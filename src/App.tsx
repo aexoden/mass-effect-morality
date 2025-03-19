@@ -1,35 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import "./App.css";
+import MoralityCalculator from "./components/MoralityCalculator";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+    return (
+        <div className="bg-gray-100 min-h-screen py-8">
+            <div className="@container mx-auto px-4">
+                <header className="mb-8 text-center">
+                    <h1 className="font-bold text-4xl text-gray-800">Mass Effect Morality Planner</h1>
+                    <p className="mt-2 text-gray-600">Plan your character's choices and track morality points</p>
+                </header>
+                <MoralityCalculator />
+                <footer className="mt-12 pb-4 text-center text-sm text-gray-600">
+                    <p>
+                        Based on the
+                        {" "}
+                        <a href="https://masseffect.fandom.com/wiki/Morality_Guide">Mass Effect Wiki Morality Guide</a>
+                        .
+                    </p>
+                    <p className="mt-1">This is a fan project and is not affiliated with EA or BioWare.</p>
+                </footer>
+            </div>
+        </div>
+    );
+};
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
-
-export default App
+export default App;
