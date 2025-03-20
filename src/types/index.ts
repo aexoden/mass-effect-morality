@@ -23,8 +23,8 @@ export interface ChoiceDependency {
 export interface Choice {
     id: string;
     title: string;
-    requiredBackground?: "spacer" | "colonist" | "earthborn";
-    isOptional?: boolean;
+    info?: string;
+    isForced?: boolean;
     dependsOn?: ChoiceDependency;
     options: ChoiceOption[];
 }
