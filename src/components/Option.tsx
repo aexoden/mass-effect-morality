@@ -14,28 +14,34 @@ export default function Option({ choiceId, option, isSelected, handleOptionSelec
 
     return (
         <div className="flex items-center">
-            <input
-                type="radio"
-                id={inputId}
-                name={inputId}
-                checked={isSelected}
-                onChange={() => {
-                    handleOptionSelect(choiceId, option.id);
-                }}
-                className="mr-2"
-                aria-labelledby={labelId}
-            />
+            <div className="relative flex items-center">
+                <input
+                    type="radio"
+                    id={inputId}
+                    name={`choice_${choiceId}`}
+                    checked={isSelected}
+                    onChange={() => {
+                        handleOptionSelect(choiceId, option.id);
+                    }}
+                    className="transition-colors"
+                    aria-labelledby={labelId}
+                />
+            </div>
             <label
                 id={labelId}
                 htmlFor={inputId}
-                className="flex-1"
+                className={`ml-2 flex-1 cursor-pointer transition-colors ${isSelected ? "font-medium text-blue-800" : "text-gray-700"}`}
             >
                 {option.label}
                 {(option.paragon > 0 || option.renegade > 0) && (
                     <span className="ml-2">
-                        {option.paragon > 0 && <span className="text-sky-600">+{option.paragon} Paragon</span>}
+                        {option.paragon > 0 && (
+                            <span className="font-medium text-sky-600">+{option.paragon} Paragon</span>
+                        )}
                         {option.paragon > 0 && option.renegade > 0 && " / "}
-                        {option.renegade > 0 && <span className="text-red-600">+{option.renegade} Renegade</span>}
+                        {option.renegade > 0 && (
+                            <span className="font-medium text-red-600">+{option.renegade} Renegade</span>
+                        )}
                     </span>
                 )}
             </label>
