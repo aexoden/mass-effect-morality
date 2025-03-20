@@ -1,49 +1,49 @@
-// Skill requirement for dialog options
-export interface SkillRequirement {
-    type: "charm" | "intimidate";
-    level: number;
+export interface ChoiceDependencyData {
+    choiceId: string;
+    optionId: string;
 }
 
-// Option in a choice
-export interface ChoiceOption {
+export interface OptionDependencyData {
+    talent: "charm" | "intimidate";
+    points: number;
+    dependsOn?: ChoiceDependencyData;
+}
+
+export interface OptionData {
     id: string;
     label: string;
     paragon: number;
     renegade: number;
-    requiresSkill?: SkillRequirement;
+    dependsOn?: OptionDependencyData[];
 }
 
-// Dependency on another choice
-export interface ChoiceDependency {
-    choiceId: string;
-    optionIndex?: number;
+export interface ChoiceData {
+    id: string;
+    description?: string;
+    options: OptionData[];
+    dependsOn?: ChoiceDependencyData;
+    isForced?: boolean;
 }
 
-// Individual choice
-export interface Choice {
+export interface GroupData {
     id: string;
     title: string;
-    info?: string;
-    isForced?: boolean;
-    dependsOn?: ChoiceDependency;
-    options: ChoiceOption[];
+    description?: string;
+    choices: ChoiceData[];
 }
 
-// Section of choices
-export interface ChoiceSection {
-    section: string;
-    choices: Choice[];
-    info?: string;
+export interface SectionData {
+    id: string;
+    title: string;
+    description?: string;
+    groups: GroupData[];
 }
 
 export interface MoralityScores {
-    paragonScore: number;
-    renegadeScore: number;
+    paragon: number;
+    renegade: number;
 }
 
-// Component state types
 export interface MoralityState {
-    currentProgress: string;
     selectedChoices: Record<string, string>;
-    completedChoices: string[];
 }

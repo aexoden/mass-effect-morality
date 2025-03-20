@@ -1,33 +1,36 @@
-import React from "react";
-import { ChoiceOption as ChoiceOptionType } from "../types";
+import { OptionData } from "../types";
 
-interface ChoiceOptionProps {
+interface OptionProps {
     choiceId: string;
-    option: ChoiceOptionType;
+    option: OptionData;
     isSelected: boolean;
-    onSelect: (_choiceId: string, _optionId: string) => void;
+    handleOptionSelect: (choiceId: string, optionId: string) => void;
 }
 
-const ChoiceOption = React.memo<ChoiceOptionProps>(({
+export default function Option({
     choiceId,
     option,
     isSelected,
-    onSelect,
-}) => {
+    handleOptionSelect,
+}: OptionProps) {
+    const fullOptionId = `${choiceId}_${option.id}`;
+    const inputId = `option_${fullOptionId}`;
+    const labelId = `label_${fullOptionId}`;
+
     return (
         <div className="flex items-center">
             <input
                 type="radio"
-                id={`option-${choiceId}-${option.id}`}
-                name={`choice-${choiceId}`}
+                id={inputId}
+                name={inputId}
                 checked={isSelected}
-                onChange={() => { onSelect(choiceId, option.id); }}
+                onChange={() => { handleOptionSelect(choiceId, option.id); }}
                 className="mr-2"
-                aria-labelledby={`label-${choiceId}-${option.id}`}
+                aria-labelledby={labelId}
             />
             <label
-                id={`label-${choiceId}-${option.id}`}
-                htmlFor={`option-${choiceId}-${option.id}`}
+                id={labelId}
+                htmlFor={inputId}
                 className="flex-1"
             >
                 {option.label}
@@ -43,8 +46,7 @@ const ChoiceOption = React.memo<ChoiceOptionProps>(({
                     </span>
                 )}
             </label>
+
         </div>
     );
-});
-
-export default ChoiceOption;
+};

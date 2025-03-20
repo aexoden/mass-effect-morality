@@ -1,29 +1,30 @@
 import { useCallback, useState, useMemo } from "react";
 import gameChoicesData from "../data/gameChoices";
-import { ChoiceOption, MoralityState } from "../types";
+import { MoralityState, OptionData } from "../types";
 
 export function useMoralityState() {
     const [state, setState] = useState<MoralityState>({
-        completedChoices: [],
-        currentProgress: "game-start",
         selectedChoices: {},
     });
 
-    const choicesLookup = useMemo(() => {
-        const lookup = new Map<string, Map<string, ChoiceOption>>();
+    const choicesMap = useMemo(() => {
+        const map = new Map<string, Map<string, OptionData>>();
 
         gameChoicesData.forEach((section) => {
-            section.choices.forEach((choice) => {
-                const optionsMap = new Map<string, ChoiceOption>();
-                choice.options.forEach((option) => {
-                    optionsMap.set(option.id, option);
-                });
+            section.groups.forEach((group) => {
+                group.choices.forEach((choice) => {
+                    const optionsMap = new Map<string, OptionData>();
 
-                lookup.set(choice.id, optionsMap);
+                    choice.options.forEach((option) => {
+                        optionsMap.set(option.id, option);
+                    });
+
+                    map.set(choice.id, optionsMap);
+                });
             });
         });
 
-        return lookup;
+        return map;
     }, []);
 
     const scores = useMemo(() => {
@@ -31,7 +32,7 @@ export function useMoralityState() {
         let totalRenegade = 0;
 
         Object.entries(state.selectedChoices).forEach(([choiceId, optionId]) => {
-            const optionsMap = choicesLookup.get(choiceId);
+            const optionsMap = choicesMap.get(choiceId);
 
             if (optionsMap) {
                 const option = optionsMap.get(optionId);
@@ -44,10 +45,10 @@ export function useMoralityState() {
         });
 
         return {
-            paragonScore: totalParagon,
-            renegadeScore: totalRenegade,
+            paragon: totalParagon,
+            renegade: totalRenegade,
         };
-    }, [state.selectedChoices, choicesLookup]);
+    }, [state.selectedChoices, choicesMap]);
 
     const handleOptionSelect = useCallback((choiceId: string, optionId: string): void => {
         setState(prev => ({

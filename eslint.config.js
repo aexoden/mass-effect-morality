@@ -44,7 +44,6 @@ export default tseslint.config(
             "@stylistic/no-extra-parens": "error",
             "@stylistic/quotes": ["error", "double", { avoidEscape: true }],
             "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
-            "no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
             "react-refresh/only-export-components": [
                 "warn",
                 { allowConstantExport: true },
