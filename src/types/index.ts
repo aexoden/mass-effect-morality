@@ -36,9 +36,18 @@ export interface ChoiceSection {
     info?: string;
 }
 
+export interface MoralityScores {
+    paragonScore: number;
+    renegadeScore: number;
+}
+
+export interface SelectedChoices {
+    [choiceId: string]: string;
+}
+
 // Component state types
 export interface MoralityState {
     currentProgress: string;
-    selectedChoices: Record<string, string>;
+    selectedChoices: SelectedChoices;
     completedChoices: string[];
 }
