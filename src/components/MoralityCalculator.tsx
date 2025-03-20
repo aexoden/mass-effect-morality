@@ -1,5 +1,5 @@
 import React from "react";
-import MoralityScore from "./MoralityScore";
+import MoralityScore, { MoralityScoreWidget } from "./MoralityScore";
 import ChoiceSection from "./ChoiceSection";
 import { useMoralityState } from "../hooks/useMoralityState";
 import gameChoicesData from "../data/gameChoices";
@@ -11,7 +11,9 @@ const MoralityCalculator: React.FC = () => {
         <div className="bg-gray-50 max-w-6xl mx-auto p-6 rounded-lg shadow-md">
             <h1 className="font-bold mb-6 text-3xl text-center">Mass Effect Morality Calculator</h1>
 
-            <MoralityScore paragonScore={scores.paragonScore} renegadeScore={scores.renegadeScore} />
+            <MoralityScoreWidget scores={scores} />
+
+            <MoralityScore scores={scores} />
 
             <div className="space-y-8">
                 {gameChoicesData.map((section, sectionIndex) => (

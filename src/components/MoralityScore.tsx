@@ -1,12 +1,10 @@
-import React from "react";
 import { MoralityScores } from "../types";
 
 interface MoralityScoreProps {
-    paragonScore: number;
-    renegadeScore: number;
+    scores: MoralityScores;
 }
 
-const MoralityScore: React.FC<MoralityScoreProps> = (scores: MoralityScores) => {
+export default function MoralityScore({ scores }: MoralityScoreProps) {
     const paragonPercentage = Math.min(100, Math.round((scores.paragonScore / 629) * 100));
     const renegadePercentage = Math.min(100, Math.round((scores.renegadeScore / 629) * 100));
 
@@ -14,7 +12,6 @@ const MoralityScore: React.FC<MoralityScoreProps> = (scores: MoralityScores) => 
         <div className="bg-gray-100 mb-8 p-4 rounded-lg shadow">
             <h2 className="font-bold mb-3 text-xl">Current Status</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Paragon */}
                 <div>
                     <div className="flex justify-between mb-1">
                         <span className="font-semibold text-sky-700">Paragon: {scores.paragonScore} points</span>
@@ -24,7 +21,6 @@ const MoralityScore: React.FC<MoralityScoreProps> = (scores: MoralityScores) => 
                     </div>
                 </div>
 
-                {/* Renegade */}
                 <div>
                     <div className="flex justify-between mb-1">
                         <span className="font-semibold text-red-700">
@@ -40,4 +36,41 @@ const MoralityScore: React.FC<MoralityScoreProps> = (scores: MoralityScores) => 
     );
 };
 
-export default MoralityScore;
+export function MoralityScoreWidget({ scores }: MoralityScoreProps) {
+    const paragonPercentage = Math.min(100, Math.round((scores.paragonScore / 629) * 100));
+    const renegadePercentage = Math.min(100, Math.round((scores.renegadeScore / 629) * 100));
+
+    return (
+        <div className="fixed bottom-4 right-4 bg-gray-800 text-white p-3 rounded-lg shadow-lg z-50 w-64">
+            <h3 className="text-lg font-bold mb-2 text-center">Current Scores</h3>
+
+            <div className="mb-2">
+                <div className="flex justify-between mb-1">
+                    <span className="font-semibold text-sky-400">Paragon: {scores.paragonScore}</span>
+                    <span className="font-semibold text-sky-400">{paragonPercentage}%</span>
+                </div>
+                <div className="w-full bg-gray-600 rounded-full h-3">
+                    <div
+                        className="bg-sky-500 h-3 rounded-full"
+                        style={{ width: `${paragonPercentage.toString()}%` }}
+                    >
+                    </div>
+                </div>
+            </div>
+
+            <div className="mb-2">
+                <div className="flex justify-between mb-1">
+                    <span className="font-semibold text-red-400">Renegade: {scores.renegadeScore}</span>
+                    <span className="font-semibold text-red-400">{renegadePercentage}%</span>
+                </div>
+                <div className="w-full bg-gray-600 rounded-full h-3">
+                    <div
+                        className="bg-red-500 h-3 rounded-full"
+                        style={{ width: `${renegadePercentage.toString()}%` }}
+                    >
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
