@@ -7,21 +7,15 @@ interface SectionProps {
     handleOptionSelect: (choiceId: string, optionId: string) => void;
 }
 
-export default function Section({
-    section,
-    selectedChoices,
-    handleOptionSelect,
-}: SectionProps) {
+export default function Section({ section, selectedChoices, handleOptionSelect }: SectionProps) {
     return (
-        <div className="bg-white p-4 rounded-lg shadow">
-            <h2 className="border-b font-bold mb-3 pb-2 text-xl">{section.title}</h2>
+        <div className="rounded-lg bg-white p-4 shadow">
+            <h2 className="mb-3 border-b pb-2 text-xl font-bold">{section.title}</h2>
 
-            {section.description && (
-                <p className="italic mb-4 text-gray-700">{section.description}</p>
-            )}
+            {section.description && <p className="mb-4 text-gray-700 italic">{section.description}</p>}
 
             <div className="space-y-4">
-                {section.groups.map(group => (
+                {section.groups.map((group) => (
                     <Group
                         key={group.id}
                         group={group}
@@ -32,4 +26,4 @@ export default function Section({
             </div>
         </div>
     );
-};
+}

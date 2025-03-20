@@ -14,19 +14,13 @@ const skipOption: OptionData = {
     renegade: 0,
 };
 
-export default function Choice({
-    choice,
-    selectedChoices,
-    handleOptionSelect,
-}: ChoiceProps) {
+export default function Choice({ choice, selectedChoices, handleOptionSelect }: ChoiceProps) {
     return (
-        <div className="bg-gray-50 border p-3 rounded">
-            {choice.description && (
-                <p className="mb-3 text-gray-700 italic">{choice.description}</p>
-            )}
+        <div className="rounded border bg-gray-50 p-3">
+            {choice.description && <p className="mb-3 text-gray-700 italic">{choice.description}</p>}
 
             <div className="space-y-1">
-                {choice.options.map(option => (
+                {choice.options.map((option) => (
                     <Option
                         key={option.id}
                         choiceId={choice.id}

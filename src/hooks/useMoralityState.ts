@@ -1,6 +1,6 @@
 import { useCallback, useState, useMemo } from "react";
 import gameChoicesData from "../data/gameChoices";
-import { MoralityState, OptionData } from "../types";
+import { MoralityScores, MoralityState, OptionData } from "../types";
 
 export function useMoralityState() {
     const [state, setState] = useState<MoralityState>({
@@ -27,7 +27,7 @@ export function useMoralityState() {
         return map;
     }, []);
 
-    const scores = useMemo(() => {
+    const scores = useMemo<MoralityScores>(() => {
         let totalParagon = 0;
         let totalRenegade = 0;
 
@@ -51,7 +51,7 @@ export function useMoralityState() {
     }, [state.selectedChoices, choicesMap]);
 
     const handleOptionSelect = useCallback((choiceId: string, optionId: string): void => {
-        setState(prev => ({
+        setState((prev) => ({
             ...prev,
             selectedChoices: {
                 ...prev.selectedChoices,

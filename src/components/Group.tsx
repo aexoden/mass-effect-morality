@@ -7,21 +7,15 @@ interface GroupProps {
     handleOptionSelect: (choiceId: string, optionId: string) => void;
 }
 
-export default function Group({
-    group,
-    selectedChoices,
-    handleOptionSelect,
-}: GroupProps) {
+export default function Group({ group, selectedChoices, handleOptionSelect }: GroupProps) {
     return (
-        <div className="border-l-4 border-gray-300 pl-4 pt-2 pb-2 my-4">
-            <h3 className="font-semibold mb-2">{group.title}</h3>
+        <div className="my-4 border-l-4 border-gray-300 pt-2 pb-2 pl-4">
+            <h3 className="mb-2 font-semibold">{group.title}</h3>
 
-            {group.description && (
-                <p className="text-gray-600 mb-3 italic">{group.description}</p>
-            )}
+            {group.description && <p className="mb-3 text-gray-600 italic">{group.description}</p>}
 
             <div className="space-y-2">
-                {group.choices.map(choice => (
+                {group.choices.map((choice) => (
                     <Choice
                         key={choice.id}
                         choice={choice}

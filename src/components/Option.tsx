@@ -7,12 +7,7 @@ interface OptionProps {
     handleOptionSelect: (choiceId: string, optionId: string) => void;
 }
 
-export default function Option({
-    choiceId,
-    option,
-    isSelected,
-    handleOptionSelect,
-}: OptionProps) {
+export default function Option({ choiceId, option, isSelected, handleOptionSelect }: OptionProps) {
     const fullOptionId = `${choiceId}_${option.id}`;
     const inputId = `option_${fullOptionId}`;
     const labelId = `label_${fullOptionId}`;
@@ -24,7 +19,9 @@ export default function Option({
                 id={inputId}
                 name={inputId}
                 checked={isSelected}
-                onChange={() => { handleOptionSelect(choiceId, option.id); }}
+                onChange={() => {
+                    handleOptionSelect(choiceId, option.id);
+                }}
                 className="mr-2"
                 aria-labelledby={labelId}
             />
@@ -36,17 +33,12 @@ export default function Option({
                 {option.label}
                 {(option.paragon > 0 || option.renegade > 0) && (
                     <span className="ml-2">
-                        {option.paragon > 0 && (
-                            <span className="text-sky-600">+{option.paragon} Paragon</span>
-                        )}
+                        {option.paragon > 0 && <span className="text-sky-600">+{option.paragon} Paragon</span>}
                         {option.paragon > 0 && option.renegade > 0 && " / "}
-                        {option.renegade > 0 && (
-                            <span className="text-red-600">+{option.renegade} Renegade</span>
-                        )}
+                        {option.renegade > 0 && <span className="text-red-600">+{option.renegade} Renegade</span>}
                     </span>
                 )}
             </label>
-
         </div>
     );
-};
+}

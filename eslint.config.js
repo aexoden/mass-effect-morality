@@ -4,6 +4,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import stylistic from "@stylistic/eslint-plugin";
+import prettier from "eslint-plugin-prettier/recommended";
 
 export default tseslint.config(
     stylistic.configs.customize({
@@ -26,6 +27,7 @@ export default tseslint.config(
                     },
                 },
             },
+            prettier,
         ],
         files: ["**/*.{js,ts,tsx}"],
         languageOptions: {
@@ -39,15 +41,12 @@ export default tseslint.config(
         },
         rules: {
             ...reactHooks.configs.recommended.rules,
-            "@stylistic/jsx-one-expression-per-line": ["error", { allow: "non-jsx" }],
+            "@stylistic/arrow-parens": ["error", "always"],
             "@stylistic/linebreak-style": ["error", "unix"],
             "@stylistic/no-extra-parens": "error",
             "@stylistic/quotes": ["error", "double", { avoidEscape: true }],
             "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
-            "react-refresh/only-export-components": [
-                "warn",
-                { allowConstantExport: true },
-            ],
+            "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
             "sort-keys": ["error", "asc", { natural: true }],
         },
     },

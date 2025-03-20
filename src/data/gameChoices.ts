@@ -6,7 +6,8 @@ const gameChoices: SectionData[] = [
     {
         id: "history-and-profile",
         title: "Pre-Service History and Psychological Profile",
-        description: "Pre-service history and psychological profile selected during character creation determine your starting morality points.",
+        description:
+            "Pre-service history and psychological profile selected during character creation determine your starting morality points.",
         groups: [
             {
                 id: "pre-service-history",
@@ -89,9 +90,7 @@ const gameChoices: SectionData[] = [
                 choices: [
                     {
                         id: "ashley-williams-1",
-                        options: [
-                            { id: "paragon", label: "Are you okay?", paragon: 2, renegade: 0 },
-                        ],
+                        options: [{ id: "paragon", label: "Are you okay?", paragon: 2, renegade: 0 }],
                     },
                     {
                         id: "ashley-williams-2",
@@ -104,9 +103,7 @@ const gameChoices: SectionData[] = [
                     {
                         id: "ashley-williams-3",
                         description: 'After telling Ashley "Stay here."',
-                        options: [
-                            { id: "renegade", label: "Fine, come with us.", paragon: 0, renegade: 2 },
-                        ],
+                        options: [{ id: "renegade", label: "Fine, come with us.", paragon: 0, renegade: 2 }],
                     },
                 ],
             },
