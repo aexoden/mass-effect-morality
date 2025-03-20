@@ -10,7 +10,7 @@ export function useMoralityState() {
     });
 
     const choicesLookup = useMemo(() => {
-        const lookup: Map<string, Map<string, ChoiceOption>> = new Map();
+        const lookup = new Map<string, Map<string, ChoiceOption>>();
 
         gameChoicesData.forEach((section) => {
             section.choices.forEach((choice) => {

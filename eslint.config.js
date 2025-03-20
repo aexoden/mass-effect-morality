@@ -7,15 +7,29 @@ import stylistic from "@stylistic/eslint-plugin";
 
 export default tseslint.config(
     stylistic.configs.customize({
+        braceStyle: "1tbs",
         indent: 4,
         semi: true,
     }),
     { ignores: ["dist"] },
     {
-        extends: [js.configs.recommended, ...tseslint.configs.recommended],
+        extends: [
+            js.configs.recommended,
+            ...tseslint.configs.strictTypeChecked,
+            ...tseslint.configs.stylisticTypeChecked,
+            {
+                languageOptions: {
+                    parserOptions: {
+                        projectService: true,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                        tsconfigRootDir: import.meta.dirname,
+                    },
+                },
+            },
+        ],
         files: ["**/*.{js,ts,tsx}"],
         languageOptions: {
-            ecmaVersion: 2020,
+            ecmaVersion: "latest",
             globals: globals.browser,
         },
         plugins: {

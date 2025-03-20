@@ -14,11 +14,16 @@
     "noEmit": true,
 
     /* Linting */
+    "allowJs": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["vite.config.ts"]
+  "include": [
+    "eslint.config.js",
+    "tailwind.config.ts",
+    "vite.config.ts",
+  ]
 }

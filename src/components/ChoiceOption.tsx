@@ -21,7 +21,7 @@ const ChoiceOption = React.memo<ChoiceOptionProps>(({
                 id={`option-${choiceId}-${option.id}`}
                 name={`choice-${choiceId}`}
                 checked={isSelected}
-                onChange={() => onSelect(choiceId, option.id)}
+                onChange={() => { onSelect(choiceId, option.id); }}
                 className="mr-2"
                 aria-labelledby={`label-${choiceId}-${option.id}`}
             />

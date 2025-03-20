@@ -7,6 +7,9 @@ interface MoralityScoreProps {
 }
 
 const MoralityScore: React.FC<MoralityScoreProps> = (scores: MoralityScores) => {
+    const paragonPercentage = Math.min(100, Math.round((scores.paragonScore / 629) * 100));
+    const renegadePercentage = Math.min(100, Math.round((scores.renegadeScore / 629) * 100));
+
     return (
         <div className="bg-gray-100 mb-8 p-4 rounded-lg shadow">
             <h2 className="font-bold mb-3 text-xl">Current Status</h2>
@@ -17,7 +20,7 @@ const MoralityScore: React.FC<MoralityScoreProps> = (scores: MoralityScores) => 
                         <span className="font-semibold text-sky-700">Paragon: {scores.paragonScore} points</span>
                     </div>
                     <div className="bg-gray-300 h-4 rounded-full w-full">
-                        <div className="bg-sky-600 h-4 rounded-full" style={{ width: `${Math.min(100, Math.round((scores.paragonScore / 629) * 100))}%` }}></div>
+                        <div className="bg-sky-600 h-4 rounded-full" style={{ width: `${paragonPercentage.toString()}%` }}></div>
                     </div>
                 </div>
 
@@ -29,7 +32,7 @@ const MoralityScore: React.FC<MoralityScoreProps> = (scores: MoralityScores) => 
                         </span>
                     </div>
                     <div className="bg-gray-300 h-4 rounded-full w-full">
-                        <div className="bg-red-600 h-4 rounded-full" style={{ width: `${Math.min(100, Math.round((scores.renegadeScore / 629) * 100))}%` }}></div>
+                        <div className="bg-red-600 h-4 rounded-full" style={{ width: `${renegadePercentage.toString()}%` }}></div>
                     </div>
                 </div>
             </div>
