@@ -10,6 +10,21 @@ const gameChoices: SectionData[] = [
             "Pre-service history and psychological profile selected during character creation determine your starting morality points.",
         groups: [
             {
+                id: "male-or-female",
+                title: "Male or Female",
+                choices: [
+                    {
+                        id: "male-or-female",
+                        description: "One choice is only available for a female Shepard.",
+                        options: [
+                            { id: "male", label: "Male", paragon: 0, renegade: 0 },
+                            { id: "female", label: "Female", paragon: 0, renegade: 0 },
+                        ],
+                        isForced: true,
+                    },
+                ],
+            },
+            {
                 id: "pre-service-history",
                 title: "Pre-Service History",
                 choices: [
@@ -168,11 +183,44 @@ const gameChoices: SectionData[] = [
                 title: "The Smuggler",
                 choices: [
                     {
-                        id: "the-smuggler",
+                        id: "the-smuggler-1",
+                        description: "Available if you extracted the smuggler's name from Cole and friends.",
                         options: [{ id: "paragon", label: "Let it go, Williams.", paragon: 2, renegade: 0 }],
                         dependsOn: [
                             { choiceId: "cole-and-friends-3", optionId: "paragon" },
                             { choiceId: "cole-and-friends-3", optionId: "renegade" },
+                        ],
+                    },
+                    {
+                        id: "the-smuggler-2",
+                        options: [
+                            {
+                                id: "renegade",
+                                label: "You're lying!",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [{ talent: "intimidate", points: 3 }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "kaidan-after-prologue",
+                title: "Kaidan (on the Normandy)",
+                choices: [
+                    {
+                        id: "kaidan-after-prologue",
+                        description: "Available only for a female Shepard.",
+                        options: [
+                            { id: "paragon", label: "You helped.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "The mission failed.", paragon: 0, renegade: 2 },
+                        ],
+                        dependsOn: [
+                            {
+                                choiceId: "male-or-female",
+                                optionId: "female",
+                            },
                         ],
                     },
                 ],

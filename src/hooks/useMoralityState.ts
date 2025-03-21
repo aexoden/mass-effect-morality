@@ -41,22 +41,41 @@ export function useMoralityState() {
         gameChoicesData.forEach((section) => {
             section.groups.forEach((group) => {
                 group.choices.forEach((choice) => {
+                    // For actual scored points
                     const hasUnmetDependency =
                         choice.dependsOn &&
                         choice.dependsOn.length > 0 &&
                         !choice.dependsOn.some((dep) => state.selectedChoices[dep.choiceId] === dep.optionId);
 
-                    if (!hasUnmetDependency) {
-                        choice.options.forEach((option) => {
-                            if (!(choice.id in state.selectedChoices)) {
-                                availableParagon += option.paragon || 0;
-                                availableRenegade += option.renegade || 0;
+                    // For available points - only consider explicitly failed dependencies
+                    const hasExplicitlyUnmetDependency =
+                        choice.dependsOn &&
+                        choice.dependsOn.length > 0 &&
+                        choice.dependsOn.every((dep) => {
+                            // If the dependency choice is unset, don't consider it unmet
+                            if (!(dep.choiceId in state.selectedChoices)) {
+                                return false;
                             }
 
-                            if (state.selectedChoices[choice.id] === option.id) {
-                                totalParagon += option.paragon || 0;
-                                totalRenegade += option.renegade || 0;
-                            }
+                            // Otherwise check if the selection doesn't match the requirement
+                            return state.selectedChoices[dep.choiceId] !== dep.optionId;
+                        });
+
+                    if (!hasUnmetDependency) {
+                        const selectedOption = choice.options.find(
+                            (option) => state.selectedChoices[choice.id] === option.id,
+                        );
+
+                        if (selectedOption) {
+                            totalParagon += selectedOption.paragon || 0;
+                            totalRenegade += selectedOption.renegade || 0;
+                        }
+                    }
+
+                    if (!hasExplicitlyUnmetDependency && !(choice.id in state.selectedChoices)) {
+                        choice.options.forEach((option) => {
+                            availableParagon += option.paragon || 0;
+                            availableRenegade += option.renegade || 0;
                         });
                     }
                 });
