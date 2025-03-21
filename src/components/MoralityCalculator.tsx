@@ -10,8 +10,6 @@ export default function MoralityCalculator() {
 
     return (
         <div className="mx-auto max-w-6xl rounded-lg bg-gray-50 p-6 shadow-md">
-            <h1 className="mb-6 text-center text-3xl font-bold">Mass Effect Morality Calculator</h1>
-
             <div className="mb-4 flex items-center justify-between rounded-lg bg-gray-100 p-4 shadow">
                 <div className="flex items-center">
                     <span className="font-semibold text-gray-700">Options</span>
