@@ -225,6 +225,170 @@ const gameChoices: SectionData[] = [
                     },
                 ],
             },
+            {
+                id: "ashley-after-prologue",
+                title: "Ashley (on the Normandy)",
+                choices: [
+                    {
+                        id: "ashley-after-prologue",
+                        options: [
+                            { id: "paragon", label: "You helped.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "The mission failed.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "citadel-expose-saren",
+        title: "Citadel: Expose Saren",
+        groups: [
+            {
+                id: "arrival-at-citadel",
+                title: "Arrival at the Citadel",
+                choices: [
+                    {
+                        id: "arrival-at-citadel",
+                        options: [{ id: "renegade", label: "They're blind.", paragon: 0, renegade: 2 }],
+                    },
+                ],
+            },
+            {
+                id: "council-meeting-1",
+                title: "First Council Meeting",
+                choices: [
+                    {
+                        id: "council-meeting-1",
+                        options: [{ id: "paragon", label: "Quit protecting him!", paragon: 2, renegade: 0 }],
+                    },
+                ],
+            },
+            {
+                id: "citadel-garrus",
+                title: "Citadel: Garrus",
+                choices: [
+                    {
+                        id: "citadel-garrus",
+                        options: [
+                            { id: "paragon", label: "It was a big risk.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Nice shot.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "fist-henchmen",
+                title: "Fist's Henchmen",
+                choices: [
+                    {
+                        id: "fist-henchmen",
+                        description: "Conversation only happens if you have charm or intimidate talent at level 3.",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "Save yourselves.",
+                                paragon: 2,
+                                renegade: 0,
+                                dependsOn: [{ talent: "charm", points: 3 }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "You're making a mistake.",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [{ talent: "intimidate", points: 3 }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "fist",
+                title: "Fist",
+                choices: [
+                    {
+                        id: "fist",
+                        options: [
+                            {
+                                id: "renegade",
+                                label: "You don't deserve to live. / He deserved it.",
+                                paragon: 0,
+                                renegade: 2,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "council-meeting-2",
+                title: "Second Council Meeting",
+                choices: [
+                    {
+                        id: "council-meeting-2",
+                        options: [
+                            { id: "paragon", label: "It's the best solution.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Quit holding us back!", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "udina-at-docks",
+                title: "Ambassador Udina (at the Docks)",
+                choices: [
+                    {
+                        id: "udina-at-docks",
+                        options: [
+                            { id: "paragon", label: "I'll be careful.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "That's your job.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "departing-speech",
+                title: "Departing Speech",
+                choices: [
+                    {
+                        id: "departing-speech-1",
+                        options: [
+                            { id: "paragon", label: "Humanity must do its part.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Nobody's going to help us.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                    {
+                        id: "departing-speech-2-paragon",
+                        description: "Unavailable if choosing the renegade option earlier in the speech.",
+                        options: [{ id: "paragon", label: "Everyone is counting on us.", paragon: 2, renegade: 0 }],
+                        dependsOn: [
+                            { choiceId: "departing-speech-1", optionId: "paragon" },
+                            { choiceId: "departing-speech-1", optionId: "skip" },
+                        ],
+                    },
+                    {
+                        id: "departing-speech-2-renegade",
+                        description: "Unavailable if choosing the paragon option earlier in the speech.",
+                        options: [{ id: "renegade", label: "Humanity's in this alone!", paragon: 0, renegade: 2 }],
+                        dependsOn: [{ choiceId: "departing-speech-1", optionId: "renegade" }],
+                    },
+                ],
+            },
+            {
+                id: "navigator-pressly",
+                title: "Navigator Pressly",
+                choices: [
+                    {
+                        id: "navigator-pressly-1",
+                        description: "Choosing the renegade option first will lock out this choice.",
+                        options: [{ id: "paragon", label: "They're on our side.", paragon: 2, renegade: 0 }],
+                    },
+                    {
+                        id: "navigator-pressly-2",
+                        options: [{ id: "renegade", label: "You doubt my decisions?", paragon: 0, renegade: 2 }],
+                    },
+                ],
+            },
         ],
     },
 ];
