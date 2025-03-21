@@ -73,10 +73,16 @@ export function useMoralityState() {
                     }
 
                     if (!hasExplicitlyUnmetDependency && !(choice.id in state.selectedChoices)) {
+                        let maxAvailableParagon = 0;
+                        let maxAvailableRenegade = 0;
+
                         choice.options.forEach((option) => {
-                            availableParagon += option.paragon || 0;
-                            availableRenegade += option.renegade || 0;
+                            maxAvailableParagon = Math.max(maxAvailableParagon, option.paragon || 0);
+                            maxAvailableRenegade = Math.max(maxAvailableRenegade, option.renegade || 0);
                         });
+
+                        availableParagon += maxAvailableParagon;
+                        availableRenegade += maxAvailableRenegade;
                     }
                 });
             });
