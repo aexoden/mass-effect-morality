@@ -3,10 +3,14 @@ export interface ChoiceDependencyData {
     optionId: string;
 }
 
-export interface OptionDependencyData {
+export interface TalentDependencyData {
     talent: "charm" | "intimidate";
     points: number;
-    dependsOn?: ChoiceDependencyData;
+}
+
+export interface OptionDependencyData {
+    requiredTalent?: TalentDependencyData;
+    dependsOn?: ChoiceDependencyData[];
 }
 
 export interface OptionData {

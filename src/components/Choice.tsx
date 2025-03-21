@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import Option from "./Option";
-import { ChoiceData, OptionData } from "../types";
+import { ChoiceData, OptionData, OptionDependencyData } from "../types";
 import { LockClosedIcon } from "@heroicons/react/24/solid";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
@@ -8,6 +8,7 @@ interface ChoiceProps {
     choice: ChoiceData;
     selectedChoices: Record<string, string>;
     handleOptionSelect: (choiceId: string, optionId: string) => void;
+    isOptionDependencyMet: (dependsOn?: OptionDependencyData[]) => boolean;
 }
 
 const skipOption: OptionData = {
@@ -17,7 +18,7 @@ const skipOption: OptionData = {
     renegade: 0,
 };
 
-export default function Choice({ choice, selectedChoices, handleOptionSelect }: ChoiceProps) {
+export default function Choice({ choice, selectedChoices, handleOptionSelect, isOptionDependencyMet }: ChoiceProps) {
     const hasUnmetDependency = useMemo(() => {
         if (
             choice.dependsOn &&
@@ -60,7 +61,7 @@ export default function Choice({ choice, selectedChoices, handleOptionSelect }: 
                         choiceId={choice.id}
                         option={option}
                         isSelected={selectedChoices[choice.id] === option.id}
-                        isDisabled={hasUnmetDependency}
+                        isDisabled={hasUnmetDependency || !isOptionDependencyMet(option.dependsOn)}
                         handleOptionSelect={handleOptionSelect}
                     />
                 ))}

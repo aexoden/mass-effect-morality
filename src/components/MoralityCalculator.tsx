@@ -5,7 +5,7 @@ import { useMoralityState } from "../hooks/useMoralityState";
 import gameChoicesData from "../data/gameChoices";
 
 export default function MoralityCalculator() {
-    const { handleOptionSelect, resetState, state, scores } = useMoralityState();
+    const { handleOptionSelect, isOptionDependencyMet, resetState, state, scores } = useMoralityState();
     const [showWidget, setShowWidget] = useState(true);
 
     return (
@@ -43,6 +43,7 @@ export default function MoralityCalculator() {
                         section={section}
                         selectedChoices={state.selectedChoices}
                         handleOptionSelect={handleOptionSelect}
+                        isOptionDependencyMet={isOptionDependencyMet}
                     />
                 ))}
             </div>

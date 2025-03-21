@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { OptionData } from "../types";
+import { OptionDependencyData, OptionData } from "../types";
 
 interface OptionProps {
     choiceId: string;
@@ -13,6 +13,24 @@ export default function Option({ choiceId, option, isSelected, isDisabled, handl
     const fullOptionId = `${choiceId}_${option.id}`;
     const inputId = `option_${fullOptionId}`;
     const labelId = `label_${fullOptionId}`;
+
+    const renderDependency = (dep: OptionDependencyData, index: number) => {
+        return (
+            <Fragment key={index}>
+                {index > 0 && <span className="mx-1 text-gray-500">OR</span>}
+                <span>
+                    {dep.requiredTalent && (
+                        <span className={dep.requiredTalent.talent === "charm" ? "text-sky-500" : "text-red-500"}>
+                            {dep.requiredTalent.talent.charAt(0).toUpperCase() + dep.requiredTalent.talent.slice(1)}{" "}
+                            {dep.requiredTalent.points}
+                        </span>
+                    )}
+                    {dep.requiredTalent && dep.dependsOn && <span className="text-gray-500"> + </span>}
+                    {dep.dependsOn && <span className="text-gray-500">Prior choice</span>}
+                </span>
+            </Fragment>
+        );
+    };
 
     return (
         <div className="flex items-center">
@@ -35,8 +53,8 @@ export default function Option({ choiceId, option, isSelected, isDisabled, handl
                 htmlFor={inputId}
                 className={`ml-2 flex-1 ${!isDisabled ? "cursor-pointer" : ""} transition-colors ${isSelected ? "font-medium text-blue-800" : "text-gray-700"}`}
             >
-                {option.label}
-                {(option.paragon > 0 || option.renegade > 0) && (
+                <span className={isDisabled ? "line-through" : ""}>{option.label}</span>
+                {(option.paragon > 0 || option.renegade > 0 || (option.dependsOn && option.dependsOn.length > 0)) && (
                     <span className="ml-2">
                         {option.paragon > 0 && (
                             <span className="font-medium text-sky-600">+{option.paragon} Paragon</span>
@@ -47,16 +65,7 @@ export default function Option({ choiceId, option, isSelected, isDisabled, handl
                         )}
                         {option.dependsOn && option.dependsOn.length > 0 && (
                             <span className="ml-2 text-sm text-gray-500">
-                                (Requires{" "}
-                                {option.dependsOn.map((dep, index) => (
-                                    <Fragment key={index}>
-                                        {index > 0 && <span> OR </span>}
-                                        <span className={dep.talent === "charm" ? "text-sky-500" : "text-red-500"}>
-                                            {dep.talent.charAt(0).toUpperCase() + dep.talent.slice(1)} {dep.points}
-                                        </span>
-                                    </Fragment>
-                                ))}
-                                )
+                                (Requires {option.dependsOn.map(renderDependency)})
                             </span>
                         )}
                     </span>

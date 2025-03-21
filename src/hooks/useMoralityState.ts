@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
 import gameChoicesData from "../data/gameChoices";
-import { MoralityScores, MoralityState } from "../types";
+import { MoralityScores, MoralityState, OptionDependencyData } from "../types";
 
 const STORAGE_KEY = "mass-effect-morality-state";
 
@@ -97,6 +97,24 @@ export function useMoralityState() {
         };
     }, [state.selectedChoices]);
 
+    const isOptionDependencyMet = (dependsOn?: OptionDependencyData[]): boolean => {
+        if (!dependsOn || dependsOn.length === 0) {
+            return true;
+        }
+
+        return dependsOn.some((dep) => {
+            let choiceMet = true;
+
+            if (dep.dependsOn) {
+                choiceMet = dep.dependsOn.some((dep) => {
+                    return state.selectedChoices[dep.choiceId] === dep.optionId;
+                });
+            }
+
+            return choiceMet;
+        });
+    };
+
     const handleOptionSelect = useCallback((choiceId: string, optionId: string): void => {
         setState((prev) => ({
             ...prev,
@@ -111,5 +129,5 @@ export function useMoralityState() {
         setState({ selectedChoices: {} });
     }, []);
 
-    return { handleOptionSelect, resetState, scores, state };
+    return { handleOptionSelect, isOptionDependencyMet, resetState, scores, state };
 }

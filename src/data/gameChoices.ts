@@ -153,7 +153,7 @@ const gameChoices: SectionData[] = [
                                 label: "You're holding out on me.",
                                 paragon: 0,
                                 renegade: 2,
-                                dependsOn: [{ talent: "intimidate", points: 1 }],
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 1 } }],
                             },
                         ],
                     },
@@ -165,14 +165,14 @@ const gameChoices: SectionData[] = [
                                 label: "He may know something.",
                                 paragon: 2,
                                 renegade: 0,
-                                dependsOn: [{ talent: "charm", points: 2 }],
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 2 } }],
                             },
                             {
                                 id: "renegade",
                                 label: "Is he worth dying for?",
                                 paragon: 0,
                                 renegade: 2,
-                                dependsOn: [{ talent: "intimidate", points: 2 }],
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 2 } }],
                             },
                         ],
                     },
@@ -199,7 +199,7 @@ const gameChoices: SectionData[] = [
                                 label: "You're lying!",
                                 paragon: 0,
                                 renegade: 2,
-                                dependsOn: [{ talent: "intimidate", points: 3 }],
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 3 } }],
                             },
                         ],
                     },
@@ -290,14 +290,14 @@ const gameChoices: SectionData[] = [
                                 label: "Save yourselves.",
                                 paragon: 2,
                                 renegade: 0,
-                                dependsOn: [{ talent: "charm", points: 3 }],
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 3 } }],
                             },
                             {
                                 id: "renegade",
                                 label: "You're making a mistake.",
                                 paragon: 0,
                                 renegade: 2,
-                                dependsOn: [{ talent: "intimidate", points: 3 }],
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 3 } }],
                             },
                         ],
                     },
@@ -349,6 +349,7 @@ const gameChoices: SectionData[] = [
             {
                 id: "departing-speech",
                 title: "Departing Speech",
+                description: "You can only earn either paragon or renegade points, but not both.",
                 choices: [
                     {
                         id: "departing-speech-1",
@@ -358,19 +359,37 @@ const gameChoices: SectionData[] = [
                         ],
                     },
                     {
-                        id: "departing-speech-2-paragon",
-                        description: "Unavailable if choosing the renegade option earlier in the speech.",
-                        options: [{ id: "paragon", label: "Everyone is counting on us.", paragon: 2, renegade: 0 }],
-                        dependsOn: [
-                            { choiceId: "departing-speech-1", optionId: "paragon" },
-                            { choiceId: "departing-speech-1", optionId: "skip" },
+                        id: "departing-speech-2",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "Everyone is counting on us.",
+                                paragon: 2,
+                                renegade: 0,
+                                dependsOn: [
+                                    {
+                                        dependsOn: [
+                                            { choiceId: "departing-speech-1", optionId: "paragon" },
+                                            { choiceId: "departing-speech-1", optionId: "skip" },
+                                        ],
+                                    },
+                                ],
+                            },
+                            {
+                                id: "renegade",
+                                label: "Humanity's in this alone!",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [
+                                    {
+                                        dependsOn: [
+                                            { choiceId: "departing-speech-1", optionId: "renegade" },
+                                            { choiceId: "departing-speech-1", optionId: "skip" },
+                                        ],
+                                    },
+                                ],
+                            },
                         ],
-                    },
-                    {
-                        id: "departing-speech-2-renegade",
-                        description: "Unavailable if choosing the paragon option earlier in the speech.",
-                        options: [{ id: "renegade", label: "Humanity's in this alone!", paragon: 0, renegade: 2 }],
-                        dependsOn: [{ choiceId: "departing-speech-1", optionId: "renegade" }],
                     },
                 ],
             },
