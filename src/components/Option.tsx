@@ -13,7 +13,7 @@ export default function Option({ choiceId, option, hasUnmetDependency }: OptionP
     const selectedChoices = useSelectedChoices();
 
     const isSelected = selectedChoices[choiceId] === option.id;
-    const isDisabled = hasUnmetDependency || !isOptionDependencyMet(option.dependsOn);
+    const isDisabled = hasUnmetDependency || !isOptionDependencyMet(option.dependsOn, false);
 
     const fullOptionId = `${choiceId}_${option.id}`;
     const inputId = `option_${fullOptionId}`;

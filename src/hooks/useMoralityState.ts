@@ -31,6 +31,31 @@ export function useMoralityState() {
         }
     }, [state]);
 
+    const isOptionDependencyMet = useCallback(
+        (dependsOn: OptionDependencyData[] | undefined, explicitOnly: boolean): boolean => {
+            if (!dependsOn || dependsOn.length === 0) {
+                return true;
+            }
+
+            return dependsOn.some((dep) => {
+                let choiceMet = true;
+
+                if (dep.dependsOn) {
+                    choiceMet = dep.dependsOn.some((dep) => {
+                        if (explicitOnly && !(dep.choiceId in state.selectedChoices)) {
+                            return true;
+                        }
+
+                        return state.selectedChoices[dep.choiceId] === dep.optionId;
+                    });
+                }
+
+                return choiceMet;
+            });
+        },
+        [state.selectedChoices],
+    );
+
     const scores = useMemo<MoralityScores>(() => {
         let totalParagon = 0;
         let totalRenegade = 0;
@@ -66,7 +91,7 @@ export function useMoralityState() {
                             (option) => state.selectedChoices[choice.id] === option.id,
                         );
 
-                        if (selectedOption) {
+                        if (selectedOption && isOptionDependencyMet(selectedOption.dependsOn, false)) {
                             totalParagon += selectedOption.paragon || 0;
                             totalRenegade += selectedOption.renegade || 0;
                         }
@@ -77,8 +102,10 @@ export function useMoralityState() {
                         let maxAvailableRenegade = 0;
 
                         choice.options.forEach((option) => {
-                            maxAvailableParagon = Math.max(maxAvailableParagon, option.paragon || 0);
-                            maxAvailableRenegade = Math.max(maxAvailableRenegade, option.renegade || 0);
+                            if (isOptionDependencyMet(option.dependsOn, true)) {
+                                maxAvailableParagon = Math.max(maxAvailableParagon, option.paragon || 0);
+                                maxAvailableRenegade = Math.max(maxAvailableRenegade, option.renegade || 0);
+                            }
                         });
 
                         availableParagon += maxAvailableParagon;
@@ -95,25 +122,7 @@ export function useMoralityState() {
             paragon: totalParagon,
             renegade: totalRenegade,
         };
-    }, [state.selectedChoices]);
-
-    const isOptionDependencyMet = (dependsOn?: OptionDependencyData[]): boolean => {
-        if (!dependsOn || dependsOn.length === 0) {
-            return true;
-        }
-
-        return dependsOn.some((dep) => {
-            let choiceMet = true;
-
-            if (dep.dependsOn) {
-                choiceMet = dep.dependsOn.some((dep) => {
-                    return state.selectedChoices[dep.choiceId] === dep.optionId;
-                });
-            }
-
-            return choiceMet;
-        });
-    };
+    }, [state.selectedChoices, isOptionDependencyMet]);
 
     const handleOptionSelect = useCallback((choiceId: string, optionId: string): void => {
         setState((prev) => ({

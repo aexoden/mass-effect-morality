@@ -4,7 +4,7 @@ import { MoralityScores, MoralityState, OptionDependencyData } from "../types";
 export interface MoralityContextData {
     state: MoralityState;
     handleOptionSelect: (choiceId: string, optionId: string) => void;
-    isOptionDependencyMet: (dependsOn?: OptionDependencyData[]) => boolean;
+    isOptionDependencyMet: (dependsOn: OptionDependencyData[] | undefined, explicitOnly: boolean) => boolean;
     resetState: () => void;
     scores: MoralityScores;
 }
