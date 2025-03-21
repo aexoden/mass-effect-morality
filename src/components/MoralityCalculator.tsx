@@ -1,11 +1,12 @@
 import { useState } from "react";
 import MoralityScore, { MoralityScoreWidget } from "./MoralityScore";
 import Section from "./Section";
-import { useMoralityState } from "../hooks/useMoralityState";
 import gameChoicesData from "../data/gameChoices";
+import { MoralityProvider } from "../contexts/MoralityProvider";
+import { useMorality } from "../hooks/useMoralityContext";
 
-export default function MoralityCalculator() {
-    const { handleOptionSelect, isOptionDependencyMet, resetState, state, scores } = useMoralityState();
+function MoralityCalculatorContent() {
+    const { resetState, scores } = useMorality();
     const [showWidget, setShowWidget] = useState(true);
 
     return (
@@ -41,12 +42,17 @@ export default function MoralityCalculator() {
                     <Section
                         key={section.id}
                         section={section}
-                        selectedChoices={state.selectedChoices}
-                        handleOptionSelect={handleOptionSelect}
-                        isOptionDependencyMet={isOptionDependencyMet}
                     />
                 ))}
             </div>
         </div>
+    );
+}
+
+export default function MoralityCalculator() {
+    return (
+        <MoralityProvider>
+            <MoralityCalculatorContent />
+        </MoralityProvider>
     );
 }

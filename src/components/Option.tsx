@@ -1,15 +1,20 @@
 import { Fragment } from "react";
-import { OptionDependencyData, OptionData } from "../types";
+import { OptionData, OptionDependencyData } from "../types";
+import { useMorality, useSelectedChoices } from "../hooks/useMoralityContext";
 
 interface OptionProps {
     choiceId: string;
     option: OptionData;
-    isSelected: boolean;
-    isDisabled: boolean;
-    handleOptionSelect: (choiceId: string, optionId: string) => void;
+    hasUnmetDependency: boolean;
 }
 
-export default function Option({ choiceId, option, isSelected, isDisabled, handleOptionSelect }: OptionProps) {
+export default function Option({ choiceId, option, hasUnmetDependency }: OptionProps) {
+    const { handleOptionSelect, isOptionDependencyMet } = useMorality();
+    const selectedChoices = useSelectedChoices();
+
+    const isSelected = selectedChoices[choiceId] === option.id;
+    const isDisabled = hasUnmetDependency || !isOptionDependencyMet(option.dependsOn);
+
     const fullOptionId = `${choiceId}_${option.id}`;
     const inputId = `option_${fullOptionId}`;
     const labelId = `label_${fullOptionId}`;

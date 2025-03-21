@@ -1,14 +1,11 @@
 import Group from "./Group";
-import { OptionDependencyData, SectionData } from "../types";
+import { SectionData } from "../types";
 
 interface SectionProps {
     section: SectionData;
-    selectedChoices: Record<string, string>;
-    handleOptionSelect: (choiceId: string, optionId: string) => void;
-    isOptionDependencyMet: (dependsOn?: OptionDependencyData[]) => boolean;
 }
 
-export default function Section({ section, selectedChoices, handleOptionSelect, isOptionDependencyMet }: SectionProps) {
+export default function Section({ section }: SectionProps) {
     return (
         <div className="rounded-lg bg-white p-4 shadow">
             <h2 className="mb-3 border-b pb-2 text-xl font-bold">{section.title}</h2>
@@ -20,9 +17,6 @@ export default function Section({ section, selectedChoices, handleOptionSelect, 
                     <Group
                         key={group.id}
                         group={group}
-                        selectedChoices={selectedChoices}
-                        handleOptionSelect={handleOptionSelect}
-                        isOptionDependencyMet={isOptionDependencyMet}
                     />
                 ))}
             </div>

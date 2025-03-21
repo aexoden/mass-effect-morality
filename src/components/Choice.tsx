@@ -1,14 +1,12 @@
 import { useMemo } from "react";
 import Option from "./Option";
-import { ChoiceData, OptionData, OptionDependencyData } from "../types";
+import { ChoiceData, OptionData } from "../types";
 import { LockClosedIcon } from "@heroicons/react/24/solid";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import { useSelectedChoices } from "../hooks/useMoralityContext";
 
 interface ChoiceProps {
     choice: ChoiceData;
-    selectedChoices: Record<string, string>;
-    handleOptionSelect: (choiceId: string, optionId: string) => void;
-    isOptionDependencyMet: (dependsOn?: OptionDependencyData[]) => boolean;
 }
 
 const skipOption: OptionData = {
@@ -18,7 +16,9 @@ const skipOption: OptionData = {
     renegade: 0,
 };
 
-export default function Choice({ choice, selectedChoices, handleOptionSelect, isOptionDependencyMet }: ChoiceProps) {
+export default function Choice({ choice }: ChoiceProps) {
+    const selectedChoices = useSelectedChoices();
+
     const hasUnmetDependency = useMemo(() => {
         if (
             choice.dependsOn &&
@@ -60,9 +60,7 @@ export default function Choice({ choice, selectedChoices, handleOptionSelect, is
                         key={option.id}
                         choiceId={choice.id}
                         option={option}
-                        isSelected={selectedChoices[choice.id] === option.id}
-                        isDisabled={hasUnmetDependency || !isOptionDependencyMet(option.dependsOn)}
-                        handleOptionSelect={handleOptionSelect}
+                        hasUnmetDependency={hasUnmetDependency}
                     />
                 ))}
 
@@ -71,9 +69,7 @@ export default function Choice({ choice, selectedChoices, handleOptionSelect, is
                         key={skipOption.id}
                         choiceId={choice.id}
                         option={skipOption}
-                        isSelected={selectedChoices[choice.id] === skipOption.id}
-                        isDisabled={hasUnmetDependency}
-                        handleOptionSelect={handleOptionSelect}
+                        hasUnmetDependency={hasUnmetDependency}
                     />
                 )}
             </div>
