@@ -41,17 +41,24 @@ export function useMoralityState() {
         gameChoicesData.forEach((section) => {
             section.groups.forEach((group) => {
                 group.choices.forEach((choice) => {
-                    choice.options.forEach((option) => {
-                        if (!(choice.id in state.selectedChoices)) {
-                            availableParagon += option.paragon || 0;
-                            availableRenegade += option.renegade || 0;
-                        }
+                    const hasUnmetDependency =
+                        choice.dependsOn &&
+                        choice.dependsOn.length > 0 &&
+                        !choice.dependsOn.some((dep) => state.selectedChoices[dep.choiceId] === dep.optionId);
 
-                        if (state.selectedChoices[choice.id] === option.id) {
-                            totalParagon += option.paragon || 0;
-                            totalRenegade += option.renegade || 0;
-                        }
-                    });
+                    if (!hasUnmetDependency) {
+                        choice.options.forEach((option) => {
+                            if (!(choice.id in state.selectedChoices)) {
+                                availableParagon += option.paragon || 0;
+                                availableRenegade += option.renegade || 0;
+                            }
+
+                            if (state.selectedChoices[choice.id] === option.id) {
+                                totalParagon += option.paragon || 0;
+                                totalRenegade += option.renegade || 0;
+                            }
+                        });
+                    }
                 });
             });
         });

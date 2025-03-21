@@ -21,7 +21,7 @@ export interface ChoiceData {
     id: string;
     description?: string;
     options: OptionData[];
-    dependsOn?: ChoiceDependencyData;
+    dependsOn?: ChoiceDependencyData[];
     isForced?: boolean;
 }
 

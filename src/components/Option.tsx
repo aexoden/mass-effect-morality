@@ -1,13 +1,15 @@
+import { Fragment } from "react";
 import { OptionData } from "../types";
 
 interface OptionProps {
     choiceId: string;
     option: OptionData;
     isSelected: boolean;
+    isDisabled: boolean;
     handleOptionSelect: (choiceId: string, optionId: string) => void;
 }
 
-export default function Option({ choiceId, option, isSelected, handleOptionSelect }: OptionProps) {
+export default function Option({ choiceId, option, isSelected, isDisabled, handleOptionSelect }: OptionProps) {
     const fullOptionId = `${choiceId}_${option.id}`;
     const inputId = `option_${fullOptionId}`;
     const labelId = `label_${fullOptionId}`;
@@ -20,6 +22,7 @@ export default function Option({ choiceId, option, isSelected, handleOptionSelec
                     id={inputId}
                     name={`choice_${choiceId}`}
                     checked={isSelected}
+                    disabled={isDisabled}
                     onChange={() => {
                         handleOptionSelect(choiceId, option.id);
                     }}
@@ -30,7 +33,7 @@ export default function Option({ choiceId, option, isSelected, handleOptionSelec
             <label
                 id={labelId}
                 htmlFor={inputId}
-                className={`ml-2 flex-1 cursor-pointer transition-colors ${isSelected ? "font-medium text-blue-800" : "text-gray-700"}`}
+                className={`ml-2 flex-1 ${!isDisabled ? "cursor-pointer" : ""} transition-colors ${isSelected ? "font-medium text-blue-800" : "text-gray-700"}`}
             >
                 {option.label}
                 {(option.paragon > 0 || option.renegade > 0) && (
@@ -41,6 +44,20 @@ export default function Option({ choiceId, option, isSelected, handleOptionSelec
                         {option.paragon > 0 && option.renegade > 0 && " / "}
                         {option.renegade > 0 && (
                             <span className="font-medium text-red-600">+{option.renegade} Renegade</span>
+                        )}
+                        {option.dependsOn && option.dependsOn.length > 0 && (
+                            <span className="ml-2 text-sm text-gray-500">
+                                (Requires{" "}
+                                {option.dependsOn.map((dep, index) => (
+                                    <Fragment key={index}>
+                                        {index > 0 && <span> OR </span>}
+                                        <span className={dep.talent === "charm" ? "text-sky-500" : "text-red-500"}>
+                                            {dep.talent.charAt(0).toUpperCase() + dep.talent.slice(1)} {dep.points}
+                                        </span>
+                                    </Fragment>
+                                ))}
+                                )
+                            </span>
                         )}
                     </span>
                 )}

@@ -107,6 +107,76 @@ const gameChoices: SectionData[] = [
                     },
                 ],
             },
+            {
+                id: "manuel-and-dr-warren",
+                title: "Manuel and Dr. Warren",
+                choices: [
+                    {
+                        id: "manuel-and-dr-warren-1",
+                        options: [{ id: "paragon", label: "You're safe.", paragon: 2, renegade: 0 }],
+                    },
+                    {
+                        id: "manuel-and-dr-warren-2",
+                        description: "After asking about the assistant.",
+                        options: [{ id: "renegade", label: "Shutting Manuel up.", paragon: 0, renegade: 9 }],
+                    },
+                ],
+            },
+            {
+                id: "cole-and-friends",
+                title: "Cole and Friends",
+                choices: [
+                    {
+                        id: "cole-and-friends-1",
+                        options: [{ id: "paragon", label: "It's safe.", paragon: 2, renegade: 0 }],
+                    },
+                    {
+                        id: "cole-and-friends-2",
+                        options: [
+                            {
+                                id: "renegade",
+                                label: "You're holding out on me.",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [{ talent: "intimidate", points: 1 }],
+                            },
+                        ],
+                    },
+                    {
+                        id: "cole-and-friends-3",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "He may know something.",
+                                paragon: 2,
+                                renegade: 0,
+                                dependsOn: [{ talent: "charm", points: 2 }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "Is he worth dying for?",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [{ talent: "intimidate", points: 2 }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "the-smuggler",
+                title: "The Smuggler",
+                choices: [
+                    {
+                        id: "the-smuggler",
+                        options: [{ id: "paragon", label: "Let it go, Williams.", paragon: 2, renegade: 0 }],
+                        dependsOn: [
+                            { choiceId: "cole-and-friends-3", optionId: "paragon" },
+                            { choiceId: "cole-and-friends-3", optionId: "renegade" },
+                        ],
+                    },
+                ],
+            },
         ],
     },
 ];
