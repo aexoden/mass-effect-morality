@@ -5,7 +5,7 @@ import { useMoralityState } from "../hooks/useMoralityState";
 import gameChoicesData from "../data/gameChoices";
 
 export default function MoralityCalculator() {
-    const { handleOptionSelect, state, scores } = useMoralityState();
+    const { handleOptionSelect, resetState, state, scores } = useMoralityState();
     const [showWidget, setShowWidget] = useState(true);
 
     return (
@@ -14,37 +14,29 @@ export default function MoralityCalculator() {
 
             <div className="mb-4 flex items-center justify-between rounded-lg bg-gray-100 p-4 shadow">
                 <div className="flex items-center">
-                    <span className="mr-4 font-semibold text-gray-700">Options</span>
+                    <span className="font-semibold text-gray-700">Options</span>
                     <button
+                        className="ml-4 rounded bg-blue-200 px-3 py-1 text-sm transition hover:bg-blue-300"
                         onClick={() => {
                             setShowWidget(!showWidget);
                         }}
-                        className="rounded bg-blue-200 px-3 py-1 text-sm transition hover:bg-blue-300"
                     >
                         {showWidget ? "Hide" : "Show"} Floating Score
+                    </button>
+                    <button
+                        className="ml-4 rounded bg-blue-200 px-3 py-1 text-sm transition hover:bg-blue-300"
+                        onClick={() => {
+                            resetState();
+                        }}
+                    >
+                        Reset Data
                     </button>
                 </div>
             </div>
 
-            {/*
-             * TODO: Maximum scores are only 340 if the player lands on Asteroid X57. Technically, these aren't actual
-             * maximum scores, but reflect the score needed to fully fill the bar. The game keeps track of the actual
-             * score regardless.
-             */}
+            {showWidget && <MoralityScoreWidget scores={scores} />}
 
-            {showWidget && (
-                <MoralityScoreWidget
-                    scores={scores}
-                    paragonMax={340}
-                    renegadeMax={340}
-                />
-            )}
-
-            <MoralityScore
-                scores={scores}
-                paragonMax={340}
-                renegadeMax={340}
-            />
+            <MoralityScore scores={scores} />
 
             <div className="space-y-8">
                 {gameChoicesData.map((section) => (

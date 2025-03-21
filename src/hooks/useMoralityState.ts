@@ -1,54 +1,69 @@
-import { useCallback, useState, useMemo } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import gameChoicesData from "../data/gameChoices";
-import { MoralityScores, MoralityState, OptionData } from "../types";
+import { MoralityScores, MoralityState } from "../types";
+
+const STORAGE_KEY = "mass-effect-morality-state";
 
 export function useMoralityState() {
-    const [state, setState] = useState<MoralityState>({
-        selectedChoices: {},
-    });
+    const initialState = (): MoralityState => {
+        if (typeof window === "undefined") return { selectedChoices: {} };
 
-    const choicesMap = useMemo(() => {
-        const map = new Map<string, Map<string, OptionData>>();
+        try {
+            const savedState = localStorage.getItem(STORAGE_KEY);
 
-        gameChoicesData.forEach((section) => {
-            section.groups.forEach((group) => {
-                group.choices.forEach((choice) => {
-                    const optionsMap = new Map<string, OptionData>();
+            if (savedState) {
+                return JSON.parse(savedState) as MoralityState;
+            }
+        } catch (error) {
+            console.error("Error loading saved state:", error);
+        }
 
-                    choice.options.forEach((option) => {
-                        optionsMap.set(option.id, option);
-                    });
+        return { selectedChoices: {} };
+    };
 
-                    map.set(choice.id, optionsMap);
-                });
-            });
-        });
+    const [state, setState] = useState<MoralityState>(initialState);
 
-        return map;
-    }, []);
+    useEffect(() => {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (error) {
+            console.error("Error saving state:", error);
+        }
+    }, [state]);
 
     const scores = useMemo<MoralityScores>(() => {
         let totalParagon = 0;
         let totalRenegade = 0;
 
-        Object.entries(state.selectedChoices).forEach(([choiceId, optionId]) => {
-            const optionsMap = choicesMap.get(choiceId);
+        let availableParagon = 0;
+        let availableRenegade = 0;
 
-            if (optionsMap) {
-                const option = optionsMap.get(optionId);
+        gameChoicesData.forEach((section) => {
+            section.groups.forEach((group) => {
+                group.choices.forEach((choice) => {
+                    choice.options.forEach((option) => {
+                        if (!(choice.id in state.selectedChoices)) {
+                            availableParagon += option.paragon || 0;
+                            availableRenegade += option.renegade || 0;
+                        }
 
-                if (option) {
-                    totalParagon += option.paragon || 0;
-                    totalRenegade += option.renegade || 0;
-                }
-            }
+                        if (state.selectedChoices[choice.id] === option.id) {
+                            totalParagon += option.paragon || 0;
+                            totalRenegade += option.renegade || 0;
+                        }
+                    });
+                });
+            });
         });
 
         return {
+            availableParagon: availableParagon,
+            availableRenegade: availableRenegade,
+            barLength: 340,
             paragon: totalParagon,
             renegade: totalRenegade,
         };
-    }, [state.selectedChoices, choicesMap]);
+    }, [state.selectedChoices]);
 
     const handleOptionSelect = useCallback((choiceId: string, optionId: string): void => {
         setState((prev) => ({
@@ -60,5 +75,9 @@ export function useMoralityState() {
         }));
     }, []);
 
-    return { handleOptionSelect, scores, state };
+    const resetState = useCallback(() => {
+        setState({ selectedChoices: {} });
+    }, []);
+
+    return { handleOptionSelect, resetState, scores, state };
 }

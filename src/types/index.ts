@@ -40,8 +40,11 @@ export interface SectionData {
 }
 
 export interface MoralityScores {
+    barLength: number;
     paragon: number;
     renegade: number;
+    availableParagon: number;
+    availableRenegade: number;
 }
 
 export interface MoralityState {

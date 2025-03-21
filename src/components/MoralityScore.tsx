@@ -2,13 +2,11 @@ import { MoralityScores } from "../types";
 
 interface MoralityScoreProps {
     scores: MoralityScores;
-    paragonMax: number;
-    renegadeMax: number;
 }
 
-export default function MoralityScore({ scores, paragonMax, renegadeMax }: MoralityScoreProps) {
-    const paragonPercentage = Math.min(100, Math.round((scores.paragon / paragonMax) * 100));
-    const renegadePercentage = Math.min(100, Math.round((scores.renegade / renegadeMax) * 100));
+export default function MoralityScore({ scores }: MoralityScoreProps) {
+    const paragonPercentage = Math.min(100, Math.round((scores.paragon / scores.barLength) * 100));
+    const renegadePercentage = Math.min(100, Math.round((scores.renegade / scores.barLength) * 100));
 
     return (
         <div className="mb-8 rounded-lg bg-gray-100 p-4 shadow">
@@ -16,7 +14,11 @@ export default function MoralityScore({ scores, paragonMax, renegadeMax }: Moral
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                     <div className="mb-1 flex justify-between">
-                        <span className="font-semibold text-sky-700">Paragon: {scores.paragon} points</span>
+                        <span className="font-semibold text-sky-700">
+                            Paragon: {scores.paragon} points
+                            {scores.availableParagon > 0 &&
+                                ` (with ${scores.availableParagon.toString()} still available)`}
+                        </span>
                     </div>
                     <div className="h-4 w-full rounded-full bg-gray-300">
                         <div
@@ -28,7 +30,11 @@ export default function MoralityScore({ scores, paragonMax, renegadeMax }: Moral
 
                 <div>
                     <div className="mb-1 flex justify-between">
-                        <span className="font-semibold text-red-700">Renegade: {scores.renegade} points</span>
+                        <span className="font-semibold text-red-700">
+                            Renegade: {scores.renegade} points
+                            {scores.availableRenegade > 0 &&
+                                ` (with ${scores.availableRenegade.toString()} still available)`}
+                        </span>
                     </div>
                     <div className="h-4 w-full rounded-full bg-gray-300">
                         <div
@@ -42,9 +48,9 @@ export default function MoralityScore({ scores, paragonMax, renegadeMax }: Moral
     );
 }
 
-export function MoralityScoreWidget({ scores, paragonMax, renegadeMax }: MoralityScoreProps) {
-    const paragonPercentage = Math.min(100, Math.round((scores.paragon / paragonMax) * 100));
-    const renegadePercentage = Math.min(100, Math.round((scores.renegade / renegadeMax) * 100));
+export function MoralityScoreWidget({ scores }: MoralityScoreProps) {
+    const paragonPercentage = Math.min(100, Math.round((scores.paragon / scores.barLength) * 100));
+    const renegadePercentage = Math.min(100, Math.round((scores.renegade / scores.barLength) * 100));
 
     return (
         <div className="fixed right-4 bottom-4 z-50 w-64 rounded-lg bg-gray-800 p-3 text-white shadow-lg">
