@@ -1,24 +1,60 @@
 import { MoralityScores } from "../types";
 
+interface MoralityPercentages {
+    paragonPercentage: string;
+    renegadePercentage: string;
+    maxParagonPercentage: string;
+    maxRenegadePercentage: string;
+    paragonWidth: string;
+    renegadeWidth: string;
+    maxParagonWidth: string;
+    maxRenegadeWidth: string;
+}
+
+function formatRoundedRatio(value: number): string {
+    const result = Math.round(value * 100);
+
+    if (result === 100 && value < 100) {
+        return "<100%";
+    } else {
+        return `${result.toString()}%`;
+    }
+}
+
+function calculateMoralityPercentages(scores: MoralityScores): MoralityPercentages {
+    const paragonRatio = Math.min(1.0, scores.paragon / scores.barLength);
+    const renegadeRatio = Math.min(1.0, scores.renegade / scores.barLength);
+    const maxParagonRatio = Math.min(1.0, (scores.paragon + scores.availableParagon) / scores.barLength);
+    const maxRenegadeRatio = Math.min(1.0, (scores.renegade + scores.availableRenegade) / scores.barLength);
+
+    const paragonPercentage = formatRoundedRatio(paragonRatio);
+    const renegadePercentage = formatRoundedRatio(renegadeRatio);
+    const maxParagonPercentage = formatRoundedRatio(maxParagonRatio);
+    const maxRenegadePercentage = formatRoundedRatio(maxRenegadeRatio);
+
+    const paragonWidth = `${((paragonRatio * 100) / maxParagonRatio).toString()}%`;
+    const renegadeWidth = `${((renegadeRatio * 100) / maxRenegadeRatio).toString()}%`;
+    const maxParagonWidth = `${(maxParagonRatio * 100).toString()}%`;
+    const maxRenegadeWidth = `${(maxRenegadeRatio * 100).toString()}%`;
+
+    return {
+        maxParagonPercentage,
+        maxParagonWidth,
+        maxRenegadePercentage,
+        maxRenegadeWidth,
+        paragonPercentage,
+        paragonWidth,
+        renegadePercentage,
+        renegadeWidth,
+    };
+}
+
 interface MoralityScoreProps {
     scores: MoralityScores;
 }
 
 export default function MoralityScore({ scores }: MoralityScoreProps) {
-    const paragonPercentage = Math.min(100, Math.round((scores.paragon / scores.barLength) * 100));
-    const renegadePercentage = Math.min(100, Math.round((scores.renegade / scores.barLength) * 100));
-
-    const maxParagonPercentage = Math.min(
-        100,
-        Math.round(((scores.paragon + scores.availableParagon) / scores.barLength) * 100),
-    );
-    const maxRenegadePercentage = Math.min(
-        100,
-        Math.round(((scores.renegade + scores.availableRenegade) / scores.barLength) * 100),
-    );
-
-    const paragonWidth = `${((paragonPercentage * 100) / maxParagonPercentage).toString()}%`;
-    const renegadeWidth = `${((renegadePercentage * 100) / maxRenegadePercentage).toString()}%`;
+    const percentages = calculateMoralityPercentages(scores);
 
     return (
         <div className="mb-8 rounded-lg bg-gray-100 p-4 shadow">
@@ -35,11 +71,11 @@ export default function MoralityScore({ scores }: MoralityScoreProps) {
                     <div className="h-4 w-full rounded-full bg-gray-300">
                         <div
                             className="h-4 w-full rounded-full bg-sky-600/15"
-                            style={{ width: `${maxParagonPercentage.toString()}%` }}
+                            style={{ width: percentages.maxParagonWidth }}
                         >
                             <div
                                 className="h-4 rounded-full bg-sky-600"
-                                style={{ width: paragonWidth }}
+                                style={{ width: percentages.paragonWidth }}
                             ></div>
                         </div>
                     </div>
@@ -56,11 +92,11 @@ export default function MoralityScore({ scores }: MoralityScoreProps) {
                     <div className="h-4 w-full rounded-full bg-gray-300">
                         <div
                             className="h-4 w-full rounded-full bg-red-600/15"
-                            style={{ width: `${maxRenegadePercentage.toString()}%` }}
+                            style={{ width: percentages.maxRenegadeWidth }}
                         >
                             <div
                                 className="h-4 rounded-full bg-red-600"
-                                style={{ width: renegadeWidth }}
+                                style={{ width: percentages.renegadeWidth }}
                             ></div>
                         </div>
                     </div>
@@ -71,34 +107,7 @@ export default function MoralityScore({ scores }: MoralityScoreProps) {
 }
 
 export function MoralityScoreWidget({ scores }: MoralityScoreProps) {
-    const paragonPercentage = Math.min(100, Math.round((scores.paragon / scores.barLength) * 100));
-    const renegadePercentage = Math.min(100, Math.round((scores.renegade / scores.barLength) * 100));
-
-    const displayParagonPercentage =
-        paragonPercentage === 100 && scores.paragon < scores.barLength ? "<100" : paragonPercentage.toString();
-    const displayRenegadePercentage =
-        renegadePercentage === 100 && scores.renegade < scores.barLength ? "<100" : renegadePercentage.toString();
-
-    const maxParagonPercentage = Math.min(
-        100,
-        Math.round(((scores.paragon + scores.availableParagon) / scores.barLength) * 100),
-    );
-    const maxRenegadePercentage = Math.min(
-        100,
-        Math.round(((scores.renegade + scores.availableRenegade) / scores.barLength) * 100),
-    );
-
-    const displayMaxParagonPercentage =
-        maxParagonPercentage === 100 && scores.paragon + scores.availableParagon < scores.barLength
-            ? "<100"
-            : maxParagonPercentage.toString();
-    const displayMaxRenegadePercentage =
-        maxRenegadePercentage === 100 && scores.renegade + scores.availableRenegade < scores.barLength
-            ? "<100"
-            : maxRenegadePercentage.toString();
-
-    const paragonWidth = `${((paragonPercentage * 100) / maxParagonPercentage).toString()}%`;
-    const renegadeWidth = `${((renegadePercentage * 100) / maxRenegadePercentage).toString()}%`;
+    const percentages = calculateMoralityPercentages(scores);
 
     return (
         <div className="fixed right-4 bottom-4 z-50 w-64 rounded-lg bg-gray-800 p-3 text-white shadow-lg">
@@ -108,17 +117,17 @@ export function MoralityScoreWidget({ scores }: MoralityScoreProps) {
                 <div className="mb-1 flex justify-between">
                     <span className="font-semibold text-sky-400">Paragon: {scores.paragon}</span>
                     <span className="font-semibold text-sky-400">
-                        {displayParagonPercentage}% / {displayMaxParagonPercentage}%
+                        {percentages.paragonPercentage} / {percentages.maxParagonPercentage}
                     </span>
                 </div>
                 <div className="h-3 w-full rounded-full bg-gray-600">
                     <div
                         className="h-3 w-full rounded-full bg-sky-500/25"
-                        style={{ width: `${maxParagonPercentage.toString()}%` }}
+                        style={{ width: percentages.maxParagonWidth }}
                     >
                         <div
                             className="h-3 rounded-full bg-sky-500"
-                            style={{ width: paragonWidth }}
+                            style={{ width: percentages.paragonWidth }}
                         ></div>
                     </div>
                 </div>
@@ -128,17 +137,17 @@ export function MoralityScoreWidget({ scores }: MoralityScoreProps) {
                 <div className="mb-1 flex justify-between">
                     <span className="font-semibold text-red-400">Renegade: {scores.renegade}</span>
                     <span className="font-semibold text-red-400">
-                        {displayRenegadePercentage}% / {displayMaxRenegadePercentage}%
+                        {percentages.renegadePercentage} / {percentages.maxRenegadePercentage}
                     </span>
                 </div>
                 <div className="h-3 w-full rounded-full bg-gray-600">
                     <div
                         className="h-3 w-full rounded-full bg-red-500/25"
-                        style={{ width: `${maxRenegadePercentage.toString()}%` }}
+                        style={{ width: percentages.maxRenegadeWidth }}
                     >
                         <div
                             className="h-3 rounded-full bg-red-500"
-                            style={{ width: renegadeWidth }}
+                            style={{ width: percentages.renegadeWidth }}
                         ></div>
                     </div>
                 </div>

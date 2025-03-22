@@ -33,15 +33,26 @@ export function useMoralityState() {
 
     const isOptionDependencyMet = useCallback(
         (dependsOn: OptionDependencyData[] | undefined, explicitOnly: boolean): boolean => {
+            // If there are no dependencies, they are met.
             if (!dependsOn || dependsOn.length === 0) {
                 return true;
             }
 
+            // Each option can provide a list of dependencies to meet. Only one of the items needs to be met. Each
+            // individual dependency itself consists of an optional talent requirement and an optional list of choices
+            // that must be made to meet the dependency. If defined, both the talent requirement and the list of choices
+            // must be met. However, as with the list as a whole, only one of the items in the choice list must be met.
+            // The explicitOnly parameter controls whether or not a choice with no selection made at all is considered
+            // a pass or not. This is to allow actual scored points to be considered separately from points that are
+            // still potentially available. (You only count a point as scored if any required dependency was actually
+            // selected, but a point remains available as long as its path hasn't been explicitly ruled out.)
             return dependsOn.some((dep) => {
                 let choiceMet = true;
 
                 if (dep.dependsOn) {
                     choiceMet = dep.dependsOn.some((dep) => {
+                        // If only considering explicitly set dependencies, and the dependency has no choice selected,
+                        // treat the dependency as met.
                         if (explicitOnly && !(dep.choiceId in state.selectedChoices)) {
                             return true;
                         }
