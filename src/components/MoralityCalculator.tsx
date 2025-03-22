@@ -8,6 +8,7 @@ import { useMorality } from "../hooks/useMoralityContext";
 function MoralityCalculatorContent() {
     const { resetState, scores } = useMorality();
     const [showWidget, setShowWidget] = useState(true);
+    const [isPinned, setIsPinned] = useState(false);
 
     return (
         <div className="mx-auto max-w-6xl rounded-lg bg-gray-50 p-6 shadow-md">
@@ -33,7 +34,18 @@ function MoralityCalculatorContent() {
                 </div>
             </div>
 
-            {showWidget && <MoralityScoreWidget scores={scores} />}
+            {showWidget && (
+                <MoralityScoreWidget
+                    scores={scores}
+                    onClose={() => {
+                        setShowWidget(false);
+                    }}
+                    onPin={() => {
+                        setIsPinned(!isPinned);
+                    }}
+                    isPinned={isPinned}
+                />
+            )}
 
             <MoralityScore scores={scores} />
 

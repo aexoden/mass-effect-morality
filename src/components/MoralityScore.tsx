@@ -1,3 +1,13 @@
+import { useEffect, useState } from "react";
+import {
+    BookmarkIcon,
+    CheckCircleIcon,
+    ChevronDownIcon,
+    ChevronUpIcon,
+    ExclamationTriangleIcon,
+    ShieldCheckIcon,
+    XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { MoralityScores } from "../types";
 
 interface MoralityPercentages {
@@ -34,8 +44,8 @@ function calculateMoralityPercentages(scores: MoralityScores): MoralityPercentag
     const maxParagonPercentage = formatRoundedRatio(maxParagonRatio);
     const maxRenegadePercentage = formatRoundedRatio(maxRenegadeRatio);
 
-    const paragonWidth = `${((paragonRatio * 100) / maxParagonRatio).toString()}%`;
-    const renegadeWidth = `${((renegadeRatio * 100) / maxRenegadeRatio).toString()}%`;
+    const paragonWidth = `${(paragonRatio * 100).toString()}%`;
+    const renegadeWidth = `${(renegadeRatio * 100).toString()}%`;
     const maxParagonWidth = `${(maxParagonRatio * 100).toString()}%`;
     const maxRenegadeWidth = `${(maxRenegadeRatio * 100).toString()}%`;
 
@@ -51,6 +61,31 @@ function calculateMoralityPercentages(scores: MoralityScores): MoralityPercentag
         renegadeRatio,
         renegadeWidth,
     };
+}
+
+function getMoralityLabel(scores: MoralityScores): string {
+    const difference = scores.paragon - scores.renegade;
+    const total = scores.paragon + scores.renegade;
+
+    if (total < 20) return "Undefined";
+
+    if (difference > 80) return "Pure Paragon";
+    if (difference > 40) return "Paragon";
+    if (difference > 10) return "Mostly Paragon";
+
+    if (difference < -80) return "Pure Renegade";
+    if (difference < -40) return "Renegade";
+    if (difference < -10) return "Mostly Renegade";
+
+    return "Neutral";
+}
+
+function getAlignmentColor(scores: MoralityScores): string {
+    const alignment = getMoralityLabel(scores);
+
+    if (alignment.includes("Paragon")) return "text-sky-600";
+    if (alignment.includes("Renegade")) return "text-red-600";
+    return "text-gray-300";
 }
 
 interface MoralityScoreProps {
@@ -74,21 +109,8 @@ export default function MoralityScore({ scores }: MoralityScoreProps) {
         return "bg-white";
     };
 
-    const getMoralityLabel = (): string => {
-        const difference = scores.paragon - scores.renegade;
-        const total = scores.paragon + scores.renegade;
-
-        if (total < 20) return "Undefined";
-
-        if (difference > 50) return "Paragon";
-        if (difference > 20) return "Mostly Paragon";
-        if (difference < -50) return "Renegade";
-        if (difference < -20) return "Mostly Renegade";
-
-        return "Neutral";
-    };
-
-    const moralityLabel = getMoralityLabel();
+    const moralityLabel = getMoralityLabel(scores);
+    const alignmentColor = getAlignmentColor(scores);
 
     return (
         <div className={`mb-8 w-full rounded-lg p-6 shadow-lg ${getBackgroundGradient()}`}>
@@ -96,18 +118,7 @@ export default function MoralityScore({ scores }: MoralityScoreProps) {
             <div className="mb-6">
                 <div className="mb-2 flex items-center justify-between">
                     <span className="text-lg font-medium">
-                        Moral Alignment:{" "}
-                        <span
-                            className={
-                                moralityLabel === "Paragon" || moralityLabel === "Mostly Paragon"
-                                    ? "text-sky-600"
-                                    : moralityLabel === "Renegade" || moralityLabel === "Mostly Renegade"
-                                      ? "text-red-600"
-                                      : "text-gray-600"
-                            }
-                        >
-                            {moralityLabel}
-                        </span>
+                        Moral Alignment: <span className={alignmentColor}>{moralityLabel}</span>
                     </span>
                 </div>
             </div>
@@ -120,17 +131,16 @@ export default function MoralityScore({ scores }: MoralityScoreProps) {
                         </span>
                         <span className="font-medium">{percentages.paragonPercentage}</span>
                     </div>
-                    <div className="h-6 w-full overflow-hidden rounded-full bg-gray-200">
+                    <div className="relative h-6 w-full overflow-hidden rounded-full bg-gray-200">
                         <div
-                            className="h-6 rounded-full bg-sky-600/20 transition-all duration-500"
+                            className="absolute h-6 rounded-full bg-sky-600/20 transition-all duration-500"
                             style={{ width: percentages.maxParagonWidth }}
+                        ></div>
+                        <div
+                            className="flex h-6 items-center justify-end rounded-full bg-sky-600 pr-2 text-xs font-medium text-white transition-all duration-500"
+                            style={{ width: percentages.paragonWidth }}
                         >
-                            <div
-                                className="flex h-6 items-center justify-end rounded-full bg-sky-600 pr-2 text-xs font-medium text-white transition-all duration-500"
-                                style={{ width: percentages.paragonWidth }}
-                            >
-                                {percentages.paragonRatio > 0.15 && percentages.paragonPercentage}
-                            </div>
+                            {percentages.paragonRatio > 0.15 && percentages.paragonPercentage}
                         </div>
                     </div>
                 </div>
@@ -161,52 +171,188 @@ export default function MoralityScore({ scores }: MoralityScoreProps) {
     );
 }
 
-export function MoralityScoreWidget({ scores }: MoralityScoreProps) {
+interface MoralityScoreWidgetProps {
+    scores: MoralityScores;
+    onClose: () => void;
+    onPin: () => void;
+    isPinned?: boolean;
+}
+
+export function MoralityScoreWidget({ scores, onClose, onPin, isPinned }: MoralityScoreWidgetProps) {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [lastParagon, setLastParagon] = useState(scores.paragon);
+    const [lastRenegade, setLastRenegade] = useState(scores.renegade);
+    const [paragonChanged, setParagonChanged] = useState(false);
+    const [renegadeChanged, setRenegadeChanged] = useState(false);
+
+    useEffect(() => {
+        if (scores.paragon !== lastParagon) {
+            setParagonChanged(true);
+            setLastParagon(scores.paragon);
+            setTimeout(() => {
+                setParagonChanged(false);
+            }, 2000);
+        }
+    }, [scores.paragon, lastParagon]);
+
+    useEffect(() => {
+        if (scores.renegade !== lastRenegade) {
+            setRenegadeChanged(true);
+            setLastRenegade(scores.renegade);
+            setTimeout(() => {
+                setRenegadeChanged(false);
+            }, 2000);
+        }
+    }, [scores.renegade, lastRenegade]);
+
+    const moralityLabel = getMoralityLabel(scores);
+    const alignmentColor = getAlignmentColor(scores);
     const percentages = calculateMoralityPercentages(scores);
 
     return (
-        <div className="fixed right-4 bottom-4 z-50 w-64 rounded-lg bg-gray-800 p-3 text-white shadow-lg">
-            <h3 className="mb-2 text-center text-lg font-bold">Current Scores</h3>
-
-            <div className="mb-2">
-                <div className="mb-1 flex justify-between">
-                    <span className="font-semibold text-sky-400">Paragon: {scores.paragon}</span>
-                    <span className="font-semibold text-sky-400">
-                        {percentages.paragonPercentage} / {percentages.maxParagonPercentage}
-                    </span>
+        <div className="bg-opacity-95 fixed right-4 bottom-4 z-50 w-72 rounded-lg bg-gray-800 text-white shadow-lg backdrop-blur-sm transition-all duration-300">
+            <div className="flex items-center justify-between rounded-t-lg bg-gray-700 px-3 py-2">
+                <div className="flex items-center">
+                    <span className="mr-2 h-3 w-3 rounded-full bg-gradient-to-r from-sky-400 to-red-400"></span>
+                    <h3 className="text-lg font-bold">Morality Status</h3>
                 </div>
-                <div className="h-3 w-full rounded-full bg-gray-600">
-                    <div
-                        className="h-3 w-full rounded-full bg-sky-500/25"
-                        style={{ width: percentages.maxParagonWidth }}
+                <div className="flex space-x-1">
+                    <button
+                        onClick={() => {
+                            setIsExpanded(!isExpanded);
+                        }}
+                        className="rounded p-1 text-gray-300 hover:bg-gray-600 hover:text-white"
+                        aria-label={isExpanded ? "Collapse details" : "Expand details"}
                     >
+                        {isExpanded ? <ChevronUpIcon className="h-4 w-4" /> : <ChevronDownIcon className="h-4 w-4" />}
+                    </button>
+                    <button
+                        onClick={onPin}
+                        className={`rounded p-1 hover:bg-gray-600 ${isPinned ? "text-yellow-400" : "text-gray-300 hover:text-white"}`}
+                        aria-label={isPinned ? "Unpin widget" : "Pin widget"}
+                    >
+                        <BookmarkIcon className="h-4 w-4" />
+                    </button>
+                    <button
+                        onClick={onClose}
+                        className="rounded p-1 text-gray-300 hover:bg-gray-600 hover:text-white"
+                        aria-label="Close widget"
+                    >
+                        <XMarkIcon className="h-4 w-4" />
+                    </button>
+                </div>
+            </div>
+
+            {/* Moral Alignment Display */}
+            <div className="border-b border-gray-700 px-3 py-2">
+                <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-300">Alignment:</span>
+                    <span className={`font-bold ${alignmentColor}`}>{moralityLabel}</span>
+                </div>
+            </div>
+
+            {/* Scores */}
+            <div className="px-3 py-2">
+                <div className="mb-3">
+                    <div className="mb-1 flex justify-between">
+                        <span
+                            className={`flex items-center text-sm font-medium text-sky-500 ${paragonChanged ? "animate-pulse" : ""}`}
+                        >
+                            <CheckCircleIcon className="mr-1 h-4 w-4" />
+                            Paragon
+                        </span>
+                        <span className="text-sm font-medium text-sky-500">
+                            {scores.paragon} ({percentages.paragonPercentage})
+                        </span>
+                    </div>
+                    <div className="relative h-2 w-full overflow-hidden rounded-full bg-gray-700">
                         <div
-                            className="h-3 rounded-full bg-sky-500"
+                            className="absolute h-2 rounded-full bg-sky-500/20 transition-all duration-500"
+                            style={{ width: percentages.maxParagonWidth }}
+                        ></div>
+                        <div
+                            className={`absolute h-2 rounded-full bg-sky-500 transition-all duration-500 ${paragonChanged ? "animate-pulse" : ""}`}
                             style={{ width: percentages.paragonWidth }}
                         ></div>
                     </div>
                 </div>
-            </div>
-
-            <div className="mb-2">
-                <div className="mb-1 flex justify-between">
-                    <span className="font-semibold text-red-400">Renegade: {scores.renegade}</span>
-                    <span className="font-semibold text-red-400">
-                        {percentages.renegadePercentage} / {percentages.maxRenegadePercentage}
-                    </span>
-                </div>
-                <div className="h-3 w-full rounded-full bg-gray-600">
-                    <div
-                        className="h-3 w-full rounded-full bg-red-500/25"
-                        style={{ width: percentages.maxRenegadeWidth }}
-                    >
+                <div>
+                    <div className="mb-1 flex justify-between">
+                        <span
+                            className={`flex items-center text-sm font-medium text-red-500 ${renegadeChanged ? "animate-pulse" : ""}`}
+                        >
+                            <ExclamationTriangleIcon className="mr-1 h-4 w-4" />
+                            Renegade
+                        </span>
+                        <span className="text-sm font-medium text-red-500">
+                            {scores.renegade} ({percentages.renegadePercentage})
+                        </span>
+                    </div>
+                    <div className="relative h-2 w-full rounded-full bg-gray-700">
                         <div
-                            className="h-3 rounded-full bg-red-500"
+                            className="absolute h-2 rounded-full bg-red-500/20"
+                            style={{ width: percentages.maxRenegadeWidth }}
+                        ></div>
+                        <div
+                            className={`absolute h-2 rounded-full bg-red-500 transition-all duration-500 ${renegadeChanged ? "animate-pulse" : ""}`}
                             style={{ width: percentages.renegadeWidth }}
                         ></div>
                     </div>
                 </div>
             </div>
+
+            {/* Expanded Details */}
+            {isExpanded && (
+                <div className="border-t border-gray-700 px-3 py-2">
+                    <div className="grid grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <p className="text-gray-400">Available Paragon</p>
+                            <p className="font-medium text-sky-200">{scores.availableParagon} points</p>
+                        </div>
+                        <div>
+                            <p className="text-gray-400">Available Renegade</p>
+                            <p className="font-medium text-red-200">{scores.availableRenegade} points</p>
+                        </div>
+                        <div>
+                            <p className="text-gray-400">Max Potential</p>
+                            <p className="font-medium text-sky-200">{percentages.maxParagonPercentage}</p>
+                        </div>
+                        <div>
+                            <p className="text-gray-400">Max Potential</p>
+                            <p className="font-medium text-red-200">{percentages.maxRenegadePercentage}</p>
+                        </div>
+                    </div>
+
+                    <div className="mt-2 rounded border border-gray-600 bg-gray-900 p-2 text-xs text-gray-300">
+                        <p className="mb-1 font-medium text-white">Special Effects:</p>
+                        {scores.bonusCharm > 0 && (
+                            <p className="flex items-center text-sky-300">
+                                <CheckCircleIcon className="mr-1 h-3 w-3" />+{scores.bonusCharm} Charm
+                            </p>
+                        )}
+                        {scores.bonusIntimidate > 0 && (
+                            <p className="flex items-center text-red-300">
+                                <CheckCircleIcon className="mr-1 h-3 w-3" />+{scores.bonusIntimidate} Intimidate
+                            </p>
+                        )}
+                        {percentages.paragonRatio >= 0.8 && (
+                            <p className="flex items-center text-sky-300">
+                                <ShieldCheckIcon className="mr-1 h-3 w-3" />
+                                Paragon Mission Unlocked{` ${percentages.paragonRatio >= 0.9 ? "" : "(if first)"}`}
+                            </p>
+                        )}
+                        {percentages.renegadeRatio >= 0.8 && (
+                            <p className="flex items-center text-sky-300">
+                                <ShieldCheckIcon className="mr-1 h-3 w-3" />
+                                Renegade Mission Unlocked{` ${percentages.renegadeRatio >= 0.9 ? "" : "(if first)"}`}
+                            </p>
+                        )}
+                        {scores.bonusCharm === 0 && scores.bonusIntimidate === 0 && (
+                            <p className="text-gray-400">None</p>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

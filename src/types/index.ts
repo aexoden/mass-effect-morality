@@ -49,6 +49,8 @@ export interface MoralityScores {
     renegade: number;
     availableParagon: number;
     availableRenegade: number;
+    bonusCharm: number;
+    bonusIntimidate: number;
 }
 
 export interface MoralityState {

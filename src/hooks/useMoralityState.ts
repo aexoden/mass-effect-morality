@@ -71,9 +71,17 @@ export function useMoralityState() {
         let availableParagon = 0;
         let availableRenegade = 0;
 
+        let bonusCharm = 0;
+        let bonusIntimidate = 0;
+
         gameChoicesData.forEach((section) => {
             section.groups.forEach((group) => {
                 group.choices.forEach((choice) => {
+                    if (choice.id === "council-meeting-2" && choice.id in state.selectedChoices) {
+                        bonusCharm += 1;
+                        bonusIntimidate += 1;
+                    }
+
                     // For actual scored points
                     const hasUnmetDependency =
                         choice.dependsOn &&
@@ -123,10 +131,32 @@ export function useMoralityState() {
             });
         });
 
+        const barLength = 340;
+        const paragonRatio = totalParagon / barLength;
+        const renegadeRatio = totalRenegade / barLength;
+
+        if (paragonRatio >= 0.75) {
+            bonusCharm += 3;
+        } else if (paragonRatio >= 0.25) {
+            bonusCharm += 2;
+        } else if (paragonRatio >= 0.1) {
+            bonusCharm += 1;
+        }
+
+        if (renegadeRatio >= 0.75) {
+            bonusIntimidate += 3;
+        } else if (renegadeRatio >= 0.25) {
+            bonusIntimidate += 2;
+        } else if (renegadeRatio >= 0.1) {
+            bonusIntimidate += 1;
+        }
+
         return {
-            availableParagon: availableParagon,
-            availableRenegade: availableRenegade,
-            barLength: 340,
+            availableParagon,
+            availableRenegade,
+            barLength,
+            bonusCharm,
+            bonusIntimidate,
             paragon: totalParagon,
             renegade: totalRenegade,
         };
