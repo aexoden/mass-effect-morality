@@ -1,6 +1,8 @@
 import { MoralityScores } from "../types";
 
 interface MoralityPercentages {
+    paragonRatio: number;
+    renegadeRatio: number;
     paragonPercentage: string;
     renegadePercentage: string;
     maxParagonPercentage: string;
@@ -43,8 +45,10 @@ function calculateMoralityPercentages(scores: MoralityScores): MoralityPercentag
         maxRenegadePercentage,
         maxRenegadeWidth,
         paragonPercentage,
+        paragonRatio,
         paragonWidth,
         renegadePercentage,
+        renegadeRatio,
         renegadeWidth,
     };
 }
@@ -56,48 +60,99 @@ interface MoralityScoreProps {
 export default function MoralityScore({ scores }: MoralityScoreProps) {
     const percentages = calculateMoralityPercentages(scores);
 
+    const getBackgroundGradient = (): string => {
+        if (scores.paragon > scores.renegade * 2) {
+            return "bg-gradient-to-r from-sky-100 to-white";
+        } else if (scores.renegade > scores.paragon * 2) {
+            return "bg-gradient-to-r from-red-100 to-white";
+        } else if (scores.paragon > scores.renegade) {
+            return "bg-gradient-to-r from-sky-50 to-white";
+        } else if (scores.renegade > scores.paragon) {
+            return "bg-gradient-to-r from-red-50 to-white";
+        }
+
+        return "bg-white";
+    };
+
+    const getMoralityLabel = (): string => {
+        const difference = scores.paragon - scores.renegade;
+        const total = scores.paragon + scores.renegade;
+
+        if (total < 20) return "Undefined";
+
+        if (difference > 50) return "Paragon";
+        if (difference > 20) return "Mostly Paragon";
+        if (difference < -50) return "Renegade";
+        if (difference < -20) return "Mostly Renegade";
+
+        return "Neutral";
+    };
+
+    const moralityLabel = getMoralityLabel();
+
     return (
-        <div className="mb-8 rounded-lg bg-gray-100 p-4 shadow">
-            <h2 className="mb-3 text-xl font-bold">Current Status</h2>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className={`mb-8 w-full rounded-lg p-6 shadow-lg ${getBackgroundGradient()}`}>
+            <h2 className="mb-4 text-2xl font-bold">Current Morality Tracker</h2>
+            <div className="mb-6">
+                <div className="mb-2 flex items-center justify-between">
+                    <span className="text-lg font-medium">
+                        Moral Alignment:{" "}
+                        <span
+                            className={
+                                moralityLabel === "Paragon" || moralityLabel === "Mostly Paragon"
+                                    ? "text-sky-600"
+                                    : moralityLabel === "Renegade" || moralityLabel === "Mostly Renegade"
+                                      ? "text-red-600"
+                                      : "text-gray-600"
+                            }
+                        >
+                            {moralityLabel}
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
                     <div className="mb-1 flex justify-between">
                         <span className="font-semibold text-sky-700">
                             Paragon: {scores.paragon} points
-                            {scores.availableParagon > 0 &&
-                                ` (with ${scores.availableParagon.toString()} still available)`}
+                            {scores.availableParagon > 0 && ` (${scores.availableParagon.toString()} more available)`}
                         </span>
+                        <span className="font-medium">{percentages.paragonPercentage}</span>
                     </div>
-                    <div className="h-4 w-full rounded-full bg-gray-300">
+                    <div className="h-6 w-full overflow-hidden rounded-full bg-gray-200">
                         <div
-                            className="h-4 w-full rounded-full bg-sky-600/15"
+                            className="h-6 rounded-full bg-sky-600/20 transition-all duration-500"
                             style={{ width: percentages.maxParagonWidth }}
                         >
                             <div
-                                className="h-4 rounded-full bg-sky-600"
+                                className="flex h-6 items-center justify-end rounded-full bg-sky-600 pr-2 text-xs font-medium text-white transition-all duration-500"
                                 style={{ width: percentages.paragonWidth }}
-                            ></div>
+                            >
+                                {percentages.paragonRatio > 0.15 && percentages.paragonPercentage}
+                            </div>
                         </div>
                     </div>
                 </div>
-
                 <div>
                     <div className="mb-1 flex justify-between">
                         <span className="font-semibold text-red-700">
                             Renegade: {scores.renegade} points
-                            {scores.availableRenegade > 0 &&
-                                ` (with ${scores.availableRenegade.toString()} still available)`}
+                            {scores.availableRenegade > 0 && ` (${scores.availableRenegade.toString()} more available)`}
                         </span>
+                        <span className="font-medium">{percentages.renegadePercentage}</span>
                     </div>
-                    <div className="h-4 w-full rounded-full bg-gray-300">
+                    <div className="h-6 w-full overflow-hidden rounded-full bg-gray-200">
                         <div
-                            className="h-4 w-full rounded-full bg-red-600/15"
+                            className="h-6 rounded-full bg-red-600/20 transition-all duration-500"
                             style={{ width: percentages.maxRenegadeWidth }}
                         >
                             <div
-                                className="h-4 rounded-full bg-red-600"
+                                className="flex h-6 items-center justify-end rounded-full bg-red-600 pr-2 text-xs font-medium text-white transition-all duration-500"
                                 style={{ width: percentages.renegadeWidth }}
-                            ></div>
+                            >
+                                {percentages.renegadeRatio > 0.15 && percentages.renegadePercentage}
+                            </div>
                         </div>
                     </div>
                 </div>

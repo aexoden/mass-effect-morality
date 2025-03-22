@@ -11,7 +11,7 @@ function MoralityCalculatorContent() {
 
     return (
         <div className="mx-auto max-w-6xl rounded-lg bg-gray-50 p-6 shadow-md">
-            <div className="mb-4 flex items-center justify-between rounded-lg bg-gray-100 p-4 shadow">
+            <div className="mb-8 flex items-center justify-between rounded-lg bg-gray-100 p-4 shadow">
                 <div className="flex items-center">
                     <span className="font-semibold text-gray-700">Options</span>
                     <button
