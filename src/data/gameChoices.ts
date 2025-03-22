@@ -349,7 +349,7 @@ const gameChoices: SectionData[] = [
             {
                 id: "departing-speech",
                 title: "Departing Speech",
-                description: "You can only earn either paragon or renegade points, but not both.",
+                description: "You can only earn either Paragon or Renegade points, but not both.",
                 choices: [
                     {
                         id: "departing-speech-1",
@@ -405,6 +405,719 @@ const gameChoices: SectionData[] = [
                     {
                         id: "navigator-pressly-2",
                         options: [{ id: "renegade", label: "You doubt my decisions?", paragon: 0, renegade: 2 }],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "citadel-assignments-1",
+        title: "Citadel Assignments",
+        groups: [
+            {
+                id: "citadel-asari-consort",
+                title: "Citadel: Asari Consort",
+                choices: [
+                    {
+                        id: "citadel-asari-consort",
+                        options: [
+                            { id: "paragon", label: "Glad to help.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Let's talk payment.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "citadel-doctor-michel",
+                title: "Citadel: Doctor Michel",
+                choices: [
+                    {
+                        id: "citadel-doctor-michel",
+                        options: [
+                            { id: "paragon", label: "Let's work this out.", paragon: 2, renegade: 0 },
+                            {
+                                id: "charm",
+                                label: "You should reconsider.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 6 } }],
+                            },
+                            { id: "renegade", label: "Kill him.", paragon: 0, renegade: 2 },
+                            {
+                                id: "intimidate",
+                                label: "Talk and you're dead!",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 3 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "citadel-the-fan",
+                title: "Citadel: The Fan",
+                choices: [
+                    {
+                        id: "citadel-the-fan",
+                        description: "On your third encounter.",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "It's not that easy. / There are other fights. / Let's talk about trust.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 2 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "That's a load of crap. / There are no good fights. / Here's a test.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 2 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "citadel-homecoming",
+                title: "Citadel: Homecoming",
+                choices: [
+                    {
+                        id: "citadel-homecoming",
+                        options: [
+                            {
+                                id: "paragon-bosker",
+                                label: "To Clerk Bosker: This isn't right.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 2 } }],
+                            },
+                            {
+                                id: "renegade-bosker",
+                                label: "To Clerk Bosker: I'm releasing the body.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 2 } }],
+                            },
+                            {
+                                id: "paragon-samesh",
+                                label: "To Samesh Bhatia: This is important.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 3 } }],
+                            },
+                            {
+                                id: "renegade-samesh",
+                                label: "To Samesh Bhatia: This is war.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 3 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "citadel-jahleeds-fears",
+                title: "Citadel: Jahleed's Fears",
+                choices: [
+                    {
+                        id: "citadel-jahleeds-fears-1",
+                        description:
+                            'To Chorban in the Lower Markets. The Paragon option is only available if you received "Citadel: Scan the Keepers" from Chorban, and the Renegade option is only available if you did not.',
+                        options: [
+                            { id: "paragon", label: "No more.", paragon: 8, renegade: 0 },
+                            { id: "renegade", label: "You're not leaving.", paragon: 0, renegade: 9 },
+                        ],
+                    },
+                    {
+                        id: "citadel-jahleeds-fears-2",
+                        description: "To Jahleed at C-Sec Academy.",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "Then do it legally.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 7 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "Take it back!",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 6 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "citadel-presidium-prophet",
+                title: "Citadel: Presidium Prophet",
+                choices: [
+                    {
+                        id: "citadel-presidium-prophet",
+                        options: [
+                            {
+                                id: "paragon-hanar",
+                                label: "To the hanar: This is unworthy of you.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 4 } }],
+                            },
+                            {
+                                id: "renegade-hanar",
+                                label: "To the hanar: There's trouble anyway.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 6 } }],
+                            },
+                            {
+                                id: "paragon-officer",
+                                label: "To the officer: It's not causing trouble.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 7 } }],
+                            },
+                            {
+                                id: "renegade-officer",
+                                label: "To the officer: This is dangerous.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 4 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "citadel-reporters-request",
+                title: "Citadel: Reporter's Request",
+                choices: [
+                    {
+                        id: "citadel-reporters-request",
+                        description: "Only available if you spoke to Emily Wong before dealing with Fist.",
+                        options: [
+                            {
+                                id: "renegade",
+                                label: "You owe me more.",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 2 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "citadel-ritas-sister",
+                title: "Citadel: Rita's Sister",
+                choices: [
+                    {
+                        id: "citadel-ritas-sister-1",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "You don't need her.",
+                                paragon: 2,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 7 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "Pathetic.",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 6 } }],
+                            },
+                        ],
+                    },
+                    {
+                        id: "citadel-ritas-sister-2",
+                        description:
+                            "If following Paragon, be careful to not attempt to arrest Jax, or you will fight him and lose the potential Paragon points.",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "(Return the shipment to Chellick.)",
+                                paragon: 8,
+                                renegade: 0,
+                            },
+                            {
+                                id: "renegade",
+                                label: "(Fight Jax.)",
+                                paragon: 0,
+                                renegade: 9,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "citadel-xeltans-complaint",
+                title: "Citadel: Xeltan's Complaint",
+                choices: [
+                    {
+                        id: "citadel-xeltans-complaint",
+                        options: [{ id: "paragon", label: "Don't worry.", paragon: 2, renegade: 0 }],
+                    },
+                ],
+            },
+            {
+                id: "unc-hostile-takeover",
+                title: "UNC: Hostile Takeover",
+                choices: [
+                    {
+                        id: "unc-hostile-takeover-1",
+                        options: [
+                            { id: "paragon", label: "No. I won't do this.", paragon: 8, renegade: 0 },
+                            { id: "renegade", label: "Not a problem. / I'll do it.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                    {
+                        id: "unc-hostile-takeover-2",
+                        options: [
+                            { id: "paragon", label: "You're under arrest.", paragon: 2, renegade: 0 },
+                            {
+                                id: "charm",
+                                label: "Walk away.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 10 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "Then we're fine. / You better stay clean.",
+                                paragon: 0,
+                                renegade: 2,
+                            },
+                            {
+                                id: "intimidate",
+                                label: "Disband the group.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 7 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "unc-privateers",
+                title: "UNC: Privateers",
+                choices: [
+                    {
+                        id: "unc-privateers-1",
+                        options: [
+                            { id: "paragon", label: "I'll do it.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Forget it.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                    {
+                        id: "unc-privateers-2",
+                        options: [
+                            { id: "paragon", label: "This must be hard on you.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "You were fooling yourself.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "citadel-assignments-2",
+        title: "Citadel Assignments (After 1 Plot World)",
+        groups: [
+            {
+                id: "citadel-family-matter",
+                title: "Citadel: Family Matter",
+                choices: [
+                    {
+                        id: "citadel-family-matter",
+                        options: [
+                            {
+                                id: "paragon-man",
+                                label: "It's still her choice.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 2 } }],
+                            },
+                            {
+                                id: "paragon-woman",
+                                label: "It's worth it.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 3 } }],
+                            },
+                            {
+                                id: "renegade-man",
+                                label: "You're not helping.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 3 } }],
+                            },
+                            {
+                                id: "renegade-woman",
+                                label: "Think of the child.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 2 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "citadel-planting-a-bug",
+                title: "Citadel: Planting a Bug",
+                choices: [
+                    {
+                        id: "citadel-planting-a-bug",
+                        options: [
+                            { id: "paragon", label: "It's a good cause. / You're welcome.", paragon: 2, renegade: 0 },
+                            {
+                                id: "charm",
+                                label: "I've changed my mind.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 4 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "[LIE] I already did it.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 5 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "citadel-the-fourth-estate",
+                title: "Citadel: The Fourth Estate",
+                choices: [
+                    {
+                        id: "citadel-the-fourth-estate",
+                        description:
+                            "If you use the +2 Paragon/Renegade options at any time, those are the only points you will receive. The +2 options are awarded immediately, but the +8/+9 options aren't awarded until you speak with Admiral Hackett at the Galaxy Map. You will only receive one award, so be careful.",
+                        options: [
+                            { id: "paragon", label: "This interview is over.", paragon: 2, renegade: 0 },
+                            {
+                                id: "charm",
+                                label: '"The turians helped build it." followed by "The crew is still Alliance."',
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 6 } }],
+                            },
+                            { id: "renegade", label: "Time to shut you up.", paragon: 0, renegade: 2 },
+                            {
+                                id: "intimidate",
+                                label: '"A great human innovation." followed by "I command the Normandy."',
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 5 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "citadel-snap-inspection",
+                title: "Citadel: Snap Inspection",
+                choices: [
+                    {
+                        id: "citadel-snap-inspection",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "We need to build bridges.",
+                                paragon: 2,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 9 } }],
+                            },
+                            {
+                                id: "intimidate",
+                                label: "We need to kick ass.",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 9 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: '"I don\'t think so." followed by "I\'m afraid so." / "Damn right I did."',
+                                paragon: 0,
+                                renegade: 2,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "unc-asari-diplomacy",
+                title: "UNC: Asari Diplomacy",
+                choices: [
+                    {
+                        id: "unc-asari-diplomacy",
+                        options: [
+                            { id: "paragon", label: "Don't bother.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "It better be.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "noveria-geth-interest",
+        title: "Noveria: Geth Interest",
+        groups: [
+            {
+                id: "port-hanshan",
+                title: "Port Hanshan Docking Bay",
+                choices: [
+                    {
+                        id: "port-hanshan-1",
+                        options: [{ id: "paragon", label: "We'll cooperate.", paragon: 2, renegade: 0 }],
+                    },
+                    {
+                        id: "port-hanshan-2",
+                        options: [{ id: "renegade", label: "I'm keeping my gun.", paragon: 0, renegade: 2 }],
+                    },
+                ],
+            },
+            {
+                id: "maeko-matsuo-1",
+                title: "Maeko Matsuo",
+                choices: [
+                    {
+                        id: "maeko-matsuo-1",
+                        description: "Available after speaking to Gianna Parasini.",
+                        options: [
+                            { id: "paragon", label: "Forget about it.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Humiliating, wasn't it?", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "noveria-smuggling",
+                title: "Noveria: Smuggling",
+                choices: [
+                    {
+                        id: "noveria-smuggling",
+                        description: "The Charm/Intimidate requirement is to get Opold to reveal the recipient.",
+                        options: [
+                            {
+                                id: "renegade",
+                                label: "(Sell the package directly to Inamorda.)",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [
+                                    { requiredTalent: { talent: "charm", points: 6 } },
+                                    { requiredTalent: { talent: "intimidate", points: 4 } },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "noveria-espionage",
+                title: "Noveria: Espionage",
+                choices: [
+                    {
+                        id: "noveria-espionage-1",
+                        options: [{ id: "paragon", label: "Not this time.", paragon: 8, renegade: 0 }],
+                    },
+                    {
+                        id: "noveria-espionage-2",
+                        description:
+                            "Only available if you accept the job. The Charm/Intimidate requirement is for the conversation with Rafael Vargas.",
+                        options: [
+                            { id: "paragon", label: "This is wrong.", paragon: 2, renegade: 0 },
+                            {
+                                id: "renegade",
+                                label: "It's done.",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [
+                                    { requiredTalent: { talent: "charm", points: 6 } },
+                                    { requiredTalent: { talent: "intimidate", points: 6 } },
+                                ],
+                            },
+                        ],
+                        dependsOn: [{ choiceId: "noveria-espionage-1", optionId: "skip" }],
+                    },
+                    {
+                        id: "noveria-espionage-3",
+                        description:
+                            'Only available if you accept the job and tell Rafael Vargas "An asari asked me to spy."',
+                        options: [
+                            {
+                                id: "paragon",
+                                label: '"I told him about you." followed by "You\'re a criminal."',
+                                paragon: 2,
+                                renegade: 0,
+                            },
+                            {
+                                id: "renegade",
+                                label: '"I told him about you." followed by "You\'re both irritating."',
+                                paragon: 0,
+                                renegade: 2,
+                            },
+                            { id: "renegade-lie", label: "[LIE] It's done.", paragon: 0, renegade: 9 },
+                        ],
+                        dependsOn: [{ choiceId: "noveria-espionage-2", optionId: "skip" }],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "noveria-lorik-quiin",
+        title: "Noveria: Lorik Qui'in",
+        groups: [
+            {
+                id: "synthetic-insights",
+                title: "Synthetic Insights Break-in",
+                choices: [
+                    {
+                        id: "synthetic-insights",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "You're here illegally.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 6 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "You can't take us.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 8 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "kaira-stirling",
+                title: "Confrontation with Kaira Stirling",
+                choices: [
+                    {
+                        id: "kaira-stirling",
+                        options: [
+                            { id: "paragon", label: "They didn't give me a choice.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Bring it on.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "lorik-quiin",
+                title: "Convincing Lorik Qui'in to Testify",
+                choices: [
+                    {
+                        id: "lorik-quiin",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "You'd be a hero.",
+                                paragon: 24,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 5 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "Damn right I will.",
+                                paragon: 0,
+                                renegade: 25,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 5 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "anoleis",
+                title: "Administrator Anoleis",
+                choices: [
+                    {
+                        id: "anoleis",
+                        description:
+                            "To get the +25 Renegade points, you must have learned Gianna's true identity. To get any of the +9 points, you must first choose \"I have Lorik's evidence.\" and then one of the three non-Charm/Intimidate options, followed by the point-granting option. If you received a garage pass from turning in Opold, only a single one of the +9 options will be available.",
+                        options: [
+                            { id: "renegade-gianna", label: "Gianna is investigating you.", paragon: 0, renegade: 25 },
+                            {
+                                id: "renegade-benezia",
+                                label: "Get me to Benezia. / I accept.",
+                                paragon: 0,
+                                renegade: 9,
+                            },
+                            {
+                                id: "renegade-charm",
+                                label: "I'm not here to arrest you. / I'll hold onto it.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 4 } }],
+                            },
+                            {
+                                id: "renegade-intimidate",
+                                label: "You'll do what I say.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 8 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "gianna-parasini",
+                title: "Gianna Parasini",
+                choices: [
+                    {
+                        id: "gianna-parasini",
+                        description:
+                            "Only available if you persuaded Qui'in to testify and didn't turn the evidence over to Anoleis.",
+                        options: [{ id: "paragon", label: "I convinced Qui'in.", paragon: 8, renegade: 0 }],
+                        dependsOn: [
+                            { choiceId: "lorik-quiin", optionId: "paragon" },
+                            { choiceId: "lorik-quiin", optionId: "renegade" },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "after-2-plot-worlds",
+        title: "After 2 Plot Worlds",
+        groups: [
+            {
+                id: "council-about-virmire",
+                title: "Council About Virmire",
+                choices: [
+                    {
+                        id: "council-about-virmire-1",
+                        options: [{ id: "paragon", label: "Good.", paragon: 2, renegade: 0 }],
+                    },
+                    {
+                        id: "council-about-virmire-2",
+                        options: [
+                            {
+                                id: "renegade",
+                                label: '"I don\'t have time for this." followed by "This is my investigation!"',
+                                paragon: 0,
+                                renegade: 2,
+                            },
+                        ],
                     },
                 ],
             },
