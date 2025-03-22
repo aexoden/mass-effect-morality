@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
 import gameChoicesData from "../data/gameChoices";
 import { MoralityScores, MoralityState, OptionDependencyData } from "../types";
+import { storage } from "../utils/storage";
 
 const STORAGE_KEY = "mass-effect-morality-state";
 
@@ -8,14 +9,14 @@ export function useMoralityState() {
     const initialState = (): MoralityState => {
         if (typeof window === "undefined") return { selectedChoices: {} };
 
-        try {
-            const savedState = localStorage.getItem(STORAGE_KEY);
+        const savedState = storage.getItem(STORAGE_KEY);
 
-            if (savedState) {
+        if (savedState) {
+            try {
                 return JSON.parse(savedState) as MoralityState;
+            } catch (error) {
+                console.error("Error parsing saved state:", error);
             }
-        } catch (error) {
-            console.error("Error loading saved state:", error);
         }
 
         return { selectedChoices: {} };
@@ -24,11 +25,7 @@ export function useMoralityState() {
     const [state, setState] = useState<MoralityState>(initialState);
 
     useEffect(() => {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        } catch (error) {
-            console.error("Error saving state:", error);
-        }
+        storage.setItem(STORAGE_KEY, JSON.stringify(state));
     }, [state]);
 
     const isOptionDependencyMet = useCallback(
