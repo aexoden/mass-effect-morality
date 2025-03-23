@@ -23,7 +23,7 @@ export default function Choice({ choice }: ChoiceProps) {
         if (
             choice.dependsOn &&
             choice.dependsOn.length > 0 &&
-            !choice.dependsOn.some((dep) => selectedChoices[dep.choiceId] === dep.optionId)
+            choice.dependsOn.some((dep) => !dep.optionIds.includes(selectedChoices[dep.choiceId]))
         ) {
             return true;
         } else {

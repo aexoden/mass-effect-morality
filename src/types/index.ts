@@ -1,6 +1,6 @@
 export interface ChoiceDependencyData {
     choiceId: string;
-    optionId: string;
+    optionIds: string[];
 }
 
 export interface TalentDependencyData {

@@ -38,7 +38,7 @@ export function useMoralityState() {
             // Each option can provide a list of dependencies to meet. Only one of the items needs to be met. Each
             // individual dependency itself consists of an optional talent requirement and an optional list of choices
             // that must be made to meet the dependency. If defined, both the talent requirement and the list of choices
-            // must be met. However, as with the list as a whole, only one of the items in the choice list must be met.
+            // must be met. However, unlike the list as a whole, all of the items in the choice list must be met.
             // The explicitOnly parameter controls whether or not a choice with no selection made at all is considered
             // a pass or not. This is to allow actual scored points to be considered separately from points that are
             // still potentially available. (You only count a point as scored if any required dependency was actually
@@ -47,14 +47,14 @@ export function useMoralityState() {
                 let choiceMet = true;
 
                 if (dep.dependsOn) {
-                    choiceMet = dep.dependsOn.some((dep) => {
+                    choiceMet = dep.dependsOn.every((dep) => {
                         // If only considering explicitly set dependencies, and the dependency has no choice selected,
                         // treat the dependency as met.
                         if (explicitOnly && !(dep.choiceId in state.selectedChoices)) {
                             return true;
                         }
 
-                        return state.selectedChoices[dep.choiceId] === dep.optionId;
+                        return dep.optionIds.includes(state.selectedChoices[dep.choiceId]);
                     });
                 }
 
@@ -86,20 +86,20 @@ export function useMoralityState() {
                     const hasUnmetDependency =
                         choice.dependsOn &&
                         choice.dependsOn.length > 0 &&
-                        !choice.dependsOn.some((dep) => state.selectedChoices[dep.choiceId] === dep.optionId);
+                        !choice.dependsOn.every((dep) => dep.optionIds.includes(state.selectedChoices[dep.choiceId]));
 
                     // For available points - only consider explicitly failed dependencies
                     const hasExplicitlyUnmetDependency =
                         choice.dependsOn &&
                         choice.dependsOn.length > 0 &&
-                        choice.dependsOn.every((dep) => {
+                        choice.dependsOn.some((dep) => {
                             // If the dependency choice is unset, don't consider it unmet
                             if (!(dep.choiceId in state.selectedChoices)) {
                                 return false;
                             }
 
                             // Otherwise check if the selection doesn't match the requirement
-                            return state.selectedChoices[dep.choiceId] !== dep.optionId;
+                            return !dep.optionIds.includes(state.selectedChoices[dep.choiceId]);
                         });
 
                     if (!hasUnmetDependency) {

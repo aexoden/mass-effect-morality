@@ -55,11 +55,13 @@ export function validateGameData(data: SectionData[]): { valid: boolean; errors:
                 if (choice.dependsOn) {
                     choice.dependsOn.forEach((dep) => {
                         if (allChoices.has(dep.choiceId)) {
-                            if (dep.optionId !== "skip" && !allChoices.get(dep.choiceId)?.has(dep.optionId)) {
-                                errors.push(
-                                    `Choice ${choice.id} depends on non-existent option ${dep.optionId} in choice ${dep.choiceId}`,
-                                );
-                            }
+                            dep.optionIds.forEach((optionId) => {
+                                if (optionId !== "skip" && !allChoices.get(dep.choiceId)?.has(optionId)) {
+                                    errors.push(
+                                        `Choice ${choice.id} depends on non-existent option ${optionId} in choice ${dep.choiceId}`,
+                                    );
+                                }
+                            });
                         } else {
                             errors.push(`Choice ${choice.id} depends on non-existent choice ${dep.choiceId}`);
                         }
@@ -73,14 +75,16 @@ export function validateGameData(data: SectionData[]): { valid: boolean; errors:
                             if (dep.dependsOn) {
                                 dep.dependsOn.forEach((childDep) => {
                                     if (allChoices.has(childDep.choiceId)) {
-                                        if (
-                                            childDep.optionId !== "skip" &&
-                                            !allChoices.get(childDep.choiceId)?.has(childDep.optionId)
-                                        ) {
-                                            errors.push(
-                                                `Option ${option.id} depends on non-existent option ${childDep.optionId} in choice ${childDep.choiceId}`,
-                                            );
-                                        }
+                                        childDep.optionIds.forEach((optionId) => {
+                                            if (
+                                                optionId !== "skip" &&
+                                                !allChoices.get(childDep.choiceId)?.has(optionId)
+                                            ) {
+                                                errors.push(
+                                                    `Option ${option.id} depends on non-existent option ${optionId} in choice ${childDep.choiceId}`,
+                                                );
+                                            }
+                                        });
                                     } else {
                                         errors.push(
                                             `Option ${option.id} depends on non-existent choice ${childDep.choiceId}`,

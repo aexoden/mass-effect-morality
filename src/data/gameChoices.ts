@@ -186,10 +186,7 @@ const gameChoices: SectionData[] = [
                         id: "the-smuggler-1",
                         description: "Available if you extracted the smuggler's name from Cole and friends.",
                         options: [{ id: "paragon", label: "Let it go, Williams.", paragon: 2, renegade: 0 }],
-                        dependsOn: [
-                            { choiceId: "cole-and-friends-3", optionId: "paragon" },
-                            { choiceId: "cole-and-friends-3", optionId: "renegade" },
-                        ],
+                        dependsOn: [{ choiceId: "cole-and-friends-3", optionIds: ["paragon", "renegade"] }],
                     },
                     {
                         id: "the-smuggler-2",
@@ -216,12 +213,7 @@ const gameChoices: SectionData[] = [
                             { id: "paragon", label: "You helped.", paragon: 2, renegade: 0 },
                             { id: "renegade", label: "The mission failed.", paragon: 0, renegade: 2 },
                         ],
-                        dependsOn: [
-                            {
-                                choiceId: "male-or-female",
-                                optionId: "female",
-                            },
-                        ],
+                        dependsOn: [{ choiceId: "male-or-female", optionIds: ["female"] }],
                     },
                 ],
             },
@@ -368,10 +360,7 @@ const gameChoices: SectionData[] = [
                                 renegade: 0,
                                 dependsOn: [
                                     {
-                                        dependsOn: [
-                                            { choiceId: "departing-speech-1", optionId: "paragon" },
-                                            { choiceId: "departing-speech-1", optionId: "skip" },
-                                        ],
+                                        dependsOn: [{ choiceId: "departing-speech-1", optionIds: ["paragon", "skip"] }],
                                     },
                                 ],
                             },
@@ -383,8 +372,7 @@ const gameChoices: SectionData[] = [
                                 dependsOn: [
                                     {
                                         dependsOn: [
-                                            { choiceId: "departing-speech-1", optionId: "renegade" },
-                                            { choiceId: "departing-speech-1", optionId: "skip" },
+                                            { choiceId: "departing-speech-1", optionIds: ["renegade", "skip"] },
                                         ],
                                     },
                                 ],
@@ -950,7 +938,7 @@ const gameChoices: SectionData[] = [
                                 ],
                             },
                         ],
-                        dependsOn: [{ choiceId: "noveria-espionage-1", optionId: "skip" }],
+                        dependsOn: [{ choiceId: "noveria-espionage-1", optionIds: ["skip"] }],
                     },
                     {
                         id: "noveria-espionage-3",
@@ -971,7 +959,7 @@ const gameChoices: SectionData[] = [
                             },
                             { id: "renegade-lie", label: "[LIE] It's done.", paragon: 0, renegade: 9 },
                         ],
-                        dependsOn: [{ choiceId: "noveria-espionage-2", optionId: "skip" }],
+                        dependsOn: [{ choiceId: "noveria-espionage-2", optionIds: ["skip"] }],
                     },
                 ],
             },
@@ -1088,8 +1076,28 @@ const gameChoices: SectionData[] = [
                             "Only available if you persuaded Qui'in to testify and didn't turn the evidence over to Anoleis.",
                         options: [{ id: "paragon", label: "I convinced Qui'in.", paragon: 8, renegade: 0 }],
                         dependsOn: [
-                            { choiceId: "lorik-quiin", optionId: "paragon" },
-                            { choiceId: "lorik-quiin", optionId: "renegade" },
+                            { choiceId: "lorik-quiin", optionIds: ["paragon", "renegade"] },
+                            { choiceId: "anoleis", optionIds: ["skip"] },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "maeko-matsuo-2",
+                title: "Maeko Matsuo",
+                choices: [
+                    {
+                        id: "maeko-matsuo-2",
+                        description:
+                            "(Possibly) only available if you convince Qui'in and talk to Gianna. TODO: Verify the dependencies here.",
+                        options: [
+                            { id: "paragon", label: "He was a criminal.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Your opinion doesn't matter.", paragon: 0, renegade: 2 },
+                        ],
+                        dependsOn: [
+                            { choiceId: "gianna-parasini", optionIds: ["paragon"] },
+                            { choiceId: "lorik-quiin", optionIds: ["paragon", "renegade"] },
+                            { choiceId: "anoleis", optionIds: ["skip"] },
                         ],
                     },
                 ],
