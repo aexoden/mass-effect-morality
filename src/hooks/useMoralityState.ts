@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
 import gameChoicesData from "../data/gameChoices";
-import { MoralityScores, MoralityState, OptionDependencyData } from "../types";
+import { ChoiceDependencyData, MoralityScores, MoralityState, OptionDependencyData } from "../types";
 import { storage } from "../utils/storage";
+import {
+    isOptionDependencyMet as checkOptionDependencyMet,
+    isChoiceDependencyMet as checkChoiceDependencyMet,
+    isChoiceExplicitlyLocked as checkChoiceExplicitlyLocked,
+} from "../utils/dependencyUtils";
 
 const STORAGE_KEY = "mass-effect-morality-state";
 
@@ -30,36 +35,21 @@ export function useMoralityState() {
 
     const isOptionDependencyMet = useCallback(
         (dependsOn: OptionDependencyData[] | undefined, explicitOnly: boolean): boolean => {
-            // If there are no dependencies, they are met.
-            if (!dependsOn || dependsOn.length === 0) {
-                return true;
-            }
+            return checkOptionDependencyMet(state.selectedChoices, dependsOn, explicitOnly);
+        },
+        [state.selectedChoices],
+    );
 
-            // Each option can provide a list of dependencies to meet. Only one of the items needs to be met. Each
-            // individual dependency itself consists of an optional talent requirement and an optional list of choices
-            // that must be made to meet the dependency. If defined, both the talent requirement and the list of choices
-            // must be met. However, unlike the list as a whole, all of the items in the choice list must be met.
-            // The explicitOnly parameter controls whether or not a choice with no selection made at all is considered
-            // a pass or not. This is to allow actual scored points to be considered separately from points that are
-            // still potentially available. (You only count a point as scored if any required dependency was actually
-            // selected, but a point remains available as long as its path hasn't been explicitly ruled out.)
-            return dependsOn.some((dep) => {
-                let choiceMet = true;
+    const isChoiceDependencyMet = useCallback(
+        (dependsOn: ChoiceDependencyData[] | undefined): boolean => {
+            return checkChoiceDependencyMet(state.selectedChoices, dependsOn);
+        },
+        [state.selectedChoices],
+    );
 
-                if (dep.dependsOn) {
-                    choiceMet = dep.dependsOn.every((dep) => {
-                        // If only considering explicitly set dependencies, and the dependency has no choice selected,
-                        // treat the dependency as met.
-                        if (explicitOnly && !(dep.choiceId in state.selectedChoices)) {
-                            return true;
-                        }
-
-                        return dep.optionIds.includes(state.selectedChoices[dep.choiceId]);
-                    });
-                }
-
-                return choiceMet;
-            });
+    const isChoiceExplicitlyLocked = useCallback(
+        (dependsOn: ChoiceDependencyData[] | undefined): boolean => {
+            return checkChoiceExplicitlyLocked(state.selectedChoices, dependsOn);
         },
         [state.selectedChoices],
     );
@@ -83,24 +73,10 @@ export function useMoralityState() {
                     }
 
                     // For actual scored points
-                    const hasUnmetDependency =
-                        choice.dependsOn &&
-                        choice.dependsOn.length > 0 &&
-                        !choice.dependsOn.every((dep) => dep.optionIds.includes(state.selectedChoices[dep.choiceId]));
+                    const hasUnmetDependency = !isChoiceDependencyMet(choice.dependsOn);
 
                     // For available points - only consider explicitly failed dependencies
-                    const hasExplicitlyUnmetDependency =
-                        choice.dependsOn &&
-                        choice.dependsOn.length > 0 &&
-                        choice.dependsOn.some((dep) => {
-                            // If the dependency choice is unset, don't consider it unmet
-                            if (!(dep.choiceId in state.selectedChoices)) {
-                                return false;
-                            }
-
-                            // Otherwise check if the selection doesn't match the requirement
-                            return !dep.optionIds.includes(state.selectedChoices[dep.choiceId]);
-                        });
+                    const hasExplicitlyUnmetDependency = isChoiceExplicitlyLocked(choice.dependsOn);
 
                     if (!hasUnmetDependency) {
                         const selectedOption = choice.options.find(
@@ -160,7 +136,7 @@ export function useMoralityState() {
             paragon: totalParagon,
             renegade: totalRenegade,
         };
-    }, [state.selectedChoices, isOptionDependencyMet]);
+    }, [state.selectedChoices, isChoiceDependencyMet, isChoiceExplicitlyLocked, isOptionDependencyMet]);
 
     const handleOptionSelect = useCallback((choiceId: string, optionId: string): void => {
         setState((prev) => ({
@@ -176,5 +152,13 @@ export function useMoralityState() {
         setState({ selectedChoices: {} });
     }, []);
 
-    return { handleOptionSelect, isOptionDependencyMet, resetState, scores, state };
+    return {
+        handleOptionSelect,
+        isChoiceDependencyMet,
+        isChoiceExplicitlyLocked,
+        isOptionDependencyMet,
+        resetState,
+        scores,
+        state,
+    };
 }

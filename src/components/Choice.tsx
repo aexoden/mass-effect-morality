@@ -3,7 +3,7 @@ import Option from "./Option";
 import { ChoiceData, OptionData } from "../types";
 import { LockClosedIcon } from "@heroicons/react/24/solid";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import { useSelectedChoices } from "../hooks/useMoralityContext";
+import { useMorality } from "../hooks/useMoralityContext";
 
 interface ChoiceProps {
     choice: ChoiceData;
@@ -17,19 +17,11 @@ const skipOption: OptionData = {
 };
 
 export default function Choice({ choice }: ChoiceProps) {
-    const selectedChoices = useSelectedChoices();
+    const { isChoiceDependencyMet } = useMorality();
 
     const hasUnmetDependency = useMemo(() => {
-        if (
-            choice.dependsOn &&
-            choice.dependsOn.length > 0 &&
-            choice.dependsOn.some((dep) => !dep.optionIds.includes(selectedChoices[dep.choiceId]))
-        ) {
-            return true;
-        } else {
-            return false;
-        }
-    }, [choice.dependsOn, selectedChoices]);
+        return !isChoiceDependencyMet(choice.dependsOn);
+    }, [choice.dependsOn, isChoiceDependencyMet]);
 
     return (
         <div

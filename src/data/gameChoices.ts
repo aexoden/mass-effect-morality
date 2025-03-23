@@ -1,8 +1,9 @@
 /* eslint-disable sort-keys */
 
 import { SectionData } from "../types";
+import { flattenDependencies } from "../utils/dependencyUtils";
 
-const gameChoices: SectionData[] = [
+const gameChoices: SectionData[] = flattenDependencies([
     {
         id: "history-and-profile",
         title: "Pre-Service History and Psychological Profile",
@@ -1094,11 +1095,7 @@ const gameChoices: SectionData[] = [
                             { id: "paragon", label: "He was a criminal.", paragon: 2, renegade: 0 },
                             { id: "renegade", label: "Your opinion doesn't matter.", paragon: 0, renegade: 2 },
                         ],
-                        dependsOn: [
-                            { choiceId: "gianna-parasini", optionIds: ["paragon"] },
-                            { choiceId: "lorik-quiin", optionIds: ["paragon", "renegade"] },
-                            { choiceId: "anoleis", optionIds: ["skip"] },
-                        ],
+                        dependsOn: [{ choiceId: "gianna-parasini", optionIds: ["paragon"] }],
                     },
                 ],
             },
@@ -1131,6 +1128,6 @@ const gameChoices: SectionData[] = [
             },
         ],
     },
-];
+]);
 
 export default gameChoices;
