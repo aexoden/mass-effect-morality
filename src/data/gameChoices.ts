@@ -1102,6 +1102,93 @@ const gameChoices: SectionData[] = flattenDependencies([
         ],
     },
     {
+        id: "noveria-matriarch-benezia",
+        title: "Noveria: Matriarch Benezia",
+        groups: [
+            {
+                id: "captain-ventralis",
+                title: "Captain Ventralis",
+                choices: [
+                    {
+                        id: "captain-ventralis-1",
+                        options: [
+                            { id: "paragon", label: "I'll see what I can do.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "I'm not here to help.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                    {
+                        id: "captain-ventralis-2",
+                        description:
+                            "After the attack. The Paragon option is only available if you help in the fight, and the Renegade option is only available if you run away and let them handle it.",
+                        options: [
+                            { id: "paragon", label: "No problem.", paragon: 2, renegade: 0 },
+                            {
+                                id: "renegade",
+                                label: "You're welcome. / You couldn't handle it?",
+                                paragon: 0,
+                                renegade: 2,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "noveria-quarantine",
+                title: "Noveria: Quarantine",
+                choices: [
+                    {
+                        id: "noveria-quarantine",
+                        options: [{ id: "paragon", label: "(Complete the mission.)", paragon: 24, renegade: 0 }],
+                    },
+                ],
+            },
+            {
+                id: "rachni-queen",
+                title: "The Rachni Queen",
+                choices: [
+                    {
+                        id: "rachni-queen",
+                        options: [
+                            { id: "paragon", label: "(Let her go.)", paragon: 24, renegade: 0 },
+                            { id: "renegade", label: "(Kill her.)", paragon: 0, renegade: 25 },
+                        ],
+                        isForced: true,
+                    },
+                ],
+            },
+            {
+                id: "council-after-noveria",
+                title: "Report to the Council",
+                choices: [
+                    {
+                        id: "council-after-noveria-paragon-1",
+                        description: "Only available if you let the Rachni Queen go.",
+                        options: [
+                            { id: "paragon", label: "They won't.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Should I guess?", paragon: 0, renegade: 2 },
+                        ],
+                        dependsOn: [{ choiceId: "rachni-queen", optionIds: ["paragon"] }],
+                    },
+                    {
+                        id: "countil-after-noveria-paragon-2",
+                        description: "Only available if you chose the Renegade option in the previous choice.",
+                        options: [{ id: "paragon", label: "Not these ones.", paragon: 2, renegade: 0 }],
+                        dependsOn: [{ choiceId: "council-after-noveria-paragon-1", optionIds: ["renegade"] }],
+                    },
+                    {
+                        id: "council-after-noveria-renegade",
+                        description: "Only available if you killed the Rachni Queen.",
+                        options: [
+                            { id: "paragon", label: "It was the only way.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Sometimes.", paragon: 0, renegade: 2 },
+                        ],
+                        dependsOn: [{ choiceId: "rachni-queen", optionIds: ["renegade"] }],
+                    },
+                ],
+            },
+        ],
+    },
+    {
         id: "after-2-plot-worlds",
         title: "After 2 Plot Worlds",
         groups: [
