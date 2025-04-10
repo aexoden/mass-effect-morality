@@ -26,7 +26,7 @@ interface MoralityPercentages {
 function formatRoundedRatio(value: number): string {
     const result = Math.round(value * 100);
 
-    if (result === 100 && value < 100) {
+    if (result === 100 && value < 1.0) {
         return "<100%";
     } else {
         return `${result.toString()}%`;
