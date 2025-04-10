@@ -3,7 +3,7 @@
 import { SectionData } from "../types";
 import { flattenDependencies } from "../utils/dependencyUtils";
 
-const gameChoices: SectionData[] = flattenDependencies([
+const rawGameChoices: SectionData[] = [
     {
         id: "history-and-profile",
         title: "Pre-Service History and Psychological Profile",
@@ -1462,6 +1462,270 @@ const gameChoices: SectionData[] = flattenDependencies([
             },
         ],
     },
-]);
+    {
+        id: "virmire-wrex",
+        title: "Virmire: Wrex and the Genophage",
+        groups: [
+            {
+                id: "virmire-wrex",
+                title: "Deciding Wrex's Fate",
+                choices: [
+                    {
+                        id: "virmire-wrex-1",
+                        description:
+                            'Your exact options vary based on whether you completed Wrex: Family Armor or not. If you did, you can calm Wrex regardless. If you didn\'t, you will need to pass a Charm/Intimidate check. The "[Signal Ashley to kill Wrex]" option requires asking "Wrex?" when talking with Ashley and Kaidan and then either "You\'re right." or "Be ready.".',
+                        options: [
+                            {
+                                id: "charm",
+                                label: "These aren't your people! (calms Wrex)",
+                                paragon: 28,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 8 } }],
+                            },
+                            {
+                                id: "family-armor",
+                                label: "I wouldn't do this otherwise. / We are. (calms Wrex)",
+                                paragon: 28,
+                                renegade: 0,
+                            },
+                            {
+                                id: "intimidate",
+                                label: "Don't be so naïve. (calms Wrex)",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 8 } }],
+                            },
+                            {
+                                id: "renegade-ashley",
+                                label: "[Signal Ashley to kill Wrex.] (kills Wrex)",
+                                paragon: 0,
+                                renegade: 25,
+                            },
+                            {
+                                id: "renegade",
+                                label: "[Shoot Wrex.] (kills Wrex)",
+                                paragon: 0,
+                                renegade: 25,
+                            },
+                            {
+                                id: "paragon",
+                                label: '"Calm down. / We can work this out." followed by "What the hell?!" followed by "I\'m in command." (Ashley kills Wrex)',
+                                paragon: 8,
+                                renegade: 0,
+                            },
+                        ],
+                        isForced: true,
+                    },
+                    {
+                        id: "virmire-wrex-2",
+                        description: "Only if Shepard kills Wrex.",
+                        options: [{ id: "paragon", label: "Damn it.", paragon: 2, renegade: 0 }],
+                        dependsOn: [{ choiceId: "virmire-wrex-1", optionIds: ["renegade"] }],
+                    },
+                ],
+            },
+            {
+                id: "virmire-wrex-kirrahe",
+                title: "Captain Kirrahe",
+                choices: [
+                    {
+                        id: "virmire-wrex-kirrahe",
+                        description: "Only if Wrex was killed.",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "He was my friend. / He deserves respect.",
+                                paragon: 2,
+                                renegade: 0,
+                            },
+                            { id: "renegade", label: "Dump him.", paragon: 0, renegade: 2 },
+                        ],
+                        dependsOn: [
+                            { choiceId: "virmire-wrex-1", optionIds: ["renegade-ashley", "renegade", "paragon"] },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "virmire-assisting-kirrahe",
+        title: "Virmire: Assisting Kirrahe's Team",
+        groups: [
+            {
+                id: "virmire-assisting-kirrahe",
+                title: "Tasks",
+                description:
+                    "Completing various tasks will award Paragon points. Note that especially the second can be hard to avoid completing if you approach the relevant area.",
+                choices: [
+                    {
+                        id: "virmire-assisting-kirrahe-1",
+                        options: [{ id: "paragon", label: "(Disrupt communications.)", paragon: 2, renegade: 0 }],
+                    },
+                    {
+                        id: "virmire-assisting-kirrahe-2",
+                        options: [{ id: "paragon", label: "(Destroy satellite uplink.)", paragon: 2, renegade: 0 }],
+                    },
+                    {
+                        id: "virmire-assisting-kirrahe-3",
+                        options: [{ id: "paragon", label: "(Destroy Geth flyers.)", paragon: 8, renegade: 0 }],
+                    },
+                ],
+            },
+            {
+                id: "virmire-alarm",
+                title: "Alarm",
+                choices: [
+                    {
+                        id: "virmire-assisting-kirrahe-4",
+                        options: [
+                            { id: "paragon", label: "They've got enough trouble.", paragon: 8, renegade: 0 },
+                            { id: "renegade", label: "They can handle it.", paragon: 0, renegade: 9 },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "virmire-assault",
+        title: "Virmire: Assault",
+        groups: [
+            {
+                id: "menos-avot",
+                title: "Menos Avot (Cell Block B)",
+                choices: [
+                    {
+                        id: "menos-avot",
+                        options: [
+                            { id: "paragon", label: "All right. Let him out.", paragon: 8, renegade: 0 },
+                            { id: "renegade", label: "No. / Sorry. I can't risk it.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "ganto-imness",
+                title: "Ganto Imness (Cell Block A)",
+                choices: [
+                    {
+                        id: "ganto-imness-1",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "I think I can trust you. / I'm letting you out.",
+                                paragon: 2,
+                                renegade: 0,
+                            },
+                            {
+                                id: "renegade",
+                                label: '"I can\'t trust you." followed by "Too risky."',
+                                paragon: 0,
+                                renegade: 9,
+                            },
+                        ],
+                    },
+                    {
+                        id: "ganto-imness-2",
+                        description:
+                            "If you refused to let him out, you can still get the Paragon points by talking to him a second time.",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "I think I can trust you. / I'm letting you out.",
+                                paragon: 2,
+                                renegade: 0,
+                            },
+                        ],
+                        dependsOn: [{ choiceId: "ganto-imness-1", optionIds: ["renegade"] }],
+                    },
+                    {
+                        id: "ganto-imness-3",
+                        description: "Talking to the indoctrinated salarians next door.",
+                        options: [
+                            { id: "paragon", label: "They're no threat.", paragon: 2, renegade: 0 },
+                            {
+                                id: "renegade",
+                                label: "Open the door and kill them. / Eliminate them.",
+                                paragon: 0,
+                                renegade: 2,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "rana-thanoptis",
+                title: "Rana Thanoptis",
+                choices: [
+                    {
+                        id: "rana-thanoptis",
+                        options: [{ id: "renegade", label: "Too late.", paragon: 0, renegade: 9 }],
+                    },
+                ],
+            },
+            {
+                id: "make-a-choice",
+                title: "Make a Choice",
+                choices: [
+                    {
+                        id: "make-a-choice",
+                        options: [
+                            { id: "paragon", label: "I'm sorry.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Of course it was.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "saren",
+                title: "Saren",
+                choices: [
+                    {
+                        id: "saren-virmire",
+                        description: 'Only if you choose "It\'s already happened!" or "You are indoctrinated."',
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "Join me.",
+                                paragon: 2,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 7 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "Sovereign will betray you.",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 7 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "council-after-virmire",
+                title: "Report to the Council",
+                choices: [
+                    {
+                        id: "council-after-virmire-1",
+                        options: [
+                            { id: "paragon", label: "You need proof?", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Screw you!", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                    {
+                        id: "council-after-virmire-2",
+                        description: "Only if you chose the Renegade option in the previous choice.",
+                        options: [{ id: "Paragon", label: "You have to trust me.", paragon: 2, renegade: 0 }],
+                        dependsOn: [{ choiceId: "council-after-virmire-1", optionIds: ["renegade"] }],
+                    },
+                ],
+            },
+        ],
+    },
+];
+
+const gameChoices = flattenDependencies(rawGameChoices);
 
 export default gameChoices;
