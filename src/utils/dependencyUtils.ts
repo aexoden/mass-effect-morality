@@ -1,4 +1,11 @@
-import { ChoiceData, ChoiceDependencyData, OptionData, OptionDependencyData, SectionData } from "../types";
+import {
+    ChoiceData,
+    ChoiceDependencyData,
+    NumericChoiceData,
+    OptionData,
+    OptionDependencyData,
+    SectionData,
+} from "../types";
 
 /**
  * Checks if a choice's dependencies are met based on the selected choices.
@@ -67,7 +74,7 @@ export function flattenDependencies(gameData: SectionData[]): SectionData[] {
     const clonedData = JSON.parse(JSON.stringify(gameData)) as SectionData[];
 
     // Create a lookup map for easy access to choices and their options.
-    const choiceMap = new Map<string, ChoiceData>();
+    const choiceMap = new Map<string, ChoiceData | NumericChoiceData>();
     const optionMap = new Map<string, Map<string, OptionData>>();
 
     // First pass: Create the maps.
@@ -76,13 +83,15 @@ export function flattenDependencies(gameData: SectionData[]): SectionData[] {
             for (const choice of group.choices) {
                 choiceMap.set(choice.id, choice);
 
-                const optionsForChoice = new Map<string, OptionData>();
+                if (!("type" in choice) || choice.type !== "numeric") {
+                    const optionsForChoice = new Map<string, OptionData>();
 
-                for (const option of choice.options) {
-                    optionsForChoice.set(option.id, option);
+                    for (const option of choice.options) {
+                        optionsForChoice.set(option.id, option);
+                    }
+
+                    optionMap.set(choice.id, optionsForChoice);
                 }
-
-                optionMap.set(choice.id, optionsForChoice);
             }
         }
     }
@@ -97,31 +106,33 @@ export function flattenDependencies(gameData: SectionData[]): SectionData[] {
                 }
 
                 // Flatten option dependencies.
-                for (const option of choice.options) {
-                    if (option.dependsOn) {
-                        const flattenedOptionDeps: OptionDependencyData[] = [];
+                if (!("type" in choice) || choice.type !== "numeric") {
+                    for (const option of choice.options) {
+                        if (option.dependsOn) {
+                            const flattenedOptionDeps: OptionDependencyData[] = [];
 
-                        for (const dep of option.dependsOn) {
-                            // If this dependency has nested dependencies
-                            if (dep.dependsOn) {
-                                // Get the flattened choice dependencies
-                                const flattenedChoiceDeps = resolveTransitiveDependencies(
-                                    dep.dependsOn,
-                                    choiceMap,
-                                    new Set<string>(),
-                                );
+                            for (const dep of option.dependsOn) {
+                                // If this dependency has nested dependencies
+                                if (dep.dependsOn) {
+                                    // Get the flattened choice dependencies
+                                    const flattenedChoiceDeps = resolveTransitiveDependencies(
+                                        dep.dependsOn,
+                                        choiceMap,
+                                        new Set<string>(),
+                                    );
 
-                                // Create a new option dependency with the flattened choice dependencies.
-                                flattenedOptionDeps.push({
-                                    ...dep,
-                                    dependsOn: flattenedChoiceDeps,
-                                });
-                            } else {
-                                flattenedOptionDeps.push(dep);
+                                    // Create a new option dependency with the flattened choice dependencies.
+                                    flattenedOptionDeps.push({
+                                        ...dep,
+                                        dependsOn: flattenedChoiceDeps,
+                                    });
+                                } else {
+                                    flattenedOptionDeps.push(dep);
+                                }
                             }
-                        }
 
-                        option.dependsOn = flattenedOptionDeps;
+                            option.dependsOn = flattenedOptionDeps;
+                        }
                     }
                 }
             }
@@ -133,7 +144,7 @@ export function flattenDependencies(gameData: SectionData[]): SectionData[] {
 
 function resolveTransitiveDependencies(
     dependencies: ChoiceDependencyData[],
-    choiceMap: Map<string, ChoiceData>,
+    choiceMap: Map<string, ChoiceData | NumericChoiceData>,
     visitedChoices: Set<string>,
 ): ChoiceDependencyData[] {
     const result: ChoiceDependencyData[] = [...dependencies];

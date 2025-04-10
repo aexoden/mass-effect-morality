@@ -79,29 +79,59 @@ export function useMoralityState() {
                     const hasExplicitlyUnmetDependency = isChoiceExplicitlyLocked(choice.dependsOn);
 
                     if (!hasUnmetDependency) {
-                        const selectedOption = choice.options.find(
-                            (option) => state.selectedChoices[choice.id] === option.id,
-                        );
+                        if ("type" in choice && choice.type === "numeric") {
+                            if (
+                                choice.id in state.selectedChoices &&
+                                state.selectedChoices[choice.id].startsWith("numeric_")
+                            ) {
+                                const value = parseInt(state.selectedChoices[choice.id].split("_")[1], 10);
 
-                        if (selectedOption && isOptionDependencyMet(selectedOption.dependsOn, false)) {
-                            totalParagon += selectedOption.paragon || 0;
-                            totalRenegade += selectedOption.renegade || 0;
+                                if (choice.paragonPerUnit) {
+                                    totalParagon += Math.floor(value * choice.paragonPerUnit);
+                                }
+
+                                if (choice.renegadePerUnit) {
+                                    const inverseValue = choice.maxValue - value;
+                                    totalRenegade += Math.floor(inverseValue * choice.renegadePerUnit);
+                                }
+                            }
+                        } else {
+                            const selectedOption = choice.options.find(
+                                (option) => state.selectedChoices[choice.id] === option.id,
+                            );
+
+                            if (selectedOption && isOptionDependencyMet(selectedOption.dependsOn, false)) {
+                                totalParagon += selectedOption.paragon || 0;
+                                totalRenegade += selectedOption.renegade || 0;
+                            }
                         }
                     }
 
                     if (!hasExplicitlyUnmetDependency && !(choice.id in state.selectedChoices)) {
-                        let maxAvailableParagon = 0;
-                        let maxAvailableRenegade = 0;
-
-                        choice.options.forEach((option) => {
-                            if (isOptionDependencyMet(option.dependsOn, true)) {
-                                maxAvailableParagon = Math.max(maxAvailableParagon, option.paragon || 0);
-                                maxAvailableRenegade = Math.max(maxAvailableRenegade, option.renegade || 0);
+                        if ("type" in choice && choice.type === "numeric") {
+                            if (choice.paragonPerUnit) {
+                                availableParagon += Math.floor(choice.maxValue * choice.paragonPerUnit);
                             }
-                        });
 
-                        availableParagon += maxAvailableParagon;
-                        availableRenegade += maxAvailableRenegade;
+                            if (choice.renegadePerUnit) {
+                                availableRenegade += Math.floor(
+                                    (choice.maxValue - choice.minValue) * choice.renegadePerUnit,
+                                );
+                            }
+                        } else {
+                            let maxAvailableParagon = 0;
+                            let maxAvailableRenegade = 0;
+
+                            choice.options.forEach((option) => {
+                                if (isOptionDependencyMet(option.dependsOn, true)) {
+                                    maxAvailableParagon = Math.max(maxAvailableParagon, option.paragon || 0);
+                                    maxAvailableRenegade = Math.max(maxAvailableRenegade, option.renegade || 0);
+                                }
+                            });
+
+                            availableParagon += maxAvailableParagon;
+                            availableRenegade += maxAvailableRenegade;
+                        }
                     }
                 });
             });

@@ -32,17 +32,19 @@ export function validateGameData(data: SectionData[]): { valid: boolean; errors:
                 allChoices.set(choice.id, new Set<string>());
 
                 // Option IDs don't need to be globally unique, but they do need to be unique within a choice.
-                const optionIds = new Set<string>();
+                if (!("type" in choice) || choice.type !== "numeric") {
+                    const optionIds = new Set<string>();
 
-                choice.options.forEach((option) => {
-                    if (optionIds.has(option.id)) {
-                        errors.push(`Duplicate option ID ${option.id} in choice ${choice.id}`);
-                    } else {
-                        optionIds.add(option.id);
-                    }
+                    choice.options.forEach((option) => {
+                        if (optionIds.has(option.id)) {
+                            errors.push(`Duplicate option ID ${option.id} in choice ${choice.id}`);
+                        } else {
+                            optionIds.add(option.id);
+                        }
 
-                    allChoices.get(choice.id)?.add(option.id);
-                });
+                        allChoices.get(choice.id)?.add(option.id);
+                    });
+                }
             });
         });
     });
@@ -69,32 +71,34 @@ export function validateGameData(data: SectionData[]): { valid: boolean; errors:
                 }
 
                 // Check option dependencies as well
-                choice.options.forEach((option) => {
-                    if (option.dependsOn) {
-                        option.dependsOn.forEach((dep) => {
-                            if (dep.dependsOn) {
-                                dep.dependsOn.forEach((childDep) => {
-                                    if (allChoices.has(childDep.choiceId)) {
-                                        childDep.optionIds.forEach((optionId) => {
-                                            if (
-                                                optionId !== "skip" &&
-                                                !allChoices.get(childDep.choiceId)?.has(optionId)
-                                            ) {
-                                                errors.push(
-                                                    `Option ${option.id} depends on non-existent option ${optionId} in choice ${childDep.choiceId}`,
-                                                );
-                                            }
-                                        });
-                                    } else {
-                                        errors.push(
-                                            `Option ${option.id} depends on non-existent choice ${childDep.choiceId}`,
-                                        );
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
+                if (!("type" in choice) || choice.type !== "numeric") {
+                    choice.options.forEach((option) => {
+                        if (option.dependsOn) {
+                            option.dependsOn.forEach((dep) => {
+                                if (dep.dependsOn) {
+                                    dep.dependsOn.forEach((childDep) => {
+                                        if (allChoices.has(childDep.choiceId)) {
+                                            childDep.optionIds.forEach((optionId) => {
+                                                if (
+                                                    optionId !== "skip" &&
+                                                    !allChoices.get(childDep.choiceId)?.has(optionId)
+                                                ) {
+                                                    errors.push(
+                                                        `Option ${option.id} depends on non-existent option ${optionId} in choice ${childDep.choiceId}`,
+                                                    );
+                                                }
+                                            });
+                                        } else {
+                                            errors.push(
+                                                `Option ${option.id} depends on non-existent choice ${childDep.choiceId}`,
+                                            );
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
             });
         });
     });
@@ -113,17 +117,19 @@ export function validateGameData(data: SectionData[]): { valid: boolean; errors:
                     });
                 }
 
-                choice.options.forEach((option) => {
-                    if (option.dependsOn) {
-                        option.dependsOn.forEach((dep) => {
-                            if (dep.dependsOn) {
-                                dep.dependsOn.forEach((childDep) => {
-                                    dependencies.push(childDep.choiceId);
-                                });
-                            }
-                        });
-                    }
-                });
+                if (!("type" in choice) || choice.type !== "numeric") {
+                    choice.options.forEach((option) => {
+                        if (option.dependsOn) {
+                            option.dependsOn.forEach((dep) => {
+                                if (dep.dependsOn) {
+                                    dep.dependsOn.forEach((childDep) => {
+                                        dependencies.push(childDep.choiceId);
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
 
                 dependencyGraph.set(choice.id, dependencies);
             });

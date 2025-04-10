@@ -21,19 +21,38 @@ export interface OptionData {
     dependsOn?: OptionDependencyData[];
 }
 
+export interface NumericChoiceData {
+    id: string;
+    type: "numeric";
+    label: string;
+    description?: string;
+    minValue: number;
+    maxValue: number;
+    defaultValue?: number;
+    paragonPerUnit: number;
+    renegadePerUnit: number;
+    paragonLabel: string;
+    renegadeLabel: string;
+    minLabel: string;
+    maxLabel: string;
+    note?: string;
+    dependsOn?: ChoiceDependencyData[];
+}
+
 export interface ChoiceData {
     id: string;
     description?: string;
     options: OptionData[];
     dependsOn?: ChoiceDependencyData[];
     isForced?: boolean;
+    type?: "standard";
 }
 
 export interface GroupData {
     id: string;
     title: string;
     description?: string;
-    choices: ChoiceData[];
+    choices: (ChoiceData | NumericChoiceData)[];
 }
 
 export interface SectionData {

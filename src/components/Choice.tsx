@@ -1,12 +1,13 @@
 import { useMemo } from "react";
 import Option from "./Option";
-import { ChoiceData, OptionData } from "../types";
+import NumericChoice from "./NumericChoice";
+import { ChoiceData, NumericChoiceData, OptionData } from "../types";
 import { LockClosedIcon } from "@heroicons/react/24/solid";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { useMorality } from "../hooks/useMoralityContext";
 
 interface ChoiceProps {
-    choice: ChoiceData;
+    choice: ChoiceData | NumericChoiceData;
 }
 
 const skipOption: OptionData = {
@@ -22,6 +23,16 @@ export default function Choice({ choice }: ChoiceProps) {
     const hasUnmetDependency = useMemo(() => {
         return !isChoiceDependencyMet(choice.dependsOn);
     }, [choice.dependsOn, isChoiceDependencyMet]);
+
+    if ("type" in choice && choice.type === "numeric") {
+        return (
+            <NumericChoice
+                choiceId={choice.id}
+                choice={choice}
+                hasUnmetDependency={hasUnmetDependency}
+            />
+        );
+    }
 
     return (
         <div
