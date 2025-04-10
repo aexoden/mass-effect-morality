@@ -1215,6 +1215,259 @@ const gameChoices: SectionData[] = flattenDependencies([
             },
         ],
     },
+    {
+        id: "feros-geth-attack",
+        title: "Feros: Geth Attack",
+        groups: [
+            {
+                id: "calantha-blake",
+                title: "Calantha Blake",
+                choices: [
+                    {
+                        id: "calantha-blake",
+                        options: [
+                            { id: "paragon", label: "What's wrong?", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "I hope you're not contagious.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "fai-dan",
+                title: "Fai Dan (after defeating the Geth in the tower)",
+                choices: [
+                    {
+                        id: "fai-dan",
+                        options: [
+                            { id: "paragon", label: "Happy to help.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "I didn't do it for you.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "ian-newstead",
+                title: "Ian Newstead (in the tunnels)",
+                choices: [
+                    {
+                        id: "ian-newstead",
+                        options: [
+                            { id: "paragon", label: "Can I help?", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Kill him.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "feros-geth-in-the-tunnels",
+                title: "Feros: Geth in the Tunnels",
+                choices: [
+                    {
+                        id: "feros-geth-in-the-tunnels",
+                        options: [{ id: "paragon", label: "(Complete the mission.)", paragon: 8, renegade: 0 }],
+                    },
+                ],
+            },
+            {
+                id: "feros-power-cells",
+                title: "Feros: Power Cells",
+                choices: [
+                    {
+                        id: "feros-power-cells",
+                        options: [{ id: "paragon", label: "(Complete the mission.)", paragon: 8, renegade: 0 }],
+                    },
+                ],
+            },
+            {
+                id: "feros-varren-meat",
+                title: "Feros: Varren Meat",
+                choices: [
+                    {
+                        id: "feros-varren-meat-1",
+                        options: [{ id: "paragon", label: "(Complete the mission.)", paragon: 8, renegade: 0 }],
+                    },
+                    {
+                        id: "feros-varren-meat-2",
+                        options: [{ id: "renegade", label: "Just pay up.", paragon: 0, renegade: 2 }],
+                        dependsOn: [{ choiceId: "feros-varren-meat-1", optionIds: ["paragon"] }],
+                    },
+                ],
+            },
+            {
+                id: "feros-water-restoration",
+                title: "Feros: Water Restoration",
+                choices: [
+                    {
+                        id: "feros-water-restoration",
+                        options: [{ id: "paragon", label: "(Complete the mission.)", paragon: 8, renegade: 0 }],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "feros-the-thorian",
+        title: "Feros: The Thorian",
+        groups: [
+            {
+                id: "exit-exogeni",
+                title: "When Leaving ExoGeni",
+                choices: [
+                    {
+                        id: "exit-exogeni",
+                        options: [
+                            { id: "paragon", label: "I believe you.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "I don't care.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "jeong",
+                title: "Jeong",
+                choices: [
+                    {
+                        id: "jeong-1",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "What about the big picture?",
+                                paragon: 24,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 12 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "I'll kill you first.",
+                                paragon: 0,
+                                renegade: 25,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 10 } }],
+                            },
+                        ],
+                    },
+                    {
+                        id: "jeong-2",
+                        description: "Only if you chose the Renegade option in the previous choice.",
+                        options: [
+                            { id: "paragon", label: "Sounds logical.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Can't take that chance.", paragon: 0, renegade: 2 },
+                        ],
+                        dependsOn: [{ choiceId: "jeong-1", optionIds: ["renegade"] }],
+                    },
+                    {
+                        id: "jeong-3",
+                        description: "You get the grenades regardless of your choice.",
+                        options: [
+                            { id: "paragon", label: "(Accept the grenades.)", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "No.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "minimize-casualities",
+                title: "Minimize Casualities",
+                choices: [
+                    {
+                        id: "minimize-casualties",
+                        options: [
+                            { id: "saved-16-colonists", label: "(Save 16 colonists.)", paragon: 32, renegade: 0 },
+                            { id: "saved-15-colonists", label: "(Save 15 colonists.)", paragon: 30, renegade: 2 },
+                            { id: "saved-14-colonists", label: "(Save 14 colonists.)", paragon: 28, renegade: 4 },
+                            { id: "saved-13-colonists", label: "(Save 13 colonists.)", paragon: 26, renegade: 6 },
+                            { id: "saved-12-colonists", label: "(Save 12 colonists.)", paragon: 24, renegade: 8 },
+                            { id: "saved-11-colonists", label: "(Save 11 colonists.)", paragon: 22, renegade: 10 },
+                            { id: "saved-10-colonists", label: "(Save 10 colonists.)", paragon: 20, renegade: 12 },
+                            { id: "saved-9-colonists", label: "(Save 9 colonists.)", paragon: 18, renegade: 14 },
+                            { id: "saved-8-colonists", label: "(Save 8 colonists.)", paragon: 16, renegade: 16 },
+                            { id: "saved-7-colonists", label: "(Save 7 colonists.)", paragon: 14, renegade: 18 },
+                            { id: "saved-6-colonists", label: "(Save 6 colonists.)", paragon: 12, renegade: 20 },
+                            { id: "saved-5-colonists", label: "(Save 5 colonists.)", paragon: 10, renegade: 22 },
+                            { id: "saved-4-colonists", label: "(Save 4 colonists.)", paragon: 8, renegade: 24 },
+                            { id: "saved-3-colonists", label: "(Save 3 colonists.)", paragon: 6, renegade: 26 },
+                            { id: "saved-2-colonists", label: "(Save 2 colonists.)", paragon: 4, renegade: 28 },
+                            { id: "saved-1-colonist", label: "(Save 1 colonist.)", paragon: 2, renegade: 30 },
+                            { id: "saved-0-colonists", label: "(Save no colonists.)", paragon: 0, renegade: 32 },
+                        ],
+                        isForced: true,
+                    },
+                ],
+            },
+            {
+                id: "thorian",
+                title: "The Thorian",
+                choices: [
+                    {
+                        id: "thorian-1",
+                        options: [
+                            { id: "paragon", label: "Let the colonists go.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "I'll destroy you.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                    {
+                        id: "thoran-2",
+                        options: [{ id: "paragon", label: "(Complete the mission.)", paragon: 8, renegade: 0 }],
+                        isForced: true,
+                    },
+                ],
+            },
+            {
+                id: "shiala",
+                title: "Shiala",
+                choices: [
+                    {
+                        id: "shiala",
+                        options: [{ id: "renegade", label: "I can't let you live.", paragon: 0, renegade: 9 }],
+                    },
+                ],
+            },
+            {
+                id: "council-after-feros",
+                title: "Report to the Council",
+                choices: [
+                    {
+                        id: "council-after-feros-1",
+                        options: [
+                            { id: "paragon", label: "I help everyone.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "Don't be stupid!", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                    {
+                        id: "council-after-feros-2",
+                        description: "Only if you chose the Renegade option in the previous choice.",
+                        options: [{ id: "paragon", label: "I understood it.", paragon: 2, renegade: 0 }],
+                        dependsOn: [{ choiceId: "council-after-feros-1", optionIds: ["renegade"] }],
+                    },
+                    {
+                        id: "council-after-feros-3",
+                        description: "Only if you chose the Paragon option in the previous choice.",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "I help everyone. / I wanted to help them.",
+                                paragon: 2,
+                                renegade: 0,
+                            },
+                        ],
+                        dependsOn: [{ choiceId: "council-after-feros-2", optionIds: ["paragon"] }],
+                    },
+                ],
+            },
+            {
+                id: "udina-after-feros",
+                title: "Donnel Udina (at the Embassies)",
+                choices: [
+                    {
+                        id: "udina-after-feros",
+                        options: [
+                            { id: "paragon", label: "That's all you care about?", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "They were expendable.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
 ]);
 
 export default gameChoices;
