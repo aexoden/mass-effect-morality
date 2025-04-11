@@ -28,9 +28,14 @@ export const combinedTests: CombinedTest[] = [
         // the other 2 point options seem even debatable. By my count, the total should be 66/64.
         expectedPoints: { paragon: 66, renegade: 62 },
     },
+    {
+        name: "Background",
+        sectionIds: ["history-and-profile", "background-assignments"],
+        expectedPoints: { paragon: 30, renegade: 29 },
+    },
 ];
 
 export const overallTotals = {
-    withoutDLC: { paragon: 593, renegade: 571 },
-    withDLC: { paragon: 629, renegade: 609 },
+    withoutDLC: { paragon: 613, renegade: 591 },
+    withDLC: { paragon: 657, renegade: 638 },
 };

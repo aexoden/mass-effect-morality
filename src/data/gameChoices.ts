@@ -2208,6 +2208,176 @@ const rawGameChoices: SectionData[] = [
             },
         ],
     },
+    {
+        id: "alignment-assignments",
+        title: "Alignment Assignments",
+        groups: [
+            {
+                id: "unc-besieged-base",
+                title: "UNC: Besieged Base",
+                description: "Requires a Paragon score of 80% (or 90% if you reached 80% Renegade first).",
+                choices: [
+                    {
+                        id: "unc-besieged-base-1",
+                        description: "If you take the Renegade points here, you won't receive the assignment.",
+                        options: [{ id: "renegade", label: "That's not my problem.", paragon: 0, renegade: 2 }],
+                    },
+                    {
+                        id: "unc-besieged-base-2",
+                        options: [
+                            { id: "perfect", label: "(0 researchers killed)", paragon: 24, renegade: 0 },
+                            { id: "paragon", label: "(1-4 researchers killed)", paragon: 8, renegade: 0 },
+                            { id: "renegade", label: "(5+ researchers killed)", paragon: 0, renegade: 9 },
+                        ],
+                        dependsOn: [{ choiceId: "unc-besieged-base-1", optionIds: ["skip"] }],
+                        isForced: true,
+                    },
+                ],
+            },
+            {
+                id: "unc-the-negotation",
+                title: "UNC: The Negotiation",
+                description: "Requires a Renegade score of 80% (or 90% if you reached 80% Paragon first).",
+                choices: [
+                    {
+                        id: "unc-the-negotiation-1",
+                        options: [
+                            { id: "paragon", label: "(Complete the mission peacefully.)", paragon: 8, renegade: 0 },
+                            { id: "renegade", label: "(Kill Lord Darius and his men.)", paragon: 0, renegade: 9 },
+                        ],
+                    },
+                    {
+                        id: "unc-the-negotiation-2",
+                        description:
+                            "TODO: The wiki guide suggests this has a dependency of killing Lord Darius, but it seems odd and I've never played the mission yet.",
+                        options: [
+                            { id: "renegade", label: "(Complete the mission violently.)", paragon: 0, renegade: 25 },
+                        ],
+                        dependsOn: [{ choiceId: "unc-the-negotiation-1", optionIds: ["renegade"] }],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "background-assignments",
+        title: "Background Assignments",
+        groups: [
+            {
+                id: "citadel-i-remember-me",
+                title: "Citadel: I Remember Me",
+                description: "Only available if you have the Colonist background.",
+                choices: [
+                    {
+                        id: "citadel-i-remember-me",
+                        options: [
+                            { id: "paragon", label: "[Give her the sedative.]", paragon: 8, renegade: 0 },
+                            {
+                                id: "renegade",
+                                label: "[Use the sedative.] / Shoot her. That's an order.",
+                                paragon: 0,
+                                renegade: 9,
+                            },
+                        ],
+                        dependsOn: [{ choiceId: "pre-service-history", optionIds: ["colonist"] }],
+                    },
+                ],
+            },
+            {
+                id: "citadel-old-friends",
+                title: "Citadel: Old Friends",
+                description: "Only available if you have the Earthborn background.",
+                choices: [
+                    {
+                        id: "citadel-old-friends-1",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "I've got a warning. / This changes things.",
+                                paragon: 2,
+                                renegade: 0,
+                            },
+                            {
+                                id: "charm",
+                                label: "I need your help.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 8 } }],
+                            },
+                            {
+                                id: "intimidate",
+                                label: "Make it negotiable. / There won't be a sentencing. / He's mine to take. / I don't care. Give him to me.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 8 } }],
+                            },
+                        ],
+                        dependsOn: [{ choiceId: "pre-service-history", optionIds: ["earthborn"] }],
+                    },
+                    {
+                        id: "citadel-old-friends-2",
+                        description: "Only if you chose the Paragon option in the previous choice.",
+                        options: [
+                            {
+                                id: "charm",
+                                label: "This won't help you.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 6 } }],
+                            },
+                            {
+                                id: "intimidate",
+                                label: "So what? / Do whatever you want.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 6 } }],
+                            },
+                            { id: "renegade", label: "(Shoot him.)", paragon: 0, renegade: 9 },
+                        ],
+                        dependsOn: [{ choiceId: "citadel-old-friends-1", optionIds: ["paragon"] }],
+                    },
+                ],
+            },
+            {
+                id: "citadel-old-unhappy",
+                title: "Citadel: Old, Unhappy, Far-Off Things",
+                description: "Only available if you have the Spacer background.",
+                choices: [
+                    {
+                        id: "citadel-old-unhappy-1",
+                        options: [
+                            { id: "paragon", label: "I'll give you the money.", paragon: 2, renegade: 2 },
+                            { id: "renegade", label: "You're just a drunk.", paragon: 0, renegade: 2 },
+                        ],
+                        dependsOn: [{ choiceId: "pre-service-history", optionIds: ["spacer"] }],
+                    },
+                    {
+                        id: "citadel-old-unhappy-2",
+                        description: "After talking with your mother.",
+                        options: [
+                            { id: "paragon", label: "I'll give you 20 for food.", paragon: 8, renegade: 0 },
+                            {
+                                id: "charm",
+                                label: "The Veteran's Affairs Office",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 4 } }],
+                            },
+                            { id: "renegade", label: "Screw you.", paragon: 0, renegade: 2 },
+                            {
+                                id: "intimidate",
+                                label: "No one understands! Waaah!",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 5 } }],
+                            },
+                        ],
+                        dependsOn: [{ choiceId: "pre-service-history", optionIds: ["spacer"] }],
+                    },
+                ],
+            },
+        ],
+    },
 ];
 
 const gameChoices = flattenDependencies(rawGameChoices);
