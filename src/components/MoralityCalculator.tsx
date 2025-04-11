@@ -4,11 +4,13 @@ import Section from "./Section";
 import gameChoicesData from "../data/gameChoices";
 import { MoralityProvider } from "../contexts/MoralityProvider";
 import { useMorality } from "../hooks/useMoralityContext";
+import MoralityDependencyTester from "./MoralityDependencyTester";
 
 function MoralityCalculatorContent() {
     const { resetState, scores } = useMorality();
     const [showWidget, setShowWidget] = useState(true);
     const [isPinned, setIsPinned] = useState(false);
+    const [showTestTools, setShowTestTools] = useState(false);
 
     return (
         <div className="mx-auto max-w-6xl rounded-lg bg-gray-50 p-6 shadow-md">
@@ -31,8 +33,22 @@ function MoralityCalculatorContent() {
                     >
                         Reset Data
                     </button>
+                    <button
+                        className="ml-4 rounded bg-blue-200 px-3 py-1 text-sm transition hover:bg-blue-300"
+                        onClick={() => {
+                            setShowTestTools(!showTestTools);
+                        }}
+                    >
+                        {showTestTools ? "Hide" : "Show"} Test Tools
+                    </button>
                 </div>
             </div>
+
+            {showTestTools && (
+                <div className="mb-8">
+                    <MoralityDependencyTester />
+                </div>
+            )}
 
             {showWidget && (
                 <MoralityScoreWidget

@@ -7,6 +7,7 @@ import {
     isChoiceDependencyMet as checkChoiceDependencyMet,
     isChoiceExplicitlyLocked as checkChoiceExplicitlyLocked,
 } from "../utils/dependencyUtils";
+import { calculateAvailablePoints } from "../utils/moralityCalculator";
 
 const STORAGE_KEY = "mass-effect-morality-state";
 
@@ -58,9 +59,6 @@ export function useMoralityState() {
         let totalParagon = 0;
         let totalRenegade = 0;
 
-        let availableParagon = 0;
-        let availableRenegade = 0;
-
         let bonusCharm = 0;
         let bonusIntimidate = 0;
 
@@ -74,9 +72,6 @@ export function useMoralityState() {
 
                     // For actual scored points
                     const hasUnmetDependency = !isChoiceDependencyMet(choice.dependsOn);
-
-                    // For available points - only consider explicitly failed dependencies
-                    const hasExplicitlyUnmetDependency = isChoiceExplicitlyLocked(choice.dependsOn);
 
                     if (!hasUnmetDependency) {
                         if ("type" in choice && choice.type === "numeric") {
@@ -106,36 +101,14 @@ export function useMoralityState() {
                             }
                         }
                     }
-
-                    if (!hasExplicitlyUnmetDependency && !(choice.id in state.selectedChoices)) {
-                        if ("type" in choice && choice.type === "numeric") {
-                            if (choice.paragonPerUnit) {
-                                availableParagon += Math.floor(choice.maxValue * choice.paragonPerUnit);
-                            }
-
-                            if (choice.renegadePerUnit) {
-                                availableRenegade += Math.floor(
-                                    (choice.maxValue - choice.minValue) * choice.renegadePerUnit,
-                                );
-                            }
-                        } else {
-                            let maxAvailableParagon = 0;
-                            let maxAvailableRenegade = 0;
-
-                            choice.options.forEach((option) => {
-                                if (isOptionDependencyMet(option.dependsOn, true)) {
-                                    maxAvailableParagon = Math.max(maxAvailableParagon, option.paragon || 0);
-                                    maxAvailableRenegade = Math.max(maxAvailableRenegade, option.renegade || 0);
-                                }
-                            });
-
-                            availableParagon += maxAvailableParagon;
-                            availableRenegade += maxAvailableRenegade;
-                        }
-                    }
                 });
             });
         });
+
+        const { availableParagon, availableRenegade } = calculateAvailablePoints(
+            gameChoicesData,
+            state.selectedChoices,
+        );
 
         const barLength = 340;
         const paragonRatio = totalParagon / barLength;
@@ -166,7 +139,7 @@ export function useMoralityState() {
             paragon: totalParagon,
             renegade: totalRenegade,
         };
-    }, [state.selectedChoices, isChoiceDependencyMet, isChoiceExplicitlyLocked, isOptionDependencyMet]);
+    }, [state.selectedChoices, isChoiceDependencyMet, isOptionDependencyMet]);
 
     const handleOptionSelect = useCallback((choiceId: string, optionId: string): void => {
         setState((prev) => ({

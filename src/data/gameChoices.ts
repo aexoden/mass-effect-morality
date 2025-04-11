@@ -236,6 +236,10 @@ const rawGameChoices: SectionData[] = [
     {
         id: "citadel-expose-saren",
         title: "Citadel: Expose Saren",
+        expectedPoints: {
+            paragon: 16,
+            renegade: 18,
+        },
         groups: [
             {
                 id: "arrival-at-citadel",
@@ -402,6 +406,10 @@ const rawGameChoices: SectionData[] = [
     {
         id: "citadel-assignments-1",
         title: "Citadel Assignments",
+        expectedPoints: {
+            paragon: 82,
+            renegade: 77,
+        },
         groups: [
             {
                 id: "citadel-asari-consort",
@@ -719,6 +727,10 @@ const rawGameChoices: SectionData[] = [
     {
         id: "citadel-assignments-2",
         title: "Citadel Assignments (After 1 Plot World)",
+        expectedPoints: {
+            paragon: 28,
+            renegade: 31,
+        },
         groups: [
             {
                 id: "citadel-family-matter",
@@ -1352,7 +1364,7 @@ const rawGameChoices: SectionData[] = [
                             { id: "paragon", label: "Sounds logical.", paragon: 2, renegade: 0 },
                             { id: "renegade", label: "Can't take that chance.", paragon: 0, renegade: 2 },
                         ],
-                        dependsOn: [{ choiceId: "jeong-1", optionIds: ["renegade"] }],
+                        dependsOn: [{ choiceId: "jeong-1", optionIds: ["paragon", "renegade"] }],
                     },
                     {
                         id: "jeong-3",
@@ -1530,7 +1542,8 @@ const rawGameChoices: SectionData[] = [
                 choices: [
                     {
                         id: "virmire-wrex-kirrahe",
-                        description: "Only if Wrex was killed.",
+                        description:
+                            "Only if Wrex was killed. (TODO: Verify the exactly conditions when this is available.)",
                         options: [
                             {
                                 id: "paragon",

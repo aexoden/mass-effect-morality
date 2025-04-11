@@ -55,11 +55,23 @@ export interface GroupData {
     choices: (ChoiceData | NumericChoiceData)[];
 }
 
+export interface ExpectedPoints {
+    paragon: number;
+    renegade: number;
+}
+
 export interface SectionData {
     id: string;
     title: string;
     description?: string;
     groups: GroupData[];
+    expectedPoints?: ExpectedPoints;
+}
+
+export interface CombinedTest {
+    name: string;
+    sectionIds: string[];
+    expectedPoints: ExpectedPoints;
 }
 
 export interface MoralityScores {
