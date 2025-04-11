@@ -183,7 +183,9 @@ function calculateGroupPoints(
             const choice = choiceMap.get(choiceId);
 
             if (!choice) {
-                throw new Error(`BUG: Choice ${choiceId} not found in choiceMap`);
+                // You'd think this would be a bug, but it can happen if the dependency is a choice that wasn't in the
+                // passed group.
+                continue;
             }
 
             if ("type" in choice && choice.type === "numeric") {

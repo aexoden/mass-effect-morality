@@ -1737,6 +1737,477 @@ const rawGameChoices: SectionData[] = [
             },
         ],
     },
+    {
+        id: "race-against-time",
+        title: "Race Against Time: Sovereign",
+        expectedPoints: { paragon: 10, renegade: 13 },
+        groups: [
+            {
+                id: "council-before-ilos",
+                title: "Report to the Council",
+                description: "When meeting the Council on the Citadel after finishing all plot worlds other than Ilos.",
+                choices: [
+                    {
+                        id: "council-before-ilos",
+                        options: [{ id: "renegade", label: "You son of a bitch.", paragon: 0, renegade: 2 }],
+                    },
+                ],
+            },
+            {
+                id: "citadel-negotiators-request",
+                title: "Citadel: Negotiator's Request",
+                choices: [
+                    {
+                        id: "citadel-negotiators-request",
+                        options: [
+                            {
+                                id: "charm",
+                                label: "You need help.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 8 } }],
+                            },
+                            {
+                                id: "intimidate",
+                                label: "No. You'll go now.",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 7 } }],
+                            },
+                            {
+                                id: "stimulant",
+                                label: '"Then the game is wrong." / "Don\'t be an idiot." followed by "(Give him the stimulant)".',
+                                paragon: 2,
+                                renegade: 0,
+                                dependsOn: [
+                                    { requiredTalent: { talent: "charm", points: 4 } },
+                                    { requiredTalent: { talent: "intimidate", points: 3 } },
+                                ],
+                            },
+                            {
+                                id: "depressant",
+                                label: "(Give him the depressant.)",
+                                paragon: 0,
+                                renegade: 9,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "citadel-our-own-worst-enemy",
+                title: "Citadel: Our Own Worst Enemy",
+                choices: [
+                    {
+                        id: "citadel-our-own-worst-enemy",
+                        options: [
+                            { id: "paragon", label: "I won't support you.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "You have my support.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "ilos-find-the-conduit",
+        title: "Ilos: Find the Conduit",
+        expectedPoints: { paragon: 2, renegade: 2 },
+        groups: [
+            {
+                id: "vigil",
+                title: "Vigil",
+                choices: [
+                    {
+                        id: "vigil",
+                        options: [
+                            { id: "paragon", label: "That's monstrous! / You betrayed them.", paragon: 2, renegade: 0 },
+                            { id: "renegade", label: "It was necessary.", paragon: 0, renegade: 2 },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "race-against-time-final-battle",
+        title: "Race Against Time: Final Battle",
+        expectedPoints: { paragon: 52, renegade: 54 },
+        groups: [
+            {
+                id: "saren-final-battle",
+                title: "Saren",
+                choices: [
+                    {
+                        id: "saren-final-battle",
+                        description:
+                            "If you previously used a Charm/Intimidate option during the conversation on Virmire, the Charm/Intimidate requirements are lower. TODO: Does using Charm previously only reduce the requirement for Charm here (and same question for Intimidate)?",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "That's not true.",
+                                paragon: 24,
+                                renegade: 0,
+                                dependsOn: [
+                                    { requiredTalent: { talent: "charm", points: 12 } },
+                                    {
+                                        requiredTalent: { talent: "charm", points: 9 },
+                                        dependsOn: [{ choiceId: "saren-virmire", optionIds: ["paragon", "renegade"] }],
+                                    },
+                                ],
+                            },
+                            {
+                                id: "renegade",
+                                label: "It's never too late!",
+                                paragon: 0,
+                                renegade: 25,
+                                dependsOn: [
+                                    { requiredTalent: { talent: "intimidate", points: 12 } },
+                                    {
+                                        requiredTalent: { talent: "intimidate", points: 9 },
+                                        dependsOn: [{ choiceId: "saren-virmire", optionIds: ["paragon", "renegade"] }],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "council-fate",
+                title: "The Council's Fate",
+                choices: [
+                    {
+                        id: "council-fate",
+                        options: [
+                            { id: "paragon", label: "Save the Council.", paragon: 28, renegade: 0 },
+                            { id: "neutral", label: "Concentrate on Sovereign.", paragon: 8, renegade: 9 },
+                            { id: "renegade", label: "Let the Council die.", paragon: 0, renegade: 29 },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "other-assignments",
+        title: "Other Assignments",
+        expectedPoints: { paragon: 53, renegade: 56 },
+        groups: [
+            {
+                id: "tali-and-the-geth",
+                title: "Tali and the Geth",
+                choices: [
+                    {
+                        id: "tali-and-the-geth",
+                        options: [
+                            { id: "paragon", label: "All right. / Take it.", paragon: 1, renegade: 0 },
+                            { id: "renegade", label: "I can't take that risk.", paragon: 0, renegade: 1 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "unc-dead-scientists",
+                title: "UNC: Dead Scientists",
+                choices: [
+                    {
+                        id: "unc-dead-scientists",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "This isn't Justice.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 10 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "[Shoot him]",
+                                paragon: 0,
+                                renegade: 2,
+                            },
+                            {
+                                id: "intimidate",
+                                label: "Let me do it.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 8 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "unc-exogeni-facility",
+                title: "UNC: ExoGeni Facility",
+                choices: [
+                    {
+                        id: "unc-exogeni-facility",
+                        options: [
+                            { id: "paragon", label: "I can't do that.", paragon: 8, renegade: 0 },
+                            { id: "renegade", label: "I should kill you right now.", paragon: 0, renegade: 9 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "unc-geth-incursions",
+                title: "UNC: Geth Incursions",
+                choices: [
+                    {
+                        id: "unc-geth-incursions",
+                        description: 'Not available if the second investigate option is chosen ("Or worse.")',
+                        options: [{ id: "renegade", label: "I don't have time for this!", paragon: 0, renegade: 2 }],
+                    },
+                ],
+            },
+            {
+                id: "unc-hades-dogs",
+                title: "UNC: Hades Dogs",
+                choices: [
+                    {
+                        id: "unc-hades-dogs",
+                        options: [
+                            { id: "paragon", label: "I don't trust you. / No deal.", paragon: 8, renegade: 0 },
+                            { id: "renegade", label: "Sounds good.", paragon: 0, renegade: 9 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "unc-hostage",
+                title: "UNC: Hostage",
+                choices: [
+                    {
+                        id: "unc-hostage",
+                        options: [
+                            { id: "paragon", label: "You don't have to die.", paragon: 2, renegade: 0 },
+                            {
+                                id: "charm",
+                                label: "You need Burns!",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 6 } }],
+                            },
+                            { id: "renegade", label: "Take them down!", paragon: 0, renegade: 2 },
+                            {
+                                id: "intimidate",
+                                label: "Don't be stupid.",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 5 } }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "unc-lost-module",
+                title: "UNC: Lost Module",
+                choices: [
+                    {
+                        id: "unc-lost-module-1",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "(Find the module without killing a space monkey.)",
+                                paragon: 6,
+                                renegade: 0,
+                            },
+                            { id: "renegade", label: "(Kill a space monkey.)", paragon: 0, renegade: 4 },
+                        ],
+                    },
+                    {
+                        id: "unc-lost-module-2",
+                        description:
+                            "After finding the module, you can still get the Renegade points outside. TODO: Is this actually true?",
+                        options: [{ id: "renegade", label: "(Kill a space monkey outside.)", paragon: 0, renegade: 4 }],
+                        dependsOn: [{ choiceId: "unc-lost-module-1", optionIds: ["paragon"] }],
+                    },
+                ],
+            },
+            {
+                id: "unc-major-kyle",
+                title: "UNC: Major Kyle",
+                choices: [
+                    {
+                        id: "unc-major-kyle-1",
+                        options: [{ id: "paragon", label: "Maybe I can reason with him.", paragon: 2, renegade: 0 }],
+                    },
+                    {
+                        id: "unc-major-kyle-2",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "He needs my help.",
+                                paragon: 2,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 3 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "He'll get you all killed!",
+                                paragon: 0,
+                                renegade: 2,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 5 } }],
+                            },
+                        ],
+                    },
+                    {
+                        id: "unc-major-kyle-3",
+                        description: "The Charm/Intimidate requirements are higher if you fought your way through.",
+                        options: [
+                            { id: "paragon", label: "I tried to help you.", paragon: 2, renegade: 0 },
+                            {
+                                id: "charm",
+                                label: "You can't help them now.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [
+                                    {
+                                        requiredTalent: { talent: "charm", points: 7 },
+                                        dependsOn: [
+                                            { choiceId: "unc-major-kyle-2", optionIds: ["paragon", "renegade"] },
+                                        ],
+                                    },
+                                    { requiredTalent: { talent: "charm", points: 8 } },
+                                ],
+                            },
+                            { id: "renegade", label: "Enough crazy talk.", paragon: 0, renegade: 2 },
+                            {
+                                id: "intimidate",
+                                label: "Surrender or they all die!",
+                                paragon: 0,
+                                renegade: 9,
+                                dependsOn: [
+                                    { requiredTalent: { talent: "intimidate", points: 10 } },
+                                    {
+                                        requiredTalent: { talent: "intimidate", points: 8 },
+                                        dependsOn: [
+                                            { choiceId: "unc-major-kyle-2", optionIds: ["paragon", "renegade"] },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "unc-rogue-vi",
+                title: "UNC: Rogue VI",
+                choices: [
+                    {
+                        id: "unc-rogue-vi-1",
+                        options: [{ id: "renegade", label: "I've heard that before.", paragon: 0, renegade: 2 }],
+                    },
+                    {
+                        id: "unc-rogue-vi-2",
+                        description: "Taking any of the left side investigate options forfeits the Paragon option.",
+                        options: [{ id: "paragon", label: "Was anyone hurt?", paragon: 2, renegade: 0 }],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: "x57-bring-down-the-sky",
+        title: "X57: Bring Down the Sky",
+        expectedPoints: { paragon: 36, renegade: 38 },
+        groups: [
+            {
+                id: "simon-atwell-1",
+                title: "Simon Atwell",
+                choices: [
+                    {
+                        id: "simon-atwell-1",
+                        description:
+                            'You must choose the left side option "How bad is this going to be?" to earn any of these points.',
+                        options: [
+                            { id: "paragon", label: "They're not all like this.", paragon: 2, renegade: 0 },
+                            {
+                                id: "renegade",
+                                label: '"Why wouldn\'t they?" / "The Conventions don\'t apply." followed by "That\'s no excuse."',
+                                paragon: 0,
+                                renegade: 2,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "charn",
+                title: "Charn",
+                choices: [
+                    {
+                        id: "charn",
+                        options: [
+                            {
+                                id: "charm",
+                                label: "Forget Balak.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "charm", points: 2 } }],
+                            },
+                            {
+                                id: "intimidate",
+                                label: "Don't be stpuid.",
+                                paragon: 8,
+                                renegade: 0,
+                                dependsOn: [{ requiredTalent: { talent: "intimidate", points: 2 } }],
+                            },
+                            {
+                                id: "renegade",
+                                label: "[Attack him]",
+                                paragon: 0,
+                                renegade: 9,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "balak",
+                title: "Balak",
+                choices: [
+                    {
+                        id: "balak",
+                        options: [
+                            { id: "paragon", label: "[Let him go to save hostages]", paragon: 24, renegade: 0 },
+                            { id: "renegade", label: "[Attack him]", paragon: 0, renegade: 25 },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: "simon-atwell-2",
+                title: "Simon Atwell",
+                choices: [
+                    {
+                        id: "simon-atwell-2",
+                        description: 'Only if you let Balak go and say "I\'m not like him." to Simon.',
+                        options: [{ id: "paragon", label: "Only temporarily.", paragon: 2, renegade: 0 }],
+                        dependsOn: [{ choiceId: "balak", optionIds: ["paragon"] }],
+                    },
+                    {
+                        id: "simon-atwell-3",
+                        description:
+                            'Only if you attack Balak but choose "[Leave him to die]" or "[Leave him for the alliance]" and then say "No one could\'ve done better." to Simon.',
+                        options: [
+                            {
+                                id: "renegade",
+                                label: "Damn right I am. / As hard as possible.",
+                                paragon: 0,
+                                renegade: 2,
+                            },
+                        ],
+                        dependsOn: [{ choiceId: "balak", optionIds: ["renegade"] }],
+                    },
+                ],
+            },
+        ],
+    },
 ];
 
 const gameChoices = flattenDependencies(rawGameChoices);
