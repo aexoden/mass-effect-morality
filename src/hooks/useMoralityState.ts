@@ -13,25 +13,39 @@ const STORAGE_KEY = "mass-effect-morality-state";
 
 export function useMoralityState() {
     const initialState = (): MoralityState => {
-        if (typeof window === "undefined") return { selectedChoices: {} };
+        if (typeof window === "undefined") return { hiddenChoices: new Set(), selectedChoices: {} };
 
         const savedState = storage.getItem(STORAGE_KEY);
 
         if (savedState) {
             try {
-                return JSON.parse(savedState) as MoralityState;
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                const parsedState = JSON.parse(savedState);
+
+                return {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+                    hiddenChoices: new Set(parsedState.hiddenChoices),
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                    selectedChoices: parsedState.selectedChoices,
+                };
             } catch (error) {
                 console.error("Error parsing saved state:", error);
             }
         }
 
-        return { selectedChoices: {} };
+        return { hiddenChoices: new Set(), selectedChoices: {} };
     };
 
     const [state, setState] = useState<MoralityState>(initialState);
+    const [showHiddenChoices, setShowHiddenChoices] = useState(false);
 
     useEffect(() => {
-        storage.setItem(STORAGE_KEY, JSON.stringify(state));
+        const serializable = {
+            hiddenChoices: Array.from(state.hiddenChoices),
+            selectedChoices: state.selectedChoices,
+        };
+
+        storage.setItem(STORAGE_KEY, JSON.stringify(serializable));
     }, [state]);
 
     const isOptionDependencyMet = useCallback(
@@ -151,17 +165,47 @@ export function useMoralityState() {
         }));
     }, []);
 
+    const hideChoice = useCallback((choiceId: string): void => {
+        setState((prev) => {
+            const newHiddenChoices = new Set(prev.hiddenChoices);
+            newHiddenChoices.add(choiceId);
+            return {
+                ...prev,
+                hiddenChoices: newHiddenChoices,
+            };
+        });
+    }, []);
+
+    const showChoice = useCallback((choiceId: string): void => {
+        setState((prev) => {
+            const newHiddenChoices = new Set(prev.hiddenChoices);
+            newHiddenChoices.delete(choiceId);
+            return {
+                ...prev,
+                hiddenChoices: newHiddenChoices,
+            };
+        });
+    }, []);
+
+    const toggleShowHiddenChoices = useCallback(() => {
+        setShowHiddenChoices((prev) => !prev);
+    }, []);
+
     const resetState = useCallback(() => {
-        setState({ selectedChoices: {} });
+        setState({ hiddenChoices: new Set(), selectedChoices: {} });
     }, []);
 
     return {
         handleOptionSelect,
+        hideChoice,
         isChoiceDependencyMet,
         isChoiceExplicitlyLocked,
         isOptionDependencyMet,
         resetState,
         scores,
+        showChoice,
+        showHiddenChoices,
         state,
+        toggleShowHiddenChoices,
     };
 }

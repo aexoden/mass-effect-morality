@@ -86,4 +86,5 @@ export interface MoralityScores {
 
 export interface MoralityState {
     selectedChoices: Record<string, string>;
+    hiddenChoices: Set<string>;
 }

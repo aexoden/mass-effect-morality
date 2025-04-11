@@ -9,6 +9,10 @@ export interface MoralityContextData {
     isOptionDependencyMet: (dependsOn: OptionDependencyData[] | undefined, explicitOnly: boolean) => boolean;
     resetState: () => void;
     scores: MoralityScores;
+    hideChoice: (choiceId: string) => void;
+    showChoice: (choiceId: string) => void;
+    showHiddenChoices: boolean;
+    toggleShowHiddenChoices: () => void;
 }
 
 export const MoralityContext = createContext<MoralityContextData | undefined>(undefined);
