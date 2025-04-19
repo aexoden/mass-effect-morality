@@ -937,7 +937,7 @@ const rawGameChoices: SectionData[] = [
                     {
                         id: "noveria-espionage-2",
                         description:
-                            "Only available if you accept the job. The Charm/Intimidate requirement is for the conversation with Rafael Vargas.",
+                            "Only available if you accept the job. The Charm/Intimidate requirement is for the conversation with Rafael Vargas, and the numbers may be wrong.",
                         options: [
                             { id: "paragon", label: "This is wrong.", paragon: 2, renegade: 0 },
                             {
@@ -946,6 +946,7 @@ const rawGameChoices: SectionData[] = [
                                 paragon: 0,
                                 renegade: 2,
                                 dependsOn: [
+                                    // TODO: Review these requirements.
                                     { requiredTalent: { talent: "charm", points: 6 } },
                                     { requiredTalent: { talent: "intimidate", points: 6 } },
                                 ],
@@ -1100,9 +1101,9 @@ const rawGameChoices: SectionData[] = [
                 title: "Maeko Matsuo",
                 choices: [
                     {
+                        // TODO: Verify the dependencies here.
                         id: "maeko-matsuo-2",
-                        description:
-                            "(Possibly) only available if you convince Qui'in and talk to Gianna. TODO: Verify the dependencies here.",
+                        description: "(Possibly) only available if you convince Qui'in and talk to Gianna.",
                         options: [
                             { id: "paragon", label: "He was a criminal.", paragon: 2, renegade: 0 },
                             { id: "renegade", label: "Your opinion doesn't matter.", paragon: 0, renegade: 2 },
@@ -1411,8 +1412,19 @@ const rawGameChoices: SectionData[] = [
                         ],
                     },
                     {
-                        id: "thoran-2",
-                        options: [{ id: "paragon", label: "(Complete the mission.)", paragon: 8, renegade: 0 }],
+                        // TODO: Verify the exact requirements for this or if it even exists. If it does exist, it almost
+                        //       certainly requires at the very least saving the colony, at least in Legendary Edition.
+                        //       My playthrough did not receive these points, but I intimidated Jeong and killed Shiala
+                        //       and all the colonists.
+                        id: "thorian-2",
+                        options: [
+                            {
+                                id: "paragon",
+                                label: "(Complete the mission.) There may be additional requirements.",
+                                paragon: 8,
+                                renegade: 0,
+                            },
+                        ],
                         isForced: true,
                     },
                 ],
@@ -1542,8 +1554,7 @@ const rawGameChoices: SectionData[] = [
                 choices: [
                     {
                         id: "virmire-wrex-kirrahe",
-                        description:
-                            "Only if Wrex was killed. (TODO: Verify the exactly conditions when this is available.)",
+                        description: "Only if Wrex was killed.",
                         options: [
                             {
                                 id: "paragon",
@@ -1839,9 +1850,10 @@ const rawGameChoices: SectionData[] = [
                 title: "Saren",
                 choices: [
                     {
+                        // TODO: Check if using Charm/Intimidate previously affects only the same skill's requirement or both.
                         id: "saren-final-battle",
                         description:
-                            "If you previously used a Charm/Intimidate option during the conversation on Virmire, the Charm/Intimidate requirements are lower. TODO: Does using Charm previously only reduce the requirement for Charm here (and same question for Intimidate)?",
+                            "If you previously used a Charm/Intimidate option during the conversation on Virmire, the Charm/Intimidate requirements are lower.",
                         options: [
                             {
                                 id: "paragon",
@@ -2020,8 +2032,7 @@ const rawGameChoices: SectionData[] = [
                     },
                     {
                         id: "unc-lost-module-2",
-                        description:
-                            "After finding the module, you can still get the Renegade points outside. TODO: Is this actually true?",
+                        description: "After finding the module, you can still get the Renegade points outside.",
                         options: [{ id: "renegade", label: "(Kill a space monkey outside.)", paragon: 0, renegade: 4 }],
                         dependsOn: [{ choiceId: "unc-lost-module-1", optionIds: ["paragon"] }],
                     },
@@ -2123,7 +2134,7 @@ const rawGameChoices: SectionData[] = [
                     {
                         id: "simon-atwell-1",
                         description:
-                            'You must choose the left side option "How bad is this going to be?" to earn any of these points.',
+                            'You must choose the left side option "How bad is this going to be?" followed by either the Paragon or Renegade option (not either of the neutral options) to earn any of these points.',
                         options: [
                             { id: "paragon", label: "They're not all like this.", paragon: 2, renegade: 0 },
                             {
@@ -2235,7 +2246,7 @@ const rawGameChoices: SectionData[] = [
                 ],
             },
             {
-                id: "unc-the-negotation",
+                id: "unc-the-negotiation",
                 title: "UNC: The Negotiation",
                 description: "Requires a Renegade score of 80% (or 90% if you reached 80% Paragon first).",
                 choices: [
@@ -2248,8 +2259,7 @@ const rawGameChoices: SectionData[] = [
                     },
                     {
                         id: "unc-the-negotiation-2",
-                        description:
-                            "TODO: The wiki guide suggests this has a dependency of killing Lord Darius, but it seems odd and I've never played the mission yet.",
+                        description: "TODO: Determine exactly what this entails and how it differs from above.",
                         options: [
                             { id: "renegade", label: "(Complete the mission violently.)", paragon: 0, renegade: 25 },
                         ],
