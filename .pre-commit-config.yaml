@@ -1,0 +1,56 @@
+# Pre-commit configuration
+# Install: pre-commit install
+# Update: pre-commit autoupdate
+
+repos:
+  # General hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-vcs-permalinks
+      - id: check-yaml
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  # Conventional commits
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.3.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+
+  # TypeScript formatting, linting, and type checking
+  - repo: local
+    hooks:
+      - id: pnpm-lock
+        name: pnpm lockfile check
+        description: Check that pnpm-lock.yaml is up to date
+        entry: devbox run -- pnpm install --frozen-lockfile
+        language: system
+        pass_filenames: false
+
+      - id: prettier
+        name: Prettier code formatter
+        description: Format TypeScript files using Prettier
+        entry: devbox run -- pnpm exec prettier --check .
+        language: system
+        pass_filenames: false
+
+      - id: eslint
+        name: ESLint linter
+        description: Lint TypeScript files using ESLint
+        entry: devbox run -- pnpm exec eslint . --max-warnings 0
+        language: system
+        pass_filenames: false
+
+      - id: tsc
+        name: TypeScript type checker
+        description: Type check TypeScript files using tsc
+        entry: devbox run -- pnpm exec tsc -b --noEmit
+        language: system
+        pass_filenames: false
