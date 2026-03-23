@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MoralityContext, MoralityContextData } from "../contexts/MoralityContext";
+import { MoralityContext, type MoralityContextData } from "../contexts/MoralityContext";
 
 export function useMorality(): MoralityContextData {
     const context = useContext(MoralityContext);

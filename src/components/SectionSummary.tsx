@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { SectionData, ChoiceData, NumericChoiceData } from "../types";
+import type { SectionData, ChoiceData, NumericChoiceData } from "../types";
 import { useMorality, useSelectedChoices } from "../hooks/useMoralityContext";
 import { CheckCircleIcon, ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 
@@ -26,8 +26,8 @@ export default function SectionSummary({ section, isExpanded, onToggleExpand }: 
                 completedChoices++;
 
                 if ("type" in choice && choice.type === "numeric") {
-                    if (selectedChoices[choice.id].startsWith("numeric_")) {
-                        const value = parseInt(selectedChoices[choice.id].split("_")[1], 10);
+                    if (selectedChoices[choice.id]?.startsWith("numeric_")) {
+                        const value = parseInt(selectedChoices[choice.id]?.split("_")[1] ?? "0", 10);
 
                         if (choice.paragonPerUnit) {
                             paragonPoints += Math.floor(value * choice.paragonPerUnit);

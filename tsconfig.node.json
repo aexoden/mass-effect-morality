@@ -12,6 +12,7 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
+    "verbatimModuleSyntax": true,
 
     /* Linting */
     "allowJs": true,
@@ -19,7 +20,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "noUncheckedIndexedAccess": true
   },
-  "include": ["eslint.config.js", "vite.config.ts"]
+  "include": ["eslint.config.ts", "vite.config.ts"]
 }

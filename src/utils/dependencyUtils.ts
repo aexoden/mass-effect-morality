@@ -1,4 +1,4 @@
-import {
+import type {
     ChoiceData,
     ChoiceDependencyData,
     NumericChoiceData,
@@ -18,7 +18,7 @@ export function isChoiceDependencyMet(
         return true;
     }
 
-    return choiceDependsOn.every((dep) => dep.optionIds.includes(selectedChoices[dep.choiceId]));
+    return choiceDependsOn.every((dep) => dep.optionIds.includes(selectedChoices[dep.choiceId] ?? ""));
 }
 
 /**
@@ -34,7 +34,7 @@ export function isChoiceExplicitlyLocked(
 
     return choiceDependsOn.some((dep) => {
         if (dep.choiceId in selectedChoices) {
-            return !dep.optionIds.includes(selectedChoices[dep.choiceId]);
+            return !dep.optionIds.includes(selectedChoices[dep.choiceId] ?? "");
         }
 
         return false;

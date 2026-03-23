@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Group from "./Group";
 import SectionSummary from "./SectionSummary";
-import { SectionData } from "../types";
+import type { SectionData } from "../types";
 import { useSelectedChoices } from "../hooks/useMoralityContext";
 
 interface SectionProps {

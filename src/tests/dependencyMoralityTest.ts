@@ -1,6 +1,6 @@
 import gameChoicesData from "../data/gameChoices";
 import { combinedTests, overallTotals } from "../data/testDefinitions";
-import { CombinedTest, SectionData } from "../types";
+import type { CombinedTest, SectionData } from "../types";
 
 import { calculateAvailablePoints } from "../utils/moralityCalculator";
 

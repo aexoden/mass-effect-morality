@@ -1,5 +1,6 @@
 /* eslint-disable sort-keys */
-import { CombinedTest } from "../types";
+
+import type { CombinedTest } from "../types";
 
 export const combinedTests: CombinedTest[] = [
     {

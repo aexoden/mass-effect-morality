@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import ErrorBoundary from "../components/ErrorBoundary";
 import { MoralityContext } from "./MoralityContext";
 import { useMoralityState } from "../hooks/useMoralityState";

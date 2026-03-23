@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NumericChoiceData } from "../types";
+import type { NumericChoiceData } from "../types";
 import { useMorality, useSelectedChoices } from "../hooks/useMoralityContext";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
@@ -15,9 +15,10 @@ export default function NumericChoice({ choiceId, choice, hasUnmetDependency }: 
 
     const hasBeenSelected = choiceId in selectedChoices;
 
-    const storedValue = hasBeenSelected
-        ? parseInt(selectedChoices[choiceId].split("_")[1], 10)
-        : (choice.defaultValue ?? 0);
+    const storedValue =
+        hasBeenSelected && selectedChoices[choiceId] !== undefined
+            ? parseInt(selectedChoices[choiceId].split("_")[1] ?? choice.defaultValue?.toString() ?? "0", 10)
+            : (choice.defaultValue ?? 0);
 
     const [value, setValue] = useState(storedValue);
     const [isEditing, setIsEditing] = useState(false);

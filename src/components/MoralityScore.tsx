@@ -8,7 +8,7 @@ import {
     ShieldCheckIcon,
     XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { MoralityScores } from "../types";
+import type { MoralityScores } from "../types";
 
 interface MoralityPercentages {
     paragonRatio: number;

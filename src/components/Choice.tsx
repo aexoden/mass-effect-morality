@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import Option from "./Option";
 import NumericChoice from "./NumericChoice";
-import { ChoiceData, NumericChoiceData, OptionData } from "../types";
+import type { ChoiceData, NumericChoiceData, OptionData } from "../types";
 import { LockClosedIcon, EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { useMorality, useSelectedChoices } from "../hooks/useMoralityContext";

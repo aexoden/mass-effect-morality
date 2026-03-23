@@ -1,4 +1,4 @@
-import { ChoiceData, ChoiceDependencyData, NumericChoiceData, SectionData } from "../types";
+import type { ChoiceData, ChoiceDependencyData, NumericChoiceData, SectionData } from "../types";
 import { isChoiceDependencyMet, isOptionDependencyMet } from "./dependencyUtils";
 
 interface ChoiceGraph {

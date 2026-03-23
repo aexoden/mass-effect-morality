@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { ChoiceDependencyData, MoralityScores, MoralityState, OptionDependencyData } from "../types";
+import type { ChoiceDependencyData, MoralityScores, MoralityState, OptionDependencyData } from "../types";
 
 export interface MoralityContextData {
     state: MoralityState;

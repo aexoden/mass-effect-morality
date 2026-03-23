@@ -1,4 +1,4 @@
-import { SectionData } from "../types";
+import type { SectionData } from "../types";
 
 export function validateGameData(data: SectionData[]): { valid: boolean; errors: string[] } {
     const errors: string[] = [];

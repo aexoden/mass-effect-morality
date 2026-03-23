@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys */
 
-import { SectionData } from "../types";
+import type { SectionData } from "../types";
 import { flattenDependencies } from "../utils/dependencyUtils";
 
 const rawGameChoices: SectionData[] = [

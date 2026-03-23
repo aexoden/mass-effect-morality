@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { OptionData, OptionDependencyData } from "../types";
+import type { OptionData, OptionDependencyData } from "../types";
 import { useMorality, useSelectedChoices } from "../hooks/useMoralityContext";
 
 interface OptionProps {

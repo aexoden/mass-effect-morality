@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
 import gameChoicesData from "../data/gameChoices";
-import { ChoiceDependencyData, MoralityScores, MoralityState, OptionDependencyData } from "../types";
+import type { ChoiceDependencyData, MoralityScores, MoralityState, OptionDependencyData } from "../types";
 import { storage } from "../utils/storage";
 import {
     isOptionDependencyMet as checkOptionDependencyMet,
@@ -91,9 +91,9 @@ export function useMoralityState() {
                         if ("type" in choice && choice.type === "numeric") {
                             if (
                                 choice.id in state.selectedChoices &&
-                                state.selectedChoices[choice.id].startsWith("numeric_")
+                                state.selectedChoices[choice.id]?.startsWith("numeric_")
                             ) {
-                                const value = parseInt(state.selectedChoices[choice.id].split("_")[1], 10);
+                                const value = parseInt(state.selectedChoices[choice.id]?.split("_")[1] ?? "0", 10);
 
                                 if (choice.paragonPerUnit) {
                                     totalParagon += Math.floor(value * choice.paragonPerUnit);

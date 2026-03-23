@@ -1,5 +1,5 @@
 import Choice from "./Choice";
-import { GroupData } from "../types";
+import type { GroupData } from "../types";
 
 interface GroupProps {
     group: GroupData;

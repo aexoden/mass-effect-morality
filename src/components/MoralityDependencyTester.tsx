@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { runDependencyMoralityTests, TestSuiteResults } from "../tests/dependencyMoralityTest";
+import { runDependencyMoralityTests, type TestSuiteResults } from "../tests/dependencyMoralityTest";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function MoralityDependencyTester() {
