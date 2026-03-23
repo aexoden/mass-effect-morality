@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.16.0/.schema/devbox.schema.json",
+  "packages": {
+    "nodejs": "24.12.0",
+    "pre-commit": "4.5.1"
+  },
+  "env": {
+    "DEVBOX_COREPACK_ENABLED": "true"
+  },
+  "shell": {
+    "init_hook": ["pre-commit install"],
+    "scripts": {
+      "format": "pnpm exec prettier --check .",
+      "lint": "pnpm exec eslint . --max-warnings 0 && pnpm exec tsc -b --noEmit"
+    }
+  }
+}
