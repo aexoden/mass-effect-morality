@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode } from "react";
 import ErrorBoundary from "../components/ErrorBoundary";
 import { MoralityContext } from "./MoralityContext";
 import { useMoralityState } from "../hooks/useMoralityState";
@@ -21,11 +21,7 @@ function StorageWarning() {
 
 function MoralityProviderContent({ children }: { children: ReactNode }) {
     const moralityState = useMoralityState();
-    const [isStorageAvailable, setIsStorageAvailable] = useState(true);
-
-    useEffect(() => {
-        setIsStorageAvailable(isLocalStorageAvailable());
-    }, []);
+    const isStorageAvailable = isLocalStorageAvailable();
 
     return (
         <>

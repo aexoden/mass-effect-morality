@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { NumericChoiceData } from "../types";
 import { useMorality, useSelectedChoices } from "../hooks/useMoralityContext";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
@@ -23,6 +23,8 @@ export default function NumericChoice({ choiceId, choice, hasUnmetDependency }: 
     const [value, setValue] = useState(storedValue);
     const [isEditing, setIsEditing] = useState(false);
 
+    const effectiveIsEditing = isEditing && !hasUnmetDependency;
+
     const paragonPoints = choice.paragonPerUnit ? Math.floor(value * choice.paragonPerUnit) : 0;
     const renegadePoints = choice.renegadePerUnit ? Math.floor((choice.maxValue - value) * choice.renegadePerUnit) : 0;
 
@@ -36,12 +38,6 @@ export default function NumericChoice({ choiceId, choice, hasUnmetDependency }: 
         handleOptionSelect(choiceId, `numeric_${value.toString()}`);
         setIsEditing(false);
     };
-
-    useEffect(() => {
-        if (hasUnmetDependency) {
-            setIsEditing(false);
-        }
-    }, [hasUnmetDependency]);
 
     return (
         <div
@@ -151,7 +147,7 @@ export default function NumericChoice({ choiceId, choice, hasUnmetDependency }: 
                 </div>
             </div>
 
-            {(isEditing || !hasBeenSelected) && !hasUnmetDependency && (
+            {(effectiveIsEditing || !hasBeenSelected) && !hasUnmetDependency && (
                 <div className="mt-3 flex justify-end">
                     <button
                         type="button"

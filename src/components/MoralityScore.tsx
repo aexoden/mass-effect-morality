@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     BookmarkIcon,
     CheckCircleIcon,
@@ -180,30 +180,45 @@ interface MoralityScoreWidgetProps {
 
 export function MoralityScoreWidget({ scores, onClose, onPin, isPinned }: MoralityScoreWidgetProps) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const [lastParagon, setLastParagon] = useState(scores.paragon);
-    const [lastRenegade, setLastRenegade] = useState(scores.renegade);
     const [paragonChanged, setParagonChanged] = useState(false);
     const [renegadeChanged, setRenegadeChanged] = useState(false);
+    const isInitialRender = useRef(true);
 
     useEffect(() => {
-        if (scores.paragon !== lastParagon) {
+        if (isInitialRender.current) {
+            return;
+        }
+        const showTimer = setTimeout(() => {
             setParagonChanged(true);
-            setLastParagon(scores.paragon);
-            setTimeout(() => {
-                setParagonChanged(false);
-            }, 2000);
-        }
-    }, [scores.paragon, lastParagon]);
+        }, 0);
+        const hideTimer = setTimeout(() => {
+            setParagonChanged(false);
+        }, 2000);
+        return () => {
+            clearTimeout(showTimer);
+            clearTimeout(hideTimer);
+        };
+    }, [scores.paragon]);
 
     useEffect(() => {
-        if (scores.renegade !== lastRenegade) {
-            setRenegadeChanged(true);
-            setLastRenegade(scores.renegade);
-            setTimeout(() => {
-                setRenegadeChanged(false);
-            }, 2000);
+        if (isInitialRender.current) {
+            return;
         }
-    }, [scores.renegade, lastRenegade]);
+        const showTimer = setTimeout(() => {
+            setRenegadeChanged(true);
+        }, 0);
+        const hideTimer = setTimeout(() => {
+            setRenegadeChanged(false);
+        }, 2000);
+        return () => {
+            clearTimeout(showTimer);
+            clearTimeout(hideTimer);
+        };
+    }, [scores.renegade]);
+
+    useEffect(() => {
+        isInitialRender.current = false;
+    }, []);
 
     const moralityLabel = getMoralityLabel(scores);
     const alignmentColor = getAlignmentColor(scores);
@@ -213,7 +228,7 @@ export function MoralityScoreWidget({ scores, onClose, onPin, isPinned }: Morali
         <div className="bg-opacity-95 fixed right-4 bottom-4 z-50 w-72 rounded-lg bg-gray-800 text-white shadow-lg backdrop-blur-sm transition-all duration-300">
             <div className="flex items-center justify-between rounded-t-lg bg-gray-700 px-3 py-2">
                 <div className="flex items-center">
-                    <span className="mr-2 h-3 w-3 rounded-full bg-gradient-to-r from-sky-400 to-red-400"></span>
+                    <span className="mr-2 h-3 w-3 rounded-full bg-linear-to-r from-sky-400 to-red-400"></span>
                     <h3 className="text-lg font-bold">Morality Status</h3>
                 </div>
                 <div className="flex space-x-1">

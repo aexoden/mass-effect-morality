@@ -28,6 +28,7 @@ export default defineConfig(
                 },
             },
             prettier,
+            reactHooks.configs.flat.recommended,
         ],
         files: ["**/*.{js,ts,tsx}"],
         languageOptions: {
@@ -36,7 +37,6 @@ export default defineConfig(
         },
         plugins: {
             "@stylistic": stylistic,
-            "react-hooks": reactHooks,
             "react-refresh": reactRefresh,
         },
         rules: {
