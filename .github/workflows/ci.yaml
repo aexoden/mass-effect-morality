@@ -20,6 +20,11 @@ jobs:
       - name: Install Devbox
         uses: jetify-com/devbox-install-action@8c6a66ed6273138b1915457069de78cb52fe3bd7 # v0.15.0
 
+      # pnpm currently entirely skips resolution during install if a lockfile is present. As a result, peer dependencies
+      # are not checked at all. To ensure those are enforced, we first run a separate install command with no lockfile.
+      - name: Check peer dependencies
+        run: devbox run -- pnpm install --no-lockfile --strict-peer-dependencies
+
       - name: Install dependencies
         run: devbox run -- pnpm install --frozen-lockfile
 
