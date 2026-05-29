@@ -43,9 +43,9 @@ jobs:
             echo "All ${name} versions are consistent: ${versions[devbox]}"
           }
 
-          check_version "Node.js" \
-            devbox "$(jq -r '.packages.nodejs' devbox.json)" \
-            package_json "$(jq -r '.engines.node' package.json | sed 's/[>=]//g')"
+          check_version "pnpm" \
+            devbox "$(jq -r '.packages.pnpm' devbox.json)" \
+            package_json "$(jq -r '.devEngines.packageManager.version' package.json | sed 's/[>=]//g')"
 
   lint:
     name: Lint and Type Check
