@@ -2,8 +2,8 @@
   "lockfile_version": "1",
   "packages": {
     "github:NixOS/nixpkgs/nixpkgs-unstable": {
-      "last_modified": "2026-11-06T15:06:19Z",
-      "resolved": "github:NixOS/nixpkgs/4fe25e12eb9f4c744966dd3de5a05246cf098601?lastModified=1793977579&narHash=sha256-WrSODdZFVIs%2FHh2NzC0bY%2BROByi0bATg8WfePX8dPj8%3D"
+      "last_modified": "2026-11-21T08:18:15Z",
+      "resolved": "github:NixOS/nixpkgs/93a9ed0a866099a230ed5146a5bb7d16fd5c9b14?lastModified=1795249095&narHash=sha256-8JDgyVvWUZg5m9hNlL8Ge9aT647ng3Ukc8NPMiKNTPQ%3D"
     },
     "pnpm@11.22.0": {
       "last_modified": "2026-09-02T18:03:51Z",
@@ -44,8 +44,8 @@
       }
     },
     "pre-commit@4.7.0": {
-      "last_modified": "2026-11-06T15:06:19Z",
-      "resolved": "github:NixOS/nixpkgs/4fe25e12eb9f4c744966dd3de5a05246cf098601#pre-commit",
+      "last_modified": "2026-11-21T08:18:15Z",
+      "resolved": "github:NixOS/nixpkgs/93a9ed0a866099a230ed5146a5bb7d16fd5c9b14#pre-commit",
       "source": "devbox-search",
       "version": "4.7.0",
       "systems": {
@@ -53,43 +53,43 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/a3mwvqa4z5b40xav5j6j2sqy9j93x2vs-pre-commit-4.7.0",
+              "path": "/nix/store/4hk1ad5fq9gw9h746pzxp4wqbaz2ari6-pre-commit-4.7.0",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/s4pxm5lf68p48hzajwayww3wzhn6z5gj-pre-commit-4.7.0-dist"
+              "path": "/nix/store/1h50r1xjji147mvyhjfx6anp8gygpjg1-pre-commit-4.7.0-dist"
             }
           ],
-          "store_path": "/nix/store/a3mwvqa4z5b40xav5j6j2sqy9j93x2vs-pre-commit-4.7.0"
+          "store_path": "/nix/store/4hk1ad5fq9gw9h746pzxp4wqbaz2ari6-pre-commit-4.7.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/5103lhmzidxxn28zipbq5w1lb8y6zxn5-pre-commit-4.7.0",
+              "path": "/nix/store/vdvhpr920n2n81mdyghjp89vdpb6641d-pre-commit-4.7.0",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/4xqwmx69g6ld9a5vikb07jxjr1xsj8sl-pre-commit-4.7.0-dist"
+              "path": "/nix/store/df79ba49k212130yfxlci2n7n337pmij-pre-commit-4.7.0-dist"
             }
           ],
-          "store_path": "/nix/store/5103lhmzidxxn28zipbq5w1lb8y6zxn5-pre-commit-4.7.0"
+          "store_path": "/nix/store/vdvhpr920n2n81mdyghjp89vdpb6641d-pre-commit-4.7.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/qxgfxv7pjfnc678ax65h7xbkzn4yd5ij-pre-commit-4.7.0",
+              "path": "/nix/store/x5xa74r7wcy4zxn3m5aryh9w963xn7yr-pre-commit-4.7.0",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/rayyazfv12skx0nwi43mli9bl1m282vs-pre-commit-4.7.0-dist"
+              "path": "/nix/store/zzxk59vd4z7vb7zr5qn165lqn69g6qr6-pre-commit-4.7.0-dist"
             }
           ],
-          "store_path": "/nix/store/qxgfxv7pjfnc678ax65h7xbkzn4yd5ij-pre-commit-4.7.0"
+          "store_path": "/nix/store/x5xa74r7wcy4zxn3m5aryh9w963xn7yr-pre-commit-4.7.0"
         }
       }
     }
